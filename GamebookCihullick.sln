@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamebookCihullick.Server", "GamebookCihullick.Server\GamebookCihullick.Server.csproj", "{FCC13115-AD21-4E45-BB61-9DDF6FD5A74F}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "gamebookcihullick.client", "gamebookcihullick.client\gamebookcihullick.client.esproj", "{7B900394-0377-46A6-949C-18DADF353E80}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FCC13115-AD21-4E45-BB61-9DDF6FD5A74F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC13115-AD21-4E45-BB61-9DDF6FD5A74F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC13115-AD21-4E45-BB61-9DDF6FD5A74F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC13115-AD21-4E45-BB61-9DDF6FD5A74F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B900394-0377-46A6-949C-18DADF353E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B900394-0377-46A6-949C-18DADF353E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B900394-0377-46A6-949C-18DADF353E80}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7B900394-0377-46A6-949C-18DADF353E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B900394-0377-46A6-949C-18DADF353E80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B900394-0377-46A6-949C-18DADF353E80}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A52029B8-11BB-4DE5-B385-2AE3CF266511}
+	EndGlobalSection
+EndGlobal
