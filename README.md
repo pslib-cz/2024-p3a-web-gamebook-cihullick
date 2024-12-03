@@ -48,6 +48,6 @@ Lokace jsou propojeny (např. dům → ulice → obchod). Některé cesty jsou z
 Dialogy NPC
 NPC můžou s hráčem mluvit a dávat požadavky (např. krysy žádající sýr).
 
-    Postup ve hře
+Postup ve hře
 Hra končí, když hráč získá přístup do banky a vyřeší svůj problém s účtem. Po dokončení hry je hráči umožněno pokračovat ve hře (např. vydělávat peníze v kasinu nebo obchodě).
 
