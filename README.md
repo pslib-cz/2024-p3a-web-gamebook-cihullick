@@ -1,7 +1,11 @@
 https://www.figma.com/design/ejRhrcdOx1MVqLTyM1kG7A/GAMEBOOK?node-id=228-3&node-type=canvas&t=pmkE2gCsXu0EFNmv-0
+https://drive.google.com/file/d/14LK3LTzbO3efJm6ZSDxWqJVjrgLPxwDY/view?usp=drive_link
 
 Note for Kazda & Stehlík:
 Do not look in the DON'T LOOK page.
+
+Diagram note:
+Open the diagram in draw.io to see more pixels.
 
 Popis mechanik:
 
