@@ -34,10 +34,10 @@ Praní prádla
 Hráč si může koupit pračku v obchodě a použít ji k praní špinavého oblečení.
 
 Pokojové interakce
-Ložnice: Umožňuje hráči spát a tím ukončit den.
-Kuchyně: Hráč může vzít jídlo z ledničky.
-Koupelna: Obsahuje pračku, která je ale rozbitá. (Hráč si musí koupit novou)
-Chodba: Slouží jako výstup z domu na ulici.
+1) Ložnice: Umožňuje hráči spát a tím ukončit den.
+2) Kuchyně: Hráč může vzít jídlo z ledničky.
+3) Koupelna: Obsahuje pračku, která je ale rozbitá. (Hráč si musí koupit novou)
+4) Chodba: Slouží jako výstup z domu na ulici.
 
 Stav hry a ukládání
 Hra sleduje stav hráče (progres, peníze, inventář, hlad, aktuální den). Uložení stavu hry do souboru a jeho pozdější import pro pokračování.
