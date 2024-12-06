@@ -7,6 +7,8 @@ Do not look in the DON'T LOOK page.
 Diagram note:
 Open the diagram in draw.io to see more pixels.
 
+
+
 Popis mechanik:
 
 
@@ -82,3 +84,10 @@ Postup ve hře
 
 Hra končí, když hráč získá přístup do banky a vyřeší svůj problém s účtem. Po dokončení hry je hráči umožněno pokračovat ve hře (např. vydělávat peníze v kasinu nebo obchodě).
 
+
+
+Příběh:
+
+
+
+Jednoho dne se probudíš se zprávou, že tvůj bankovní účet byl zablokován. Jediný způsob jak tento problém vyřešit je jít pěšky do banky a tam to vyřešit. Problém je, že tvá banka vyžaduje čisté oblečení pro vstup, které ty nemáš, protože sis předešlý den hrál v blátě. Jediný způsob jak se dostat do banky je vyprat si své prádlo. Problém 2! Tvá pračka se zrovna jako naschvál rozbila a ty nemáš skoro žádné peníze. Po dlouhém měsíci šetření si peněz jako brigádník v lokálním obchodě si konečně vyděláš na svou pračku a můžeš si vyprat své prádlo. Po cestě do banky ovšem zjistíš, že ulice je uzavřena a jediný způsob jak se dostat do banky je nedostupný. Musíš najít alternativní cestu. Po nějaké době tě napadne se do banky dostat přes kanalizaci, stráženou místním krysím gangem. Při vstupu do kanalizace se setkáš s krysím gang leaderem, který ti řekne, že jediná podmínka pro to, aby tě pustil dále, je, že mu daruješ čerstvý speciální pule sýr, který se prodává pouze v obchodě, kde pracuješ, a stojí $600. Zpátky do práce! Po našetření zbytku peněz a pravděpodobně dalším vyprání svého prádla se vratíš zpět ke krysám, které od tebe odeberou sýr a pustí tě dál. Nyní můžeš jít do banky. V bance ti jednoduše pomůžou s odblokováním svého účtu a ty můžeš dále expandovat svou závislost na gamblení. WOOP WOOP
