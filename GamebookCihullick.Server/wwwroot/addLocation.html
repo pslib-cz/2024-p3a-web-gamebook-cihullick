@@ -1,0 +1,56 @@
+﻿﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File upload</title>
+</head>
+<body>
+    <h1>Upload imagefile</h1>
+    <form id="addLocationForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="type">Type:</label>
+        <input type="text" id="type" name="type" required>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea>
+        <button type="submit">Add Location</button>
+    </form>
+
+    <div id="debug" style="margin-top: 20px; color: red;"></div> <!-- Debug Section -->
+
+    <script>
+        document.getElementById("addLocationForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch("/api/Location", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    // Extract error details from the response
+                    const errorMessage = await response.text();
+                    document.getElementById("debug").innerText = `Error: ${errorMessage}`;
+                    alert("Error adding location.");
+                } else {
+                    alert("Location added successfully!");
+                    document.getElementById("debug").innerText = ""; // Clear debug messages
+                }
+            } catch (error) {
+                // Log any unexpected errors
+                console.error("Unexpected error:", error);
+                document.getElementById("debug").innerText = `Unexpected error: ${error.message}`;
+                alert("Unexpected error occurred.");
+            }
+        });
+    </script>
+
+</body>
+</html>

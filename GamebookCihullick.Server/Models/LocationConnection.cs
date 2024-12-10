@@ -2,12 +2,12 @@
 {
     public class LocationConnection
     {
-        public int LocationID { get; set; } // Foreign Key to Source Location
-        public Location Location { get; set; } // Navigation Property
+        public int LocationID { get; set; }
+        public int ConnectedLocationID { get; set; }
+        public bool IsBlocked { get; set; }
 
-        public int ConnectedLocationID { get; set; } // Foreign Key to Target Location
-        public Location ConnectedLocation { get; set; } // Navigation Property
-
-        public bool IsBlocked { get; set; } // Indicates whether the connection is blocked
+        public Location? Location { get; set; }
+        public Location? ConnectedLocation { get; set; }
     }
+
 }
