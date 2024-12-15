@@ -4,8 +4,6 @@
     {
         public int LocationID { get; set; }
         public int ConnectedLocationID { get; set; }
-        public bool IsBlocked { get; set; }
-
         public Location? Location { get; set; }
         public Location? ConnectedLocation { get; set; }
     }

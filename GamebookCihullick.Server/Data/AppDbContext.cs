@@ -8,16 +8,11 @@ namespace GamebookCihullick.Server.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Location> Locations { get; set; }
-        public DbSet<Player> Players { get; set; }
         public DbSet<LocationConnection> LocationConnections { get; set; }
-        public DbSet<Inventory> Inventories { get; set; }
-        public DbSet<Item> Items { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Composite Key Configuration for Inventory
-            modelBuilder.Entity<Inventory>()
-                .HasKey(i => new { i.PlayerID, i.ItemID });
 
             modelBuilder.Entity<LocationConnection>()
                 .HasKey(lc => new { lc.LocationID, lc.ConnectedLocationID });

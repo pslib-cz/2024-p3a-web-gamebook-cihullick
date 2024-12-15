@@ -42,6 +42,24 @@ namespace GamebookCihullick.Server.Controllers
             return location;
         }
 
+        [HttpGet("{id}/connections")]
+        public IActionResult GetConnectedLocations(int id)
+        {
+            var connections = _context.LocationConnections
+                .Where(lc => lc.LocationID == id)
+                .Include(lc => lc.ConnectedLocation)
+                .Select(lc => new
+                {
+                    lc.ConnectedLocationID,
+                    lc.ConnectedLocation.Name,
+                    lc.ConnectedLocation.Description
+                })
+                .ToList();
+
+            return Ok(connections);
+        }
+
+
         // PUT: api/Locations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

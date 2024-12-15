@@ -3,8 +3,8 @@
     public class Location
     {
         public int LocationID { get; set; } // Primary Key
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
 
         // Image Data
         public byte[]? Image { get; set; } // Stores the image as a byte array
