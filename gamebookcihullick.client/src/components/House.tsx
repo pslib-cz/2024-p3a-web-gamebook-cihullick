@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setPlayerLocation, getPlayerLocation } from '../services/PlayerService';
 
 interface Location {
+    locationID: number; // Add LocationID from API response
     name: string;
     description: string;
     image: string;
@@ -25,8 +27,10 @@ const House: React.FC = () => {
             .then((result) => {
                 setData({
                     ...result,
-                    image: `data:image/png;base64,${result.image}`, // Base64 conversion
+                    image: `data:image/png;base64,${result.image}`,
                 });
+                // Dynamically set player's location
+                setPlayerLocation(result.locationID);
             })
             .catch((error) => console.error('Error fetching house data:', error));
 
@@ -40,12 +44,12 @@ const House: React.FC = () => {
     if (!data) return <div>Loading...</div>;
 
     return (
-        <div>
+        <div style={{ backgroundImage: `url(${data.image})` }}>
             <h2>{data.name}</h2>
             <p>{data.description}</p>
+            <p>Current Location ID: {getPlayerLocation()}</p> {/* Display dynamically set LocationID */}
             <img src={data.image} alt={data.name} style={{ width: '300px' }} />
 
-            {/* Reachable Locations */}
             <h3>Reachable Locations</h3>
             <ul>
                 {connections.map((conn) => (
@@ -56,7 +60,7 @@ const House: React.FC = () => {
                 ))}
             </ul>
 
-            {/* Button to navigate to Street */}
+            {/* Navigate to Street */}
             <button onClick={() => navigate('/street')} style={{ fontSize: '16px', padding: '10px', marginTop: '20px' }}>
                 Go to Street
             </button>
