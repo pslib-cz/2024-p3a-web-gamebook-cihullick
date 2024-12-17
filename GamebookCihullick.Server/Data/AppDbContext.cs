@@ -12,12 +12,10 @@ namespace GamebookCihullick.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Composite Key Configuration for Inventory
 
             modelBuilder.Entity<LocationConnection>()
                 .HasKey(lc => new { lc.LocationID, lc.ConnectedLocationID });
 
-            // Other configurations like LocationConnection
             modelBuilder.Entity<LocationConnection>()
                 .HasOne(lc => lc.Location)
                 .WithMany(l => l.Connections)

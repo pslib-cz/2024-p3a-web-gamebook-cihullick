@@ -1,12 +1,10 @@
 import './App.css';
-import {
-    createBrowserRouter,
-    RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, } from 'react-router-dom';
 import AppLayout from './app/AppLayout';
 import Menu from './app/Menu';
 import House from './components/House';
-import Street from './components/Street'; // Import the new Street component
+import Street from './components/Street';
+import Garden from './components/Garden';
 
 const router = createBrowserRouter([
     {
@@ -15,15 +13,19 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Menu />, // Start menu
+                element: <Menu />,
             },
             {
                 path: '/house',
-                element: <House />, // House page
+                element: <House />,
             },
             {
                 path: '/street',
-                element: <Street />, // Street page
+                element: <Street />,
+            },
+            {
+                path: '/garden',
+                element: <Garden />,
             },
         ],
     },

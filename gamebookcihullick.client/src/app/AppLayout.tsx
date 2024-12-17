@@ -8,7 +8,7 @@ const AppLayout: React.FC = () => {
                 <h2>Gamebook Navigation</h2>
             </header>
             <main>
-                <Outlet /> {/* This renders child routes */}
+                <Outlet />
             </main>
         </div>
     );
