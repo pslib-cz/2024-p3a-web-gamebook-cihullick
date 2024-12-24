@@ -7,7 +7,7 @@ const Menu: React.FC = () => {
     return (
         <div>
             <h2>Welcome to the Game</h2>
-            <button onClick={() => navigate("/house")} style={{ fontSize: "20px", padding: "10px" }}>
+            <button onClick={() => navigate("/location/1")} style={{ fontSize: "20px", padding: "10px" }}>
                 Start Game
             </button>
         </div>
