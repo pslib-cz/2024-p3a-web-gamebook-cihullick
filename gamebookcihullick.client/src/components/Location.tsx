@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { setPlayerLocation, getPlayerLocation } from '../services/PlayerService';
 import { Location, Connection } from '../types';
+import AchievementsButton from './buttons/AchievementsButton'
+import { getPlayer, savePlayer, visitLocation } from '../services/PlayerService';
+import SettingsButton from './buttons/SettingsButton'
+import PlayerDebugButton from './buttons/PlayerDebugButton';
+import MenuButton from './buttons/MenuButton';
+
 
 const LocationPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [data, setData] = useState<Location | null>(null);
     const [connections, setConnections] = useState<Connection[]>([]);
     const navigate = useNavigate();
+    const [playerLocationID, setPlayerLocationID] = useState<number | null>(null);
 
     useEffect(() => {
         if (!id) return;
@@ -20,7 +26,18 @@ const LocationPage: React.FC = () => {
                     ...result,
                     image: `data:image/png;base64,${result.image}`,
                 });
-                setPlayerLocation(result.locationID);
+
+                const player = getPlayer();
+                if (player) {
+                    // Update player's current location
+                    player.locationID = parseInt(id, 10);
+
+                    // Mark the location as visited
+                    visitLocation(player, player.locationID); // Add this line
+
+                    savePlayer(player); // Save updated player object
+                    setPlayerLocationID(player?.locationID || null);
+                }
             })
             .catch((error) => console.error('Error fetching location data:', error));
 
@@ -29,7 +46,8 @@ const LocationPage: React.FC = () => {
             .then((response) => response.json())
             .then((result) => setConnections(result))
             .catch((error) => console.error('Error fetching connections:', error));
-    }, [id]);
+    }, [id, navigate]);
+
 
     if (!data) return <div>Loading...</div>;
 
@@ -61,7 +79,7 @@ const LocationPage: React.FC = () => {
             >
                 <h2>{data.name}</h2>
                 <p>{data.description}</p>
-                <p>Current Location ID: {getPlayerLocation()}</p>
+                <p>Current Location ID: {playerLocationID}</p>
                 <img src={data.image} alt={data.name} style={{ width: '300px', borderRadius: '10px' }} />
 
                 <h3>Reachable Locations</h3>
@@ -82,6 +100,12 @@ const LocationPage: React.FC = () => {
                         </li>
                     ))}
                 </ul>
+                <div style={{ display: 'flex' }}>
+                    <AchievementsButton />
+                    <SettingsButton />
+                    <PlayerDebugButton />
+                    <MenuButton />
+                </div>
             </div>
         </div>
     );

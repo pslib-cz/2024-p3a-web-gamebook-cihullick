@@ -5,11 +5,26 @@
 namespace GamebookCihullick.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class ListConnections : Migration
+    public partial class Achievement : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Achievement",
+                columns: table => new
+                {
+                    AchievementID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Image = table.Column<byte[]>(type: "BLOB", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Achievement", x => x.AchievementID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
@@ -58,6 +73,9 @@ namespace GamebookCihullick.Server.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Achievement");
+
             migrationBuilder.DropTable(
                 name: "LocationConnections");
 

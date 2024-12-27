@@ -7,3 +7,15 @@ C:\Users\matth\source\repos\GamebookCihullick\GamebookCihullick.Server\Data
 Laptop
 
 C:\Users\matth\source\repos\2024-p3a-web-gamebook-cihullick\GamebookCihullick.Server\Data
+
+LocationConnections:
+INSERT INTO LocationConnections (LocationID, ConnectedLocationID)
+VALUES 
+    (1, 2),
+    (2, 1),
+    (2, 3),
+    (3, 2),
+    (2, 4),
+    (1, 3),
+    (3, 1),
+    (4, 2);

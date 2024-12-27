@@ -28,6 +28,7 @@ namespace GamebookCihullick.Server.Data
                 .HasForeignKey(lc => lc.ConnectedLocationID)
                 .OnDelete(DeleteBehavior.Restrict);
         }
+        public DbSet<GamebookCihullick.Server.Models.Achievement> Achievement { get; set; } = default!;
 
     }
 }

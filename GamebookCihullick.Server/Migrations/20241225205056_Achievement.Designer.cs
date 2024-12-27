@@ -10,14 +10,34 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamebookCihullick.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241215221117_ListConnections")]
-    partial class ListConnections
+    [Migration("20241225205056_Achievement")]
+    partial class Achievement
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
+
+            modelBuilder.Entity("GamebookCihullick.Server.Models.Achievement", b =>
+                {
+                    b.Property<int>("AchievementID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AchievementID");
+
+                    b.ToTable("Achievement");
+                });
 
             modelBuilder.Entity("GamebookCihullick.Server.Models.Location", b =>
                 {

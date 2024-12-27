@@ -2,22 +2,41 @@ import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Menu from './app/Menu';
 import LocationPage from './components/Location';
+import Achievements from './app/Achievements';
+import Settings from './app/Settings';
+import PlayerDebug from './app/PlayerDebug'
 
 const router = createBrowserRouter([
-            {
-                index: true,
-                element: <Menu />,
-            },
-            {
-                path: '/location/:id',
-                element: <LocationPage />,
-            },
+    {
+        path: '/',
+        element: <Menu />,
+        index: true, // Root route for the menu
+    },
+    {
+        path: '/location/:id',
+        element: <LocationPage />,
+    },
+    {
+        path: '/location',
+        element: <LocationPage />,
+    },
+    {
+        path: '/achievements',
+        element: <Achievements />, // Add this route for Achievements screen
+    },
+    {
+        path: '/settings',
+        element: <Settings />, // Add this route for Settings screen
+    },
+    {
+        path: '/playerdebug',
+        element: <PlayerDebug/>,
+    },
 ]);
 
 function App() {
     return (
         <>
-            <h1 style={{ textAlign: "center" }}>Gamebook</h1>
             <RouterProvider router={router} />
         </>
     );
