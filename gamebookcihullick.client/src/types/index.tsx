@@ -1,3 +1,5 @@
-export type { Location } from "./Location";
-export type { Connection } from "./Connection";
-export type { Achievement } from "./Achievement";
+export type { Location } from "./LocationType";
+export type { Connection } from "./ConnectionType";
+export type { Achievement } from "./AchievementType";
+export type { Item } from "./ItemType";
+export type { NPC } from "./NPCType";

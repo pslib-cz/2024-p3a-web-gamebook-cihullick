@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamebookCihullick.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241225205056_Achievement")]
-    partial class Achievement
+    [Migration("20250101153114_movedimageandstuffaround")]
+    partial class movedimageandstuffaround
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,32 @@ namespace GamebookCihullick.Server.Migrations
                     b.HasKey("AchievementID");
 
                     b.ToTable("Achievement");
+                });
+
+            modelBuilder.Entity("GamebookCihullick.Server.Models.Item", b =>
+                {
+                    b.Property<int>("ItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("BLOB");
+
+                    b.Property<bool?>("IsEdible")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("NutritionalValue")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ItemID");
+
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("GamebookCihullick.Server.Models.Location", b =>
@@ -74,6 +100,36 @@ namespace GamebookCihullick.Server.Migrations
                     b.ToTable("LocationConnections");
                 });
 
+            modelBuilder.Entity("GamebookCihullick.Server.Models.NPC", b =>
+                {
+                    b.Property<int>("NPCID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Dialog")
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("BLOB");
+
+                    b.Property<int>("LocationID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RequiredItemID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("NPCID");
+
+                    b.HasIndex("LocationID");
+
+                    b.HasIndex("RequiredItemID");
+
+                    b.ToTable("NPCs");
+                });
+
             modelBuilder.Entity("GamebookCihullick.Server.Models.LocationConnection", b =>
                 {
                     b.HasOne("GamebookCihullick.Server.Models.Location", "ConnectedLocation")
@@ -91,6 +147,25 @@ namespace GamebookCihullick.Server.Migrations
                     b.Navigation("ConnectedLocation");
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("GamebookCihullick.Server.Models.NPC", b =>
+                {
+                    b.HasOne("GamebookCihullick.Server.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GamebookCihullick.Server.Models.Item", "RequiredItem")
+                        .WithMany()
+                        .HasForeignKey("RequiredItemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("RequiredItem");
                 });
 
             modelBuilder.Entity("GamebookCihullick.Server.Models.Location", b =>

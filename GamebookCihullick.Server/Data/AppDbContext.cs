@@ -9,6 +9,8 @@ namespace GamebookCihullick.Server.Data
 
         public DbSet<Location> Locations { get; set; }
         public DbSet<LocationConnection> LocationConnections { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<NPC> NPCs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

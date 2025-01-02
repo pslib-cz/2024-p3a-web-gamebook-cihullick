@@ -5,6 +5,7 @@ import LocationPage from './components/Location';
 import Achievements from './app/Achievements';
 import Settings from './app/Settings';
 import PlayerDebug from './app/PlayerDebug'
+import NPCDialogPage from './components/NPCDialog';
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     {
         path: '/location',
         element: <LocationPage />,
+    },
+    {
+        path: '/locationd/:id/npc/:id',
+        element: <NPCDialogPage />,
     },
     {
         path: '/achievements',

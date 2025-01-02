@@ -91,6 +91,23 @@ namespace GamebookCihullick.Server.Controllers
             return NoContent();
         }
 
+        [HttpGet("{id}/npcs")]
+        public async Task<ActionResult<IEnumerable<NPC>>> GetNPCsForLocation(int id)
+        {
+            var npcs = await _context.NPCs
+                .Where(npc => npc.LocationID == id)
+                .Include(npc => npc.RequiredItem)
+                .ToListAsync();
+
+            if (npcs == null || npcs.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(npcs);
+        }
+
+
         // POST: api/Locations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("default")]
