@@ -12,14 +12,13 @@ const LocationPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [data, setData] = useState<Location | null>(null);
     const [connections, setConnections] = useState<Connection[]>([]);
-    const [npc, setNpc] = useState<NPC | null>(null);
+    const [npcs, setNpcs] = useState < NPC[]>([]);
     const navigate = useNavigate();
     const [playerLocationID, setPlayerLocationID] = useState<number | null>(null);
 
     useEffect(() => {
         if (!id) return;
 
-        // Fetch location details
         fetch(`https://localhost:7054/api/locations/${id}`)
             .then((response) => response.json())
             .then((result) => {
@@ -30,49 +29,48 @@ const LocationPage: React.FC = () => {
 
                 const player = getPlayer();
                 if (player) {
-                    // Update player's current location
                     player.locationID = parseInt(id, 10);
 
-                    // Mark the location as visited
-                    visitLocation(player, player.locationID); // Add this line
+                    visitLocation(player, player.locationID);
 
-                    savePlayer(player); // Save updated player object
+                    savePlayer(player);
                     setPlayerLocationID(player?.locationID || null);
                 }
             })
             .catch((error) => console.error('Error fetching location data:', error));
 
-        // Fetch connections
+
         fetch(`https://localhost:7054/api/locations/${id}/connections`)
             .then((response) => response.json())
             .then((result) => setConnections(result))
             .catch((error) => console.error('Error fetching connections:', error));
 
-        // Fetch npc (if it exists)
-        // Fetch npc (if it exists for this location)
         fetch(`https://localhost:7054/api/locations/${id}/npcs`)
             .then((response) => {
-                if (!response.ok) throw new Error("No NPC found");
+                if (!response.ok) throw new Error("Failed to fetch NPCs");
                 return response.json();
             })
-            .then((data) => setNpc({
-                ...data,
-                image: `data:image/png;base64,${data.image}`,
-            }))
-            .catch(() => setNpc(null)); // Set to null if no NPC is found
+            .then((data) => {
+                console.log("Fetched NPCs:", data);
+                setNpcs(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching NPCs:", error);
+                setNpcs([]);
+            });
 
         fetch(`https://localhost:7054/api/locations/${id}/npcs`)
             .then((response) => response.json())
             .then((data) => {
                 console.log("Raw API response in React:", data);
-                setNpc(data); // Temporarily set the raw response
+                setNpcs(data);
             });
     }, [id, navigate]);
 
     useEffect(() => {
         console.log("Fetching NPC for location:", id);
-        console.log("Fetched NPC data:", npc);
-    }, [id, npc]);
+        console.log("Fetched NPC data:", npcs);
+    }, [id, npcs]);
 
 
     if (!data) return <div>Loading...</div>;
@@ -84,7 +82,7 @@ const LocationPage: React.FC = () => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                height: '100vh',
+                height: '120vh',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -98,33 +96,37 @@ const LocationPage: React.FC = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     textAlign: 'center',
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: add a semi-transparent background
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     padding: '20px',
-                    borderRadius: '10px', // Optional: rounded corners
+                    borderRadius: '10px',
                 }}
             >
                 <h2>{data.name}</h2>
                 <p>{data.description}</p>
                 <p>Current Location ID: {playerLocationID}</p>
-                <p>Current Location ID: {npc?.npcID}</p>
                 <img src={data.image} alt={data.name} style={{ width: '300px', borderRadius: '10px' }} />
                 
 
                 
-                {npc ? (
-                    <div style={{ margin: '10px' }}>
-                        <h2>NPC</h2>
-                        {JSON.stringify(npc, null, 2)}
-                        <img
-                            src={`data:image/png;base64,${npc.image}`}
-                            alt={npc.name}
-                            style={{ cursor: 'pointer', width: '100px', height: '100px' }}
-                            onClick={() => navigate(`/location/${id}/npc/${npc.npcID}`)}
-                        />
-                        <p>{npc.name}</p>
-                    </div>
+                <h2>NPCs</h2>
+                {npcs.length > 0 ? (
+                    npcs.map((npc) => (
+                        <div key={npc.npcid} style={{ margin: '10px' }}>
+                            <img
+                                src={`data:image/png;base64,${npc.image}`}
+                                alt={npc.name}
+                                style={{ cursor: 'pointer', width: '100px', height: '100px' }}
+                                onClick={() => {
+                                    console.log("NPC ID:", npc.npcid);
+                                    navigate(`/location/${id}/npc/${npc.npcid}`)
+                                }}
+                            />
+                            <p>{npc.name}</p>
+                            <p>{npc.npcid}</p>
+                        </div>
+                    ))
                 ) : (
-                    <p>No NPC available at this location.</p>
+                    <p>No NPCs available at this location.</p>
                 )}
 
 

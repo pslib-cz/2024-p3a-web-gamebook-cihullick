@@ -6,14 +6,14 @@ const NewGameButton: React.FC = () => {
     const navigate = useNavigate();
 
     const handleNewGame = () => {
-        localStorage.removeItem('player'); // Clear any existing player data
-        initializePlayer(); // Reinitialize a new player
-        navigate('/location/1'); // Start at the first location
+        localStorage.removeItem('player');
+        initializePlayer();
+        navigate('/location/1');
     };
 
     return (
         <button
-            onClick={handleNewGame} // -1 navigates to the previous page in history
+            onClick={handleNewGame}
             style={{
                 fontSize: '16px',
                 padding: '10px 20px',

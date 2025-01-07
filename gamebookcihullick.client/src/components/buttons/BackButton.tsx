@@ -6,7 +6,7 @@ const BackButton: React.FC = () => {
 
     return (
         <button
-            onClick={() => navigate(-1)} // -1 navigates to the previous page in history
+            onClick={() => navigate(-1)}
             style={{
                 fontSize: '16px',
                 padding: '10px 20px',

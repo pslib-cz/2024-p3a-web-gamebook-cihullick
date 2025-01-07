@@ -1,6 +1,6 @@
 export type InventoryItem = {
-    itemID: number; // Matches ItemID in the database
-    quantity: number; // How many of this item the player has
+    itemID: number;
+    quantity: number;
 };
 
 export type Player = {
@@ -8,19 +8,19 @@ export type Player = {
     locationID: number | null;
     numberOfVisitedLocations: number;
     visitedLocations: number[];
-    inventory: InventoryItem[]; // Updated to track structured inventory
+    inventory: InventoryItem[];
     hunger: number;
     unlockedAchievements: number[];
+    npcs: { [npcid: number]: { dialogStage: number } };
 };
 
 const PLAYER_KEY = 'player';
 
-// Retrieve the player from localStorage
 export const getPlayer = (): Player => {
     const playerData = localStorage.getItem(PLAYER_KEY);
     if (playerData) {
         const player = JSON.parse(playerData);
-        // Ensure all fields are initialized (fallback for older/incomplete data)
+
         return {
             name: player.name || 'Player1',
             locationID: player.locationID ?? null,
@@ -29,28 +29,30 @@ export const getPlayer = (): Player => {
             inventory: player.inventory || [],
             hunger: player.hunger ?? 100,
             unlockedAchievements: player.unlockedAchievements || [],
-        };
+            npcs: player.npcs || {},
+    };
+        
     }
-    return initializePlayer(); // Create and return a new player if none exists
+    return initializePlayer();
 };
 export const unlockAdventurerAchievement = (player: Player) => {
     if (!player) return;
-    if (player?.numberOfVisitedLocations >= 3) { // Adjust condition as per achievement requirements
-        unlockAchievement(player, 1); // Unlock achievement with ID 1
+    if (player?.numberOfVisitedLocations >= 3) {
+        unlockAchievement(player, 1);
     }
 };
 export const unlockAchievement = (player: Player, achievementId: number) => {
     if (!player) return;
     if (!player.unlockedAchievements.includes(achievementId)) {
         player.unlockedAchievements.push(achievementId);
-        savePlayer(player); // Save updated player object
+        savePlayer(player);
     }
 };
 export const clearPlayerData = () => {
     localStorage.removeItem('player');
-    window.location.reload(); // Reload to reinitialize the player
+    window.location.reload();
 };
-// Save the updated player to localStorage
+
 export const savePlayer = (player: Player): void => {
     localStorage.setItem(PLAYER_KEY, JSON.stringify(player));
 };
@@ -58,9 +60,9 @@ export const savePlayer = (player: Player): void => {
 
 export const visitLocation = (player: Player, locationID: number): void => {
     if (!player.visitedLocations.includes(locationID)) {
-        player.visitedLocations.push(locationID); // Add the location ID if it's not already visited
-        player.numberOfVisitedLocations = player.visitedLocations.length; // Update the count
-        savePlayer(player); // Save the updated player object to localStorage
+        player.visitedLocations.push(locationID);
+        player.numberOfVisitedLocations = player.visitedLocations.length;
+        savePlayer(player);
     }
 };
 
@@ -69,14 +71,12 @@ export const addItemToInventory = (player: Player, itemID: number, quantity: num
     const existingItem = player.inventory.find((item) => item.itemID === itemID);
 
     if (existingItem) {
-        // Update quantity if the item already exists
         existingItem.quantity += quantity;
     } else {
-        // Add a new item to the inventory
         player.inventory.push({ itemID, quantity });
     }
 
-    savePlayer(player); // Save updated player data
+    savePlayer(player);
 };
 
 
@@ -88,33 +88,32 @@ export const getItemQuantity = (player: Player, itemID: number): number => {
 export const removeItemFromInventory = (player: Player, itemID: number, quantity: number): boolean => {
     const itemIndex = player.inventory.findIndex((item) => item.itemID === itemID);
 
-    if (itemIndex === -1) return false; // Item not found
+    if (itemIndex === -1) return false;
 
     const item = player.inventory[itemIndex];
     if (item.quantity > quantity) {
-        item.quantity -= quantity; // Reduce the quantity
+        item.quantity -= quantity;
     } else {
-        // Remove the item if the quantity is depleted
         player.inventory.splice(itemIndex, 1);
     }
 
-    savePlayer(player); // Save updated player data
+    savePlayer(player);
     return true;
 };
 
 
-// Initialize a default player object
 export const initializePlayer = (): Player => {
     const defaultPlayer: Player = {
         name: 'Player1',
         locationID: null,
         numberOfVisitedLocations: 0,
-        visitedLocations: [], // Ensure this is initialized
-        inventory: [],        // Ensure this is initialized
-        hunger: 100,          // Example default value
-        unlockedAchievements: [], // Ensure this is initialized
+        visitedLocations: [],
+        inventory: [],
+        hunger: 100,
+        unlockedAchievements: [],
+        npcs: {},
     };
-    savePlayer(defaultPlayer); // Save the default player to localStorage
+    savePlayer(defaultPlayer);
     return defaultPlayer;
 };
 

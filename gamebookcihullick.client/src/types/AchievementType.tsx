@@ -1,5 +1,5 @@
 export interface Achievement {
-    achievementID: number; // this was just "id" before
+    achievementID: number;
     name: string;
     description: string;
     image: string;

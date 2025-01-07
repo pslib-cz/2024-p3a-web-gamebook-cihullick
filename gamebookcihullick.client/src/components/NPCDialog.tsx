@@ -1,72 +1,135 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPlayer, savePlayer, removeItemFromInventory } from '../services/PlayerService';
-import { NPC } from '../types'
+import { NPC, Location } from '../types'
 
 const NPCDialogPage: React.FC = () => {
-    const { npcId } = useParams<{ npcId: string }>();
+    const { id, npcid } = useParams<{ id: string; npcid: string }>();
     const navigate = useNavigate();
     const [npc, setNpc] = useState<NPC | null>(null);
     const [currentDialogIndex, setCurrentDialogIndex] = useState(0);
     const player = getPlayer();
 
-    useEffect(() => {
-        if (!npcId) return;
+    const [data, setData] = useState<Location | null>(null);
 
-        // Fetch NPC data
-        fetch(`https://localhost:7054/api/npcs/${npcId}`)
+    useEffect(() => {
+        if (!npcid) return;
+
+        fetch(`https://localhost:7054/api/npcs/${npcid}`)
             .then((response) => response.json())
             .then((data) => {
-                data.dialog = JSON.parse(data.dialog); // Parse the dialog JSON
+                data.dialog = JSON.parse(data.dialog);
                 setNpc(data);
+
+                if (!player.npcs) player.npcs = {};
+                if (!player.npcs[+npcid]) {
+                    player.npcs[+npcid] = { dialogStage: 0 };
+                    savePlayer(player);
+                }
+                setCurrentDialogIndex(player.npcs[+npcid].dialogStage);
             })
             .catch((error) => console.error('Error fetching NPC:', error));
-    }, [npcId]);
+
+        fetch(`https://localhost:7054/api/locations/${id}`)
+            .then((response) => response.json())
+            .then((result) => {
+                setData({
+                    ...result,
+                    image: `data:image/png;base64,${result.image}`,
+                });
+                console.log({ id })
+                
+            })
+            .catch((error) => console.error('Error fetching location data:', error));
+    }, [id, npcid, player]);
+
 
     const handleOptionClick = (index: number) => {
-        if (!npc || !player) return;
+
+        if (!npc || !player || !npcid) return;
 
 
-        if (npc.requiredItemID && currentDialogIndex === 0 && index === 0) {
-            // Check for the required item
+
+        const npcID = +npcid;
+        const currentDialog = npc.dialog[currentDialogIndex];
+
+        if (index === currentDialog.options.length - 1) {
+            if (currentDialogIndex === 0) {
+                player.npcs[npcID] = { dialogStage: currentDialogIndex + 1 };
+                savePlayer(player);
+                setCurrentDialogIndex(currentDialogIndex + 1);
+                navigate(-1);
+                return;
+            }
+            navigate(-1);
+            return;
+        }
+
+        if (npc.requiredItemID && (currentDialogIndex === 0 || 1) && index === 0) {
             const hasItem = player.inventory.some((item) => item.itemID === npc.requiredItemID);
 
             if (!hasItem) {
                 alert("You don't have the required item!");
-                setCurrentDialogIndex(1); // Progress to the "not yet" dialog
                 return;
             }
 
-            // Remove the item and progress to the thank-you dialog
             removeItemFromInventory(player, npc.requiredItemID, 1);
             savePlayer(player);
-            alert(`${npc.name}: Thank you for the Golden Jelly Bean!`);
-            setCurrentDialogIndex(2); // Progress to the thank-you dialog
+            player.npcs[npcID] = { dialogStage: 2 };
+            savePlayer(player);
+            setCurrentDialogIndex(2);
         } else if (currentDialogIndex < npc.dialog.length - 1) {
-            setCurrentDialogIndex(currentDialogIndex + 1); // Progress the dialog
+            player.npcs[npcID] = { dialogStage: currentDialogIndex + 1 };
+            savePlayer(player);
+            setCurrentDialogIndex(currentDialogIndex + 1);
         } else {
-            navigate(-1); // End the dialog
+            navigate(-1);
         }
     };
 
 
-    if (!npc) return <div>Loading...</div>;
+
+    if (!npc || !data) return <div>Loading...</div>;
 
     const currentDialog = npc.dialog[currentDialogIndex];
 
     return (
-        <div>
-            <h1>{npc.name}</h1>
-            <p>{currentDialog.text}</p>
-            <div>
+        <div
+            style={{
+                backgroundImage: `url(${data.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                minHeight: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '20px',
+            }}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    padding: '20px',
+                    borderRadius: '10px',
+                }}
+            >
+                <img src={`data:image/png;base64,${npc.image}`} width={100} />
+                <h1>{npc.name}</h1>
+                <p>{currentDialog.text}</p>
                 {currentDialog.options.map((option, index) => (
                     <button key={index} onClick={() => handleOptionClick(index)}>
                         {option}
                     </button>
                 ))}
             </div>
-            <button onClick={() => navigate(-1)}>Exit</button>
         </div>
+
     );
 };
 

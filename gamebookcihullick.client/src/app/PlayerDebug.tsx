@@ -3,11 +3,11 @@ import { clearPlayerData, getPlayer, addItemToInventory, removeItemFromInventory
 import BackButton from '../components/buttons/BackButton';
 
 const PlayerDebug: React.FC = () => {
-    const player = getPlayer(); // Retrieve the player object from localStorage
+    const player = getPlayer();
 
     const addTwoTestItems = () => {
-        addItemToInventory(player, 1, 2); // Add 2 Golden Beans (ItemID: 1)
-        window.location.reload(); // Reload to reflect changes
+        addItemToInventory(player, 1, 2);
+        window.location.reload();
     };
 
     const removeTestItem = () => {

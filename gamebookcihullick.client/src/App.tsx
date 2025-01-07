@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <Menu />,
-        index: true, // Root route for the menu
+        index: true,
     },
     {
         path: '/location/:id',
@@ -22,16 +22,16 @@ const router = createBrowserRouter([
         element: <LocationPage />,
     },
     {
-        path: '/locationd/:id/npc/:id',
+        path: '/location/:id/npc/:npcid',
         element: <NPCDialogPage />,
     },
     {
         path: '/achievements',
-        element: <Achievements />, // Add this route for Achievements screen
+        element: <Achievements />,
     },
     {
         path: '/settings',
-        element: <Settings />, // Add this route for Settings screen
+        element: <Settings />,
     },
     {
         path: '/playerdebug',

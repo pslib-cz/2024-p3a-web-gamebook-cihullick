@@ -3,8 +3,8 @@ import React from 'react';
 const ClearCacheButton: React.FC = () => {
 
     const handleClearCache = () => {
-        localStorage.clear(); // Clear all localStorage data
-        window.location.reload(); // Reload the app to reset the state
+        localStorage.clear();
+        window.location.reload();
     };
 
     return (

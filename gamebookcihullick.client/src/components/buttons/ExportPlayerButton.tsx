@@ -13,15 +13,15 @@ const ExportPlayerButton: React.FC = () => {
             alert('No player data found to export!');
             return;
         }
-        const playerData = JSON.stringify(player, null, 2); // Convert player object to formatted JSON
-        const blob = new Blob([playerData], { type: 'application/json' }); // Create a JSON file blob
-        const url = URL.createObjectURL(blob); // Create a download link
+        const playerData = JSON.stringify(player, null, 2);
+        const blob = new Blob([playerData], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'Washing_Machine_Quest_Player_Data.json'; // Set the file name
+        link.download = 'Washing_Machine_Quest_Player_Data.json';
         document.body.appendChild(link);
-        link.click(); // Trigger the download
-        document.body.removeChild(link); // Clean up
+        link.click();
+        document.body.removeChild(link);
     };
 
     return (

@@ -9,9 +9,9 @@ const ContinueGameButton: React.FC = () => {
     useEffect(() => {
         const player = getPlayer();
         if (player && player.locationID !== null) {
-            setCanContinue(true); // Enable the button if a valid player and location exist
+            setCanContinue(true);
         } else {
-            setCanContinue(false); // Disable the button otherwise
+            setCanContinue(false);
         }
     }, []);
 
@@ -19,13 +19,13 @@ const ContinueGameButton: React.FC = () => {
     const handleContinueGame = () => {
         const player = getPlayer();
         if (player?.locationID) {
-            navigate(`/location/${player.locationID}`); // Navigate to the player's last location
+            navigate(`/location/${player.locationID}`);
         }
     };
 
     return (
         <button
-            onClick={handleContinueGame} disabled={!canContinue}// -1 navigates to the previous page in history
+            onClick={handleContinueGame} disabled={!canContinue}
             style={{
                 fontSize: '16px',
                 padding: '10px 20px',

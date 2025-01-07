@@ -12,16 +12,16 @@ const ImportPlayerButton: React.FC = () => {
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
-                const playerData = JSON.parse(e.target?.result as string); // Parse JSON data
-                savePlayer(playerData); // Save the imported data
+                const playerData = JSON.parse(e.target?.result as string);
+                savePlayer(playerData);
                 alert('Player data imported successfully!');
-                window.location.reload(); // Reload to apply the new player data
+                window.location.reload();
             } catch (error) {
-                console.error('Error parsing player data:', error); // Log the error
+                console.error('Error parsing player data:', error);
                 alert('Invalid file format. Please upload a valid JSON file.');
             }
         };
-        reader.readAsText(file); // Read the file as text
+        reader.readAsText(file);
     };
 
     return (
@@ -43,7 +43,7 @@ const ImportPlayerButton: React.FC = () => {
                 type="file"
                 accept="application/json"
                 onChange={handleImport}
-                style={{ display: 'none' }} // Hide the actual file input
+                style={{ display: 'none' }}
             />
         </label>
     );

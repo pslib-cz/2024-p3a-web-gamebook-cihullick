@@ -1,5 +1,5 @@
 export interface NPC {
-    npcID: number;
+    npcid: number;
     name: string;
     requiredItemID: number | null;
     dialog: NPCDialogOption[]; 
