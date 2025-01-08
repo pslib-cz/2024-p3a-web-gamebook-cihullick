@@ -1,18 +1,30 @@
-import React from 'react';
-import { clearPlayerData, getPlayer, addItemToInventory, removeItemFromInventory } from '../services/PlayerService';
+import React, { useEffect, useState } from 'react';
+import { getPlayer, addItemToInventory, removeItemFromInventory } from '../services/PlayerService'; // Adjust path
+import { Item } from '../types/ItemType';
 import BackButton from '../components/buttons/BackButton';
 
 const PlayerDebug: React.FC = () => {
-    const player = getPlayer();
+    const [items, setItems] = useState<Item[]>([]);
+    const [player, setPlayer] = useState(getPlayer());
 
-    const addTwoTestItems = () => {
-        addItemToInventory(player, 1, 2);
-        window.location.reload();
+    // Fetch all items from the API
+    useEffect(() => {
+        fetch('https://localhost:7054/api/Items')
+            .then((response) => response.json())
+            .then((data) => setItems(data))
+            .catch((error) => console.error('Error fetching items:', error));
+    }, []);
+
+    const handleAddItem = (itemID: number) => {
+        const updatedPlayer = { ...player };
+        addItemToInventory(updatedPlayer, itemID, 1);
+        setPlayer(updatedPlayer);
     };
 
-    const removeTestItem = () => {
-        removeItemFromInventory(player, 1, 1);
-        window.location.reload();
+    const handleRemoveItem = (itemID: number) => {
+        const updatedPlayer = { ...player };
+        removeItemFromInventory(updatedPlayer, itemID, 1);
+        setPlayer(updatedPlayer);
     };
 
     return (
@@ -22,22 +34,23 @@ const PlayerDebug: React.FC = () => {
                 {JSON.stringify(player, null, 2)}
             </pre>
 
-            <h3>Inventory</h3>
+            <h3>All Items</h3>
             <ul>
-                {player.inventory.length > 0 ? (
-                    player.inventory.map((item) => (
+                {items.length > 0 ? (
+                    items.map((item) => (
                         <li key={item.itemID}>
-                            Item ID: {item.itemID}, Quantity: {item.quantity}
+                            <p>
+                                <strong>{item.name}</strong>: {item.description} (ID: {item.itemID})
+                            </p>
+                            <button onClick={() => handleAddItem(item.itemID)}>Add to Inventory</button>
+                            <button onClick={() => handleRemoveItem(item.itemID)}>Remove from Inventory</button>
+                            <p>Quantity in Inventory: {player.inventory.find((i) => i.itemID === item.itemID)?.quantity || 0}</p>
                         </li>
                     ))
                 ) : (
-                    <p>No items in inventory.</p>
+                    <p>Loading items...</p>
                 )}
             </ul>
-
-            <button onClick={addTwoTestItems}>Add Two Test Items</button>
-            <button onClick={removeTestItem}>Remove Test Item</button>
-            <button onClick={clearPlayerData}>Reset Player</button>
             <BackButton />
         </div>
     );
