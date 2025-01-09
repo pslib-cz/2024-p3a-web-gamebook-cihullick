@@ -11,6 +11,7 @@ namespace GamebookCihullick.Server.Data
         public DbSet<LocationConnection> LocationConnections { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<NPC> NPCs { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
