@@ -5,8 +5,6 @@ import PlayerDebugButton from '../components/buttons/PlayerDebugButton';
 import NewGameButton from '../components/buttons/NewGameButton';
 import ContinueGameButton from '../components/buttons/ContinueGameButton';
 import ClearCacheButton from '../components/buttons/ClearCacheButton';
-import ExportPlayerButton from '../components/buttons/ExportPlayerButton';
-import ImportPlayerButton from '../components/buttons/ImportPlayerButton';
 
 const Menu: React.FC = () => {
 
@@ -15,8 +13,6 @@ const Menu: React.FC = () => {
             <h1>Gamebook</h1>
             <NewGameButton/>
             <ContinueGameButton/>
-            <ExportPlayerButton/>
-            <ImportPlayerButton/>
             <AchievementsButton/>
             <SettingsButton/>
             <PlayerDebugButton/>
