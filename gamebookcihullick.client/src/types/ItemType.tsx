@@ -6,5 +6,5 @@ export interface Item {
     cost: string;
     IsEdible: boolean;
     nutritionalValue: number;
-    imageID: Image;
+    image: Image;
 }

@@ -16,7 +16,28 @@ namespace GamebookCihullick.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                // Skip the Image entity itself
+                if (entityType.ClrType == typeof(Image))
+                    continue;
+
+                if (entityType.ClrType.GetProperty("ImageID") != null)
+                {
+                    modelBuilder.Entity(entityType.ClrType)
+                        .HasOne(typeof(Image), "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageID");
+
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Navigation("Image")
+                        .AutoInclude();
+                }
+            }
+
+            // Other configurations
             modelBuilder.Entity<LocationConnection>()
                 .HasKey(lc => new { lc.LocationID, lc.ConnectedLocationID });
 
@@ -32,7 +53,8 @@ namespace GamebookCihullick.Server.Data
                 .HasForeignKey(lc => lc.ConnectedLocationID)
                 .OnDelete(DeleteBehavior.Restrict);
         }
-        
+
+
 
     }
 }

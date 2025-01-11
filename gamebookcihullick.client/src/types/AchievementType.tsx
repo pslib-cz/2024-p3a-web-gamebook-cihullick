@@ -4,5 +4,5 @@ export interface Achievement {
     achievementID: number;
     name: string;
     description: string;
-    imageID: Image;
+    image: Image;
 }

@@ -19,13 +19,10 @@ const LocationPage: React.FC = () => {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`https://localhost:7054/api/locations/${id}`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/locations/${id}`)
             .then((response) => response.json())
             .then((result) => {
-                setData({
-                    ...result,
-                    image: `data:image/png;base64,${result.image}`,
-                });
+                setData(result);
 
                 const player = getPlayer();
                 if (player) {
@@ -40,12 +37,12 @@ const LocationPage: React.FC = () => {
             .catch((error) => console.error('Error fetching location data:', error));
 
 
-        fetch(`https://localhost:7054/api/locations/${id}/connections`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/locations/${id}/connections`)
             .then((response) => response.json())
             .then((result) => setConnections(result))
             .catch((error) => console.error('Error fetching connections:', error));
 
-        fetch(`https://localhost:7054/api/locations/${id}/npcs`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/locations/${id}/npcs`)
             .then((response) => {
                 if (!response.ok) throw new Error("Failed to fetch NPCs");
                 return response.json();
@@ -59,7 +56,7 @@ const LocationPage: React.FC = () => {
                 setNpcs([]);
             });
 
-        fetch(`https://localhost:7054/api/locations/${id}/npcs`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/locations/${id}/npcs`)
             .then((response) => response.json())
             .then((data) => {
                 console.log("Raw API response in React:", data);
@@ -78,7 +75,7 @@ const LocationPage: React.FC = () => {
     return (
         <div
             style={{
-                backgroundImage: `url(${data.imageID})`,
+                backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}${data.image.pathToFile}.webp)`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -113,7 +110,7 @@ const LocationPage: React.FC = () => {
                     npcs.map((npc) => (
                         <div key={npc.npcid} style={{ margin: '10px' }}>
                             <img
-                                src={`data:image/png;base64,${npc.imageID}`}
+                                src={`${import.meta.env.VITE_IMAGE_BASE_URL}${npc.image.pathToFile}.webp`}
                                 alt={npc.name}
                                 style={{ cursor: 'pointer', width: '100px', height: '100px' }}
                                 onClick={() => {

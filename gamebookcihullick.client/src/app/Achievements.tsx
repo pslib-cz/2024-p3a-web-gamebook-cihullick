@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { unlockAdventurerAchievement, getPlayer } from '../services/PlayerService';
 import BackButton from '../components/buttons/BackButton';
-import { Achievement, Image } from '../types';
+import { Achievement } from '../types';
 
 const Achievements: React.FC = () => {
     const [achievements, setAchievements] = useState<Achievement[]>([]);
-    const [aimage, setaimage] = useState<Image>();
     const player = getPlayer();
 
     // Fetch achievements from the API
     useEffect(() => {
-        fetch('https://localhost:7054/api/achievements')
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/achievements`)
             .then((response) => response.json())
             .then((data) => {
                 setAchievements(data);
-            })
-            .catch((error) => console.error('Error fetching achievements:', error));
-        fetch('https://localhost:7054/api/Images/10')
-            .then((response) => response.json())
-            .then((data) => {
-                setaimage(data);
             })
             .catch((error) => console.error('Error fetching achievements:', error));
     }, []);
@@ -39,8 +32,8 @@ const Achievements: React.FC = () => {
                     {achievements.map((achievement) => (
                         <li key={achievement.achievementID} style={{ marginBottom: '20px' }}>
                             <img
-                                src={achievement.imageID.pathToFile} // Use the pathToFile from the image object
-                                alt={achievement.imageID.name}
+                                src={`${import.meta.env.VITE_IMAGE_BASE_URL}${achievement.image.pathToFile}.webp`} // Use the pathToFile from the image object
+                                alt={achievement.image.name}
                                 style={{
                                     width: '100px',
                                     height: '100px',
@@ -51,10 +44,6 @@ const Achievements: React.FC = () => {
                                 }}
                             />
                             <p>{achievement.name}</p>
-                            <p>thing -{achievement.imageID.pathToFile}</p>
-                            <p>thing -{aimage?.pathToFile}</p>
-                            {JSON.stringify(achievement, null, 2)}
-                            {JSON.stringify(aimage, null, 2)}
                             <p>
                                 {unlockedAchievements.includes(achievement.achievementID)
                                     ? achievement.description
@@ -64,7 +53,8 @@ const Achievements: React.FC = () => {
                     ))}
                 </ul>
             ) : (
-                <p>Loading achievements...</p>
+                    <p>Loading achievements...</p>
+                    
             )}
             <BackButton />
         </div>

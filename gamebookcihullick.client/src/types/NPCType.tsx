@@ -4,7 +4,7 @@ export interface NPC {
     name: string;
     requiredItemID: number | null;
     dialog: NPCDialogOption[]; 
-    imageID: Image;
+    image: Image;
 }
 export interface NPCDialogOption {
     id: number;

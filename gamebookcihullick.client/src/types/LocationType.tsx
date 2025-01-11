@@ -3,5 +3,5 @@ export interface Location {
     locationID: number;
     name: string;
     description: string;
-    imageID: Image;
+    image: Image;
 }

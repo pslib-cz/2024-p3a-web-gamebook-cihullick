@@ -15,7 +15,7 @@ const NPCDialogPage: React.FC = () => {
     useEffect(() => {
         if (!npcid) return;
 
-        fetch(`https://localhost:7054/api/npcs/${npcid}`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/npcs/${npcid}`)
             .then((response) => response.json())
             .then((data) => {
                 data.dialog = JSON.parse(data.dialog);
@@ -30,13 +30,10 @@ const NPCDialogPage: React.FC = () => {
             })
             .catch((error) => console.error('Error fetching NPC:', error));
 
-        fetch(`https://localhost:7054/api/locations/${id}`)
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/locations/${id}`)
             .then((response) => response.json())
             .then((result) => {
-                setData({
-                    ...result,
-                    image: `data:image/png;base64,${result.image}`,
-                });
+                setData(result);
                 console.log({ id })
                 
             })
@@ -96,7 +93,7 @@ const NPCDialogPage: React.FC = () => {
     return (
         <div
             style={{
-                backgroundImage: `url(${data.imageID})`,
+                backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}${data.image.pathToFile}.webp)`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -119,7 +116,7 @@ const NPCDialogPage: React.FC = () => {
                     borderRadius: '10px',
                 }}
             >
-                <img src={`data:image/png;base64,${npc.imageID}`} width={100} />
+                <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${npc.image.pathToFile}.webp`} width={100} />
                 <h1>{npc.name}</h1>
                 <p>{currentDialog.text}</p>
                 {currentDialog.options.map((option, index) => (
