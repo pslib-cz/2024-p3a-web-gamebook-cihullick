@@ -96,7 +96,7 @@ const NPCDialogPage: React.FC = () => {
     return (
         <div
             style={{
-                backgroundImage: `url(${data.image})`,
+                backgroundImage: `url(${data.imageID})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -119,7 +119,7 @@ const NPCDialogPage: React.FC = () => {
                     borderRadius: '10px',
                 }}
             >
-                <img src={`data:image/png;base64,${npc.image}`} width={100} />
+                <img src={`data:image/png;base64,${npc.imageID}`} width={100} />
                 <h1>{npc.name}</h1>
                 <p>{currentDialog.text}</p>
                 {currentDialog.options.map((option, index) => (

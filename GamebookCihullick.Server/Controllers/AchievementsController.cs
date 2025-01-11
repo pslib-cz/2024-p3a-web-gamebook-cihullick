@@ -25,14 +25,14 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Achievement>>> GetAchievement()
         {
-            return await _context.Achievement.ToListAsync();
+            return await _context.Achievements.ToListAsync();
         }
 
         // GET: api/Achievements/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Achievement>> GetAchievement(int id)
         {
-            var achievement = await _context.Achievement.FindAsync(id);
+            var achievement = await _context.Achievements.FindAsync(id);
 
             if (achievement == null)
             {
@@ -78,7 +78,7 @@ namespace GamebookCihullick.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Achievement>> PostAchievement(Achievement achievement)
         {
-            _context.Achievement.Add(achievement);
+            _context.Achievements.Add(achievement);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAchievement", new { id = achievement.AchievementID }, achievement);
@@ -88,13 +88,13 @@ namespace GamebookCihullick.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAchievement(int id)
         {
-            var achievement = await _context.Achievement.FindAsync(id);
+            var achievement = await _context.Achievements.FindAsync(id);
             if (achievement == null)
             {
                 return NotFound();
             }
 
-            _context.Achievement.Remove(achievement);
+            _context.Achievements.Remove(achievement);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace GamebookCihullick.Server.Controllers
 
         private bool AchievementExists(int id)
         {
-            return _context.Achievement.Any(e => e.AchievementID == id);
+            return _context.Achievements.Any(e => e.AchievementID == id);
         }
     }
 }

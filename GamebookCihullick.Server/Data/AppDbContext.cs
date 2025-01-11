@@ -12,6 +12,7 @@ namespace GamebookCihullick.Server.Data
         public DbSet<Item> Items { get; set; }
         public DbSet<NPC> NPCs { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Achievement> Achievements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,7 +32,7 @@ namespace GamebookCihullick.Server.Data
                 .HasForeignKey(lc => lc.ConnectedLocationID)
                 .OnDelete(DeleteBehavior.Restrict);
         }
-        public DbSet<GamebookCihullick.Server.Models.Achievement> Achievement { get; set; } = default!;
+        
 
     }
 }

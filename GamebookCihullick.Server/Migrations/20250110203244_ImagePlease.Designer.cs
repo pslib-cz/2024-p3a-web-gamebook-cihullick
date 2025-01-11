@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GamebookCihullick.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250110081929_Images11")]
-    partial class Images11
+    [Migration("20250110203244_ImagePlease")]
+    partial class ImagePlease
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace GamebookCihullick.Server.Migrations
 
                     b.HasIndex("ImageID");
 
-                    b.ToTable("Achievement");
+                    b.ToTable("Achievements");
                 });
 
             modelBuilder.Entity("GamebookCihullick.Server.Models.Image", b =>

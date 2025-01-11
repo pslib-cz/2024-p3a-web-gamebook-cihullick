@@ -5,7 +5,7 @@
 namespace GamebookCihullick.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class Images11 : Migration
+    public partial class ImagePlease : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,7 @@ namespace GamebookCihullick.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Achievement",
+                name: "Achievements",
                 columns: table => new
                 {
                     AchievementID = table.Column<int>(type: "INTEGER", nullable: false)
@@ -36,9 +36,9 @@ namespace GamebookCihullick.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Achievement", x => x.AchievementID);
+                    table.PrimaryKey("PK_Achievements", x => x.AchievementID);
                     table.ForeignKey(
-                        name: "FK_Achievement_Images_ImageID",
+                        name: "FK_Achievements_Images_ImageID",
                         column: x => x.ImageID,
                         principalTable: "Images",
                         principalColumn: "ImageID",
@@ -160,8 +160,8 @@ namespace GamebookCihullick.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Achievement_ImageID",
-                table: "Achievement",
+                name: "IX_Achievements_ImageID",
+                table: "Achievements",
                 column: "ImageID");
 
             migrationBuilder.CreateIndex(
@@ -204,7 +204,7 @@ namespace GamebookCihullick.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Achievement");
+                name: "Achievements");
 
             migrationBuilder.DropTable(
                 name: "NPCs");

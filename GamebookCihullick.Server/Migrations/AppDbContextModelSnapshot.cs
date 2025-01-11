@@ -35,7 +35,7 @@ namespace GamebookCihullick.Server.Migrations
 
                     b.HasIndex("ImageID");
 
-                    b.ToTable("Achievement");
+                    b.ToTable("Achievements");
                 });
 
             modelBuilder.Entity("GamebookCihullick.Server.Models.Image", b =>

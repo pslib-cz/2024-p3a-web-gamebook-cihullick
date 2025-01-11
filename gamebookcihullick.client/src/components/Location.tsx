@@ -78,7 +78,7 @@ const LocationPage: React.FC = () => {
     return (
         <div
             style={{
-                backgroundImage: `url(${data.image})`,
+                backgroundImage: `url(${data.imageID})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -104,7 +104,7 @@ const LocationPage: React.FC = () => {
                 <h2>{data.name}</h2>
                 <p>{data.description}</p>
                 <p>Current Location ID: {playerLocationID}</p>
-                <img src={data.image} alt={data.name} style={{ width: '300px', borderRadius: '10px' }} />
+
                 
 
                 
@@ -113,7 +113,7 @@ const LocationPage: React.FC = () => {
                     npcs.map((npc) => (
                         <div key={npc.npcid} style={{ margin: '10px' }}>
                             <img
-                                src={`data:image/png;base64,${npc.image}`}
+                                src={`data:image/png;base64,${npc.imageID}`}
                                 alt={npc.name}
                                 style={{ cursor: 'pointer', width: '100px', height: '100px' }}
                                 onClick={() => {

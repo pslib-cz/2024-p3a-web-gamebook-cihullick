@@ -29,6 +29,7 @@ namespace GamebookCihullick.Server.Controllers
         }
 
         // GET: api/Images/5
+        /*
         [HttpGet("{id}")]
         public async Task<ActionResult<Image>> GetImage(int id)
         {
@@ -41,16 +42,17 @@ namespace GamebookCihullick.Server.Controllers
 
             return image;
         }
-        [HttpGet("{id}/ImageUrl")]
+        */
+        [HttpGet("{id}")]
         public IActionResult GetImageUrl(int id)
         {
-            var image = _context.Images.FirstOrDefault(i => i.ImageID == id);
-            if (image == null)
+            var imageID = _context.Images.FirstOrDefault(i => i.ImageID == id);
+            if (imageID == null)
             {
                 return NotFound("Image not found.");
             }
 
-            var url = Url.Content($"~/{image.PathToFile}");
+            var url = Url.Content($"~/{imageID.PathToFile}");
             return Ok(new { ImageUrl = url });
         }
 
