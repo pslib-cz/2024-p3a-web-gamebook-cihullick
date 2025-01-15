@@ -8,35 +8,39 @@ const ShopPage: React.FC = () => {
     const player = getPlayer();
 
     useEffect(() => {
-        const fetchShopItems = async () => {
+        const fetchShopItems = () => {
             const shopInventory = player.shopInventory || [];
-            try {
-                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch items: ${response.statusText}`);
-                }
-                const allItems: Item[] = await response.json();
 
-                const itemsToDisplay = shopInventory.map((inventoryItem: { itemID: number; quantity: number }) => {
-                    const fullItem = allItems.find((item) => item.itemID === inventoryItem.itemID);
-                    if (!fullItem) {
-                        console.warn(`Item with ID ${inventoryItem.itemID} not found.`);
-                        return null;
+            fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch items: ${response.statusText}`);
                     }
-                    return {
-                        ...fullItem,
-                        quantity: inventoryItem.quantity,
-                    };
-                }).filter((item) => item !== null) as (Item & { quantity: number })[];
+                    return response.json();
+                })
+                .then((allItems: Item[]) => {
+                    const itemsToDisplay = shopInventory.map((inventoryItem) => {
+                        const fullItem = allItems.find(item => item.itemID === inventoryItem.itemID);
+                        if (!fullItem) {
+                            console.warn(`Item with ID ${inventoryItem.itemID} not found.`);
+                            return null;
+                        }
+                        return {
+                            ...fullItem,
+                            quantity: inventoryItem.quantity,
+                        };
+                    }).filter(item => item !== null);
 
-                setShopItems(itemsToDisplay);
-            } catch (error) {
-                console.error('Error fetching shop items:', error);
-            }
+                    setShopItems(itemsToDisplay);
+                })
+                .catch(error => {
+                    console.error('Error fetching shop items:', error);
+                });
         };
 
         fetchShopItems();
     }, [player.shopInventory]);
+
 
     const handleBuyItem = (itemID: number, itemCost: number) => {
         const success = buyItem(player, itemID, 1, itemCost);

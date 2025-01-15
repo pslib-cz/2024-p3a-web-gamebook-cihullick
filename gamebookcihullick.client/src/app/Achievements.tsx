@@ -25,8 +25,11 @@ const Achievements: React.FC = () => {
 
     return (
         <div>
-            <h1>Achievements</h1>
-            <div className={AchievementModule.container}>
+            
+            <div className={AchievementModule.container} style={{
+                backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}sheetmetal.webp)`,
+            }} >
+                <h1>Achievements</h1>
                 <BackButton />
                 {achievements.length > 0 ? (
                     <ul className={AchievementModule.ach_list}>

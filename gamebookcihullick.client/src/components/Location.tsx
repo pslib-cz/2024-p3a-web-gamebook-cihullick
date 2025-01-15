@@ -27,7 +27,7 @@ const LocationPage: React.FC = () => {
             .then((response) => response.json())
             .then((result) => {
                 setData(result);
-
+                console.log(playerLocationID);
                 const player = getPlayer();
                 if (player) {
                     player.locationID = parseInt(id, 10);
@@ -49,7 +49,7 @@ const LocationPage: React.FC = () => {
             .then((response) =>  response.json())
             .then((data) => setInventories(data))
             .catch((error) => console.error('Error fetching inventories:', error));
-    }, [id]);
+    }, [id, playerLocationID], );
 
 
     if (!data) return <div className={LocationModule.loading}>Loading...</div>;
@@ -59,7 +59,6 @@ const LocationPage: React.FC = () => {
             <div className={LocationModule.loc_title}>
                 <h2>{data.name}</h2>
                 <p>{data.description}</p>
-                <p>(Current Location ID: {playerLocationID})</p>
             </div>
 
             <div className={LocationModule.location_propagules}>
