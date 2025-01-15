@@ -13,6 +13,8 @@ namespace GamebookCihullick.Server.Data
         public DbSet<NPC> NPCs { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Achievement> Achievements { get; set; }
+        public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,7 +22,6 @@ namespace GamebookCihullick.Server.Data
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                // Skip the Image entity itself
                 if (entityType.ClrType == typeof(Image))
                     continue;
 
@@ -37,7 +38,6 @@ namespace GamebookCihullick.Server.Data
                 }
             }
 
-            // Other configurations
             modelBuilder.Entity<LocationConnection>()
                 .HasKey(lc => new { lc.LocationID, lc.ConnectedLocationID });
 

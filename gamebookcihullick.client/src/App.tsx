@@ -6,6 +6,7 @@ import Achievements from './app/Achievements';
 import Settings from './app/Settings';
 import PlayerDebug from './app/PlayerDebug'
 import NPCDialogPage from './components/NPCDialog';
+import InventoryPage from './components/InventoryPage'
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
     {
         path: '/location/:id/npc/:npcid',
         element: <NPCDialogPage />,
+    },
+    {
+        path: '/location/:id/inventory/:inventoryid',
+        element: <InventoryPage />,
     },
     {
         path: '/achievements',

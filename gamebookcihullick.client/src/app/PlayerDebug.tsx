@@ -9,7 +9,7 @@ const PlayerDebug: React.FC = () => {
 
     // Fetch all items from the API
     useEffect(() => {
-        fetch('https://localhost:7054/api/Items')
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`)
             .then((response) => response.json())
             .then((data) => setItems(data))
             .catch((error) => console.error('Error fetching items:', error));

@@ -4,3 +4,5 @@ export type { Achievement } from "./AchievementType";
 export type { Item } from "./ItemType";
 export type { NPC } from "./NPCType";
 export type { Image } from "./ImageType";
+export type { Inventory } from "./InventoryType"
+export type { Customer } from "./CustomerType"

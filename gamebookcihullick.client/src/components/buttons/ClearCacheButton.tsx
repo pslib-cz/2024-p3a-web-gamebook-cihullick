@@ -1,4 +1,5 @@
 import React from 'react';
+import ButtonModule from '../buttons/button.module.css';
 
 const ClearCacheButton: React.FC = () => {
 
@@ -9,17 +10,8 @@ const ClearCacheButton: React.FC = () => {
 
     return (
         <button
+            className={ButtonModule.btn}
             onClick={handleClearCache}
-            style={{
-                fontSize: '16px',
-                padding: '10px 20px',
-                margin: '10px',
-                cursor: 'pointer',
-                backgroundColor: '#555',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '5px',
-            }}
         >
             Clear Cache
         </button>

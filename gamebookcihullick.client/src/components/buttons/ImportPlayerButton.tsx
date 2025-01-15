@@ -1,5 +1,6 @@
 import React from 'react';
 import { savePlayer } from '../../services/PlayerService';
+import ButtonModule from '../buttons/button.module.css';
 
 const ImportPlayerButton: React.FC = () => {
     const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,17 +27,7 @@ const ImportPlayerButton: React.FC = () => {
 
     return (
         <label
-            style={{
-                display: 'inline-block',
-                fontSize: '16px',
-                padding: '10px 20px',
-                margin: '10px',
-                cursor: 'pointer',
-                backgroundColor: '#4CAF50',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '5px',
-            }}
+            className={ButtonModule.btn}
         >
             Import Player Data
             <input

@@ -1,0 +1,93 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 48px;
+    margin: 20px 0 0 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 32px;
+}
+
+.npc_container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    width: 90vw;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.img {
+    max-width: 100%;
+    aspect-ratio: 2/1;
+    object-fit: cover;
+    object-position: 50% 10%;
+    background-color: white;
+}
+
+.dialogue_box {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, .75);
+}
+
+.dialogue {
+    font-size: 20px;
+    margin: 20px;
+}
+
+.dialogue_options {
+    display: grid;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.option {
+    font-size: 20px;
+    padding: 16px;
+    cursor: pointer;
+    background-color: #555555;
+    color: #FFFFFF;
+    border: none;
+}
+
+@media (min-width: 768px) {
+
+    h1 {
+        font-size: 72px;
+        margin: 20px 0 0 0;
+        padding: 0;
+    }
+
+    .npc_container {
+        grid-template-columns: 2fr 3fr;
+    }
+
+    .img {
+        aspect-ratio: unset;
+        object-position: 50% 50%;
+    }
+
+    .dialogue_box {
+        height: 50vh;
+    }
+}

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GamebookCihullick.Server.Data;
 using GamebookCihullick.Server.Models;
@@ -48,11 +43,13 @@ namespace GamebookCihullick.Server.Controllers
             var connections = _context.LocationConnections
                 .Where(lc => lc.LocationID == id)
                 .Include(lc => lc.ConnectedLocation)
+                .ThenInclude(cl => cl.Image)
                 .Select(lc => new
                 {
                     lc.ConnectedLocationID,
                     lc.ConnectedLocation.Name,
-                    lc.ConnectedLocation.Description
+                    lc.ConnectedLocation.Description,
+                    ImagePath = lc.ConnectedLocation.Image != null ? lc.ConnectedLocation.Image.PathToFile : null
                 })
                 .ToList();
 
@@ -105,6 +102,22 @@ namespace GamebookCihullick.Server.Controllers
             }
 
             return Ok(npcs);
+        }
+
+        [HttpGet("{id}/inventories")]
+        public async Task<ActionResult<IEnumerable<Inventory>>> GetInventoriesForLocation(int id)
+        {
+            var inventories = await _context.Inventories
+                .Where(inv => inv.LocationID == id)
+                .Include(inv => inv.Image) // Include related data, if needed
+                .ToListAsync();
+
+            if (inventories == null || inventories.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(inventories);
         }
 
 

@@ -42,6 +42,22 @@ namespace GamebookCihullick.Server.Controllers
             return nPC;
         }
 
+        [HttpGet("blocked-locations")]
+        public IActionResult GetBlockedLocations()
+        {
+            var blockedLocations = _context.NPCs
+                .Where(npc => npc.BlockedLocationID != null) // Filter NPCs that block locations
+                .Select(npc => new
+                {
+                    BlockedLocationID = npc.BlockedLocationID,
+                    Name = npc.Name
+                })
+                .ToList(); // Ensure this is always a list (array-like structure)
+
+            return Ok(blockedLocations); // Return the result as JSON
+        }
+
+
         // PUT: api/NPCs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

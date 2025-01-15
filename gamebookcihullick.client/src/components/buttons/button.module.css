@@ -1,0 +1,29 @@
+
+.btn {
+    text-align: center;
+    font-size: 20px;
+    padding: 16px 24px;
+    cursor: pointer;
+    background-color: #555555;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 2299968px;
+}
+
+.btn:hover {
+    background-color: #464646;
+    color: #FFE77B;
+}
+
+@media (min-width: 768px) {
+
+    .btn {
+        font-size: 24px;
+        padding: 20px 28px;
+        cursor: pointer;
+        background-color: #555555;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 100px;
+    }
+}

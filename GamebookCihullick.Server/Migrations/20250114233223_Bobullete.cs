@@ -5,7 +5,7 @@
 namespace GamebookCihullick.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class ImagePlease : Migration
+    public partial class Bobullete : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,6 +39,27 @@ namespace GamebookCihullick.Server.Migrations
                     table.PrimaryKey("PK_Achievements", x => x.AchievementID);
                     table.ForeignKey(
                         name: "FK_Achievements_Images_ImageID",
+                        column: x => x.ImageID,
+                        principalTable: "Images",
+                        principalColumn: "ImageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    CustomerID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Budget = table.Column<int>(type: "INTEGER", nullable: false),
+                    ImageID = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.CustomerID);
+                    table.ForeignKey(
+                        name: "FK_Customers_Images_ImageID",
                         column: x => x.ImageID,
                         principalTable: "Images",
                         principalColumn: "ImageID",
@@ -91,12 +112,39 @@ namespace GamebookCihullick.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Inventories",
+                columns: table => new
+                {
+                    InventoryID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    ImageID = table.Column<int>(type: "INTEGER", nullable: false),
+                    LocationID = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inventories", x => x.InventoryID);
+                    table.ForeignKey(
+                        name: "FK_Inventories_Images_ImageID",
+                        column: x => x.ImageID,
+                        principalTable: "Images",
+                        principalColumn: "ImageID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Inventories_Locations_LocationID",
+                        column: x => x.LocationID,
+                        principalTable: "Locations",
+                        principalColumn: "LocationID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LocationConnections",
                 columns: table => new
                 {
                     LocationID = table.Column<int>(type: "INTEGER", nullable: false),
-                    ConnectedLocationID = table.Column<int>(type: "INTEGER", nullable: false),
-                    LocationConnectionID = table.Column<int>(type: "INTEGER", nullable: false)
+                    ConnectedLocationID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,10 +172,8 @@ namespace GamebookCihullick.Server.Migrations
                     ImageID = table.Column<int>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     LocationID = table.Column<int>(type: "INTEGER", nullable: false),
-                    LocationConnectionID = table.Column<int>(type: "INTEGER", nullable: false),
-                    LocationConnectionLocationID = table.Column<int>(type: "INTEGER", nullable: false),
-                    LocationConnectionConnectedLocationID = table.Column<int>(type: "INTEGER", nullable: false),
-                    RequiredItemID = table.Column<int>(type: "INTEGER", nullable: false),
+                    BlockedLocationID = table.Column<int>(type: "INTEGER", nullable: true),
+                    RequiredItemID = table.Column<int>(type: "INTEGER", nullable: true),
                     Dialog = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -143,14 +189,12 @@ namespace GamebookCihullick.Server.Migrations
                         name: "FK_NPCs_Items_RequiredItemID",
                         column: x => x.RequiredItemID,
                         principalTable: "Items",
-                        principalColumn: "ItemID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ItemID");
                     table.ForeignKey(
-                        name: "FK_NPCs_LocationConnections_LocationConnectionLocationID_LocationConnectionConnectedLocationID",
-                        columns: x => new { x.LocationConnectionLocationID, x.LocationConnectionConnectedLocationID },
-                        principalTable: "LocationConnections",
-                        principalColumns: new[] { "LocationID", "ConnectedLocationID" },
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_NPCs_Locations_BlockedLocationID",
+                        column: x => x.BlockedLocationID,
+                        principalTable: "Locations",
+                        principalColumn: "LocationID");
                     table.ForeignKey(
                         name: "FK_NPCs_Locations_LocationID",
                         column: x => x.LocationID,
@@ -163,6 +207,21 @@ namespace GamebookCihullick.Server.Migrations
                 name: "IX_Achievements_ImageID",
                 table: "Achievements",
                 column: "ImageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_ImageID",
+                table: "Customers",
+                column: "ImageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inventories_ImageID",
+                table: "Inventories",
+                column: "ImageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inventories_LocationID",
+                table: "Inventories",
+                column: "LocationID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_ImageID",
@@ -180,14 +239,14 @@ namespace GamebookCihullick.Server.Migrations
                 column: "ImageID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NPCs_BlockedLocationID",
+                table: "NPCs",
+                column: "BlockedLocationID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_NPCs_ImageID",
                 table: "NPCs",
                 column: "ImageID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NPCs_LocationConnectionLocationID_LocationConnectionConnectedLocationID",
-                table: "NPCs",
-                columns: new[] { "LocationConnectionLocationID", "LocationConnectionConnectedLocationID" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_NPCs_LocationID",
@@ -207,13 +266,19 @@ namespace GamebookCihullick.Server.Migrations
                 name: "Achievements");
 
             migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Inventories");
+
+            migrationBuilder.DropTable(
+                name: "LocationConnections");
+
+            migrationBuilder.DropTable(
                 name: "NPCs");
 
             migrationBuilder.DropTable(
                 name: "Items");
-
-            migrationBuilder.DropTable(
-                name: "LocationConnections");
 
             migrationBuilder.DropTable(
                 name: "Locations");

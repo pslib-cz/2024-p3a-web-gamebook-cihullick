@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { unlockAdventurerAchievement, getPlayer} from '../../services/PlayerService';
+import { unlockAdventurerAchievement, getPlayer } from '../../services/PlayerService';
+import ButtonModule from '../buttons/button.module.css';
 
 const ExportPlayerButton: React.FC = () => {
     const player = getPlayer();
@@ -26,17 +27,8 @@ const ExportPlayerButton: React.FC = () => {
 
     return (
         <button
+            className={ButtonModule.btn}
             onClick={handleExport}
-            style={{
-                fontSize: '16px',
-                padding: '10px 20px',
-                margin: '10px',
-                cursor: 'pointer',
-                backgroundColor: '#008CBA',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '5px',
-            }}
         >
             Export Player Data
         </button>

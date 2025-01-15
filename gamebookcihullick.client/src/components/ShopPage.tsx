@@ -1,56 +1,15 @@
-﻿PC
-
-C:\Users\matth\source\repos\2024-p3a-web-gamebook-cihullick-current\GamebookCihullick.Server\Data
-
-
-Laptop
-
-C:\Users\matth\source\repos\2024-p3a-web-gamebook-cihullick\GamebookCihullick.Server\Data
-
-
-
-[
-    {
-        "id": 0,
-        "text": "Hello there, traveler! I need the Golden Jelly Bean. Can you bring it to me?",
-        "options": [
-            "I'll bring it to you.",
-            "Sorry, I can't help right now."
-        ]
-    },
-    {
-        "id": 1,
-        "text": "Have you found the Golden Jelly Bean for me yet?",
-        "options": [
-            "Yes, here it is.",
-            "Let me leave for now."
-        ]
-    },
-    {
-        "id": 2,
-        "text": "Thank you for bringing me the Golden Jelly Bean! I won't forget this kindness.",
-        "options": [
-            "Goodbye."
-        ]
-    }
-]
-
 import React, { useEffect, useState } from 'react';
-import { Item } from '../types/'; // Adjust path if needed
-
-type ShopInventoryItem = {
-    itemID: number;
-    quantity: number;
-};
+import { Item } from '../types';
+import { getPlayer, savePlayer, buyItem } from '../services/PlayerService';
+import BackButton from './buttons/BackButton';
 
 const ShopPage: React.FC = () => {
     const [shopItems, setShopItems] = useState<(Item & { quantity: number })[]>([]);
+    const player = getPlayer();
 
     useEffect(() => {
         const fetchShopItems = async () => {
-            const shopInventory: ShopInventoryItem[] = JSON.parse(localStorage.getItem('shopInventory') || '[]');
-            if (shopInventory.length === 0) return;
-
+            const shopInventory = player.shopInventory || [];
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
                 if (!response.ok) {
@@ -58,32 +17,41 @@ const ShopPage: React.FC = () => {
                 }
                 const allItems: Item[] = await response.json();
 
-                // Match shopInventory with full item details
-                const itemsToDisplay = shopInventory.map((inventoryItem) => {
+                const itemsToDisplay = shopInventory.map((inventoryItem: { itemID: number; quantity: number }) => {
                     const fullItem = allItems.find((item) => item.itemID === inventoryItem.itemID);
                     if (!fullItem) {
-                        console.warn(`Item with ID ${inventoryItem.itemID} not found in allItems.`);
+                        console.warn(`Item with ID ${inventoryItem.itemID} not found.`);
                         return null;
                     }
                     return {
                         ...fullItem,
                         quantity: inventoryItem.quantity,
                     };
-                }).filter((item) => item !== null); // Filter out any unmatched items
+                }).filter((item) => item !== null) as (Item & { quantity: number })[];
 
-                setShopItems(itemsToDisplay as (Item & { quantity: number })[]);
+                setShopItems(itemsToDisplay);
             } catch (error) {
                 console.error('Error fetching shop items:', error);
             }
         };
 
         fetchShopItems();
-    }, []);
+    }, [player.shopInventory]);
+
+    const handleBuyItem = (itemID: number, itemCost: number) => {
+        const success = buyItem(player, itemID, 1, itemCost);
+        if (success) {
+            savePlayer(player); // Save player after successful purchase
+            //alert('Purchase successful!');
+        } else {
+            alert('Not enough money!');
+        }
+    };
 
     return (
         <div>
             <h1>Shop Inventory</h1>
-            <div>
+            <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', } }>
                 {shopItems.map((item) => (
                     <div key={item.itemID} style={{ border: '1px solid black', margin: '10px', padding: '10px' }}>
                         <img
@@ -94,9 +62,13 @@ const ShopPage: React.FC = () => {
                         <h2>{item.name}</h2>
                         <p>Cost: {item.cost} F</p>
                         <p>Quantity: {item.quantity}</p>
+                        <button onClick={() => handleBuyItem(item.itemID, parseInt(item.cost))}>
+                            Buy Item
+                        </button>
                     </div>
                 ))}
             </div>
+            <BackButton />
         </div>
     );
 };

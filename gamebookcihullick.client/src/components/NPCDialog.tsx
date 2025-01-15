@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPlayer, savePlayer, removeItemFromInventory } from '../services/PlayerService';
+import { getPlayer, savePlayer, removeItemFromInventory, removeBlockedLocation } from '../services/PlayerService';
 import { NPC, Location } from '../types'
+import DialogueModule from '../components/npcdialogue.module.css';
 
 const NPCDialogPage: React.FC = () => {
     const { id, npcid } = useParams<{ id: string; npcid: string }>();
@@ -34,7 +35,6 @@ const NPCDialogPage: React.FC = () => {
             .then((response) => response.json())
             .then((result) => {
                 setData(result);
-                console.log({ id })
                 
             })
             .catch((error) => console.error('Error fetching location data:', error));
@@ -42,18 +42,14 @@ const NPCDialogPage: React.FC = () => {
 
 
     const handleOptionClick = (index: number) => {
-
         if (!npc || !player || !npcid) return;
-
-
-
         const npcID = +npcid;
         const currentDialog = npc.dialog[currentDialogIndex];
 
         if (index === currentDialog.options.length - 1) {
             if (currentDialogIndex === 0) {
                 player.npcs[npcID] = { dialogStage: currentDialogIndex + 1 };
-                savePlayer(player);
+                savePlayer(player); // Save once after all changes
                 setCurrentDialogIndex(currentDialogIndex + 1);
                 navigate(-1);
                 return;
@@ -70,14 +66,16 @@ const NPCDialogPage: React.FC = () => {
                 return;
             }
 
+            // Remove item and blocked location
             removeItemFromInventory(player, npc.requiredItemID, 1);
-            savePlayer(player);
+            removeBlockedLocation(player, npc.blockedLocationID);
+            // Update NPC dialog stage and save player once
             player.npcs[npcID] = { dialogStage: 2 };
-            savePlayer(player);
+            savePlayer(player); // Save after all changes
             setCurrentDialogIndex(2);
         } else if (currentDialogIndex < npc.dialog.length - 1) {
             player.npcs[npcID] = { dialogStage: currentDialogIndex + 1 };
-            savePlayer(player);
+            savePlayer(player); // Save after updating dialog stage
             setCurrentDialogIndex(currentDialogIndex + 1);
         } else {
             navigate(-1);
@@ -93,37 +91,26 @@ const NPCDialogPage: React.FC = () => {
     return (
         <div
             style={{
-                backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}${data.image.pathToFile}.webp)`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '20px',
+                backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}${data.image.pathToFile}.webp)`
             }}
+            className={DialogueModule.container}
         >
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    padding: '20px',
-                    borderRadius: '10px',
-                }}
-            >
-                <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${npc.image.pathToFile}.webp`} width={100} />
-                <h1>{npc.name}</h1>
-                <p>{currentDialog.text}</p>
-                {currentDialog.options.map((option, index) => (
-                    <button key={index} onClick={() => handleOptionClick(index)}>
-                        {option}
-                    </button>
-                ))}
+            <h1>{npc.name}</h1>
+            <div className={DialogueModule.npc_container}>
+                <img className={DialogueModule.img} src={`${import.meta.env.VITE_IMAGE_BASE_URL}${npc.image.pathToFile}.webp`} />
+                <div className={DialogueModule.dialogue_container}>
+                    <div className={DialogueModule.dialogue_box}>
+                        <p className={DialogueModule.dialogue}>{currentDialog.text}</p>
+                    </div>
+                    <div className={DialogueModule.dialogue_options}>
+                        {currentDialog.options.map((option, index) => (
+                            <button className={DialogueModule.option} key={index} onClick={() => handleOptionClick(index)}>
+                                {option}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
             </div>
         </div>
 
