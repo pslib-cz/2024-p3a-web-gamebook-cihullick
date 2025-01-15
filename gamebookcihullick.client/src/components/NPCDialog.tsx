@@ -29,17 +29,13 @@ const NPCDialogPage: React.FC = () => {
                 }
                 setCurrentDialogIndex(player.npcs[+npcid].dialogStage);
             })
-            .catch((error) => console.error('Error fetching NPC:', error));
 
         fetch(`${import.meta.env.VITE_API_BASE_URL}/api/locations/${id}`)
             .then((response) => response.json())
             .then((result) => {
                 setData(result);
-                
             })
-            .catch((error) => console.error('Error fetching location data:', error));
     }, [id, npcid, player]);
-
 
     const handleOptionClick = (index: number) => {
         if (!npc || !player || !npcid) return;
@@ -49,7 +45,7 @@ const NPCDialogPage: React.FC = () => {
         if (index === currentDialog.options.length - 1) {
             if (currentDialogIndex === 0) {
                 player.npcs[npcID] = { dialogStage: currentDialogIndex + 1 };
-                savePlayer(player); // Save once after all changes
+                savePlayer(player);
                 setCurrentDialogIndex(currentDialogIndex + 1);
                 navigate(-1);
                 return;
@@ -66,23 +62,19 @@ const NPCDialogPage: React.FC = () => {
                 return;
             }
 
-            // Remove item and blocked location
             removeItemFromInventory(player, npc.requiredItemID, 1);
             removeBlockedLocation(player, npc.blockedLocationID);
-            // Update NPC dialog stage and save player once
             player.npcs[npcID] = { dialogStage: 2 };
-            savePlayer(player); // Save after all changes
+            savePlayer(player);
             setCurrentDialogIndex(2);
         } else if (currentDialogIndex < npc.dialog.length - 1) {
             player.npcs[npcID] = { dialogStage: currentDialogIndex + 1 };
-            savePlayer(player); // Save after updating dialog stage
+            savePlayer(player);
             setCurrentDialogIndex(currentDialogIndex + 1);
         } else {
             navigate(-1);
         }
     };
-
-
 
     if (!npc || !data) return <div>Loading...</div>;
 
@@ -93,8 +85,7 @@ const NPCDialogPage: React.FC = () => {
             style={{
                 backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}${data.image.pathToFile}.webp)`
             }}
-            className={DialogueModule.container}
-        >
+            className={DialogueModule.container}>
             <h1>{npc.name}</h1>
             <div className={DialogueModule.npc_container}>
                 <img className={DialogueModule.img} src={`${import.meta.env.VITE_IMAGE_BASE_URL}${npc.image.pathToFile}.webp`} />
@@ -110,10 +101,8 @@ const NPCDialogPage: React.FC = () => {
                         ))}
                     </div>
                 </div>
-
             </div>
         </div>
-
     );
 };
 

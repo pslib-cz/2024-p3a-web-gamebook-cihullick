@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getPlayer, addItemToInventory, removeItemFromInventory } from '../services/PlayerService'; // Adjust path
+import { getPlayer, addItemToInventory, removeItemFromInventory } from '../services/PlayerService';
 import { Item } from '../types/ItemType';
 import BackButton from '../components/buttons/BackButton';
 
@@ -7,7 +7,6 @@ const PlayerDebug: React.FC = () => {
     const [items, setItems] = useState<Item[]>([]);
     const [player, setPlayer] = useState(getPlayer());
 
-    // Fetch all items from the API
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`)
             .then((response) => response.json())

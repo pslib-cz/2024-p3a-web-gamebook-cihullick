@@ -8,7 +8,7 @@ export type Player = {
     numberOfVisitedLocations: number;
     visitedLocations: number[];
     inventory: InventoryItem[];
-    shopInventory: InventoryItem[]; // Added shopInventory field
+    shopInventory: InventoryItem[];
     hunger: number;
     money: number;
     unlockedAchievements: number[];
@@ -26,7 +26,7 @@ export const getPlayer = (): Player => {
             numberOfVisitedLocations: player.numberOfVisitedLocations ?? 0,
             visitedLocations: player.visitedLocations || [],
             inventory: player.inventory || [],
-            shopInventory: player.shopInventory || [], // Handle missing shopInventory in existing data
+            shopInventory: player.shopInventory || [],
             hunger: player.hunger ?? 100,
             money: player.money ?? 10000,
             unlockedAchievements: player.unlockedAchievements || [],
@@ -64,7 +64,6 @@ export const visitLocation = (player: Player, locationID: number): void => {
     }
 };
 // ITEM SHENANIGANS
-// Generic function to add items to an inventory
 export const addItemToInventory = ( player: Player, itemID: number, quantity: number, target: 'player' | 'shop' = 'player'): void => {
     const inventory = target === 'player' ? player.inventory : player.shopInventory;
     const existingItem = inventory.find((item) => item.itemID === itemID);
@@ -78,7 +77,6 @@ export const addItemToInventory = ( player: Player, itemID: number, quantity: nu
     savePlayer(player);
 };
 
-// Generic function to remove items from an inventory
 export const removeItemFromInventory = (player: Player, itemID: number, quantity: number,target: 'player' | 'shop' = 'player'): boolean => {
     const inventory = target === 'player' ? player.inventory : player.shopInventory;
     const itemIndex = inventory.findIndex((item) => item.itemID === itemID);
@@ -117,24 +115,14 @@ export const removeBlockedLocation = (player: Player, locationID: number): boole
 export const buyItem = (player: Player, itemID: number, quantity: number, itemCost: number): boolean => {
     const totalCost = itemCost * quantity;
 
-    // Check if player has enough money
-    if (player.money < totalCost) {  // Assuming hunger is the currency
+    if (player.money < totalCost) {
         console.warn(`Not enough money. Player has ${player.money}, but needs ${totalCost}.`);
         return false;
     }
-
-    // Deduct money from the player
     player.money -= totalCost;
-
-    // Add item to player's inventory
     addItemToInventory(player, itemID, quantity, 'player');
-
-    // Remove item from shop's inventory
     removeItemFromInventory(player, itemID, quantity, 'shop');
-
-    // Save player state
     savePlayer(player);
-
     console.log(`Item ${itemID} purchased. Quantity: ${quantity}. Total cost: ${totalCost}.`);
     return true;
 };
@@ -146,7 +134,7 @@ export const initializePlayer = (blockedLocations: number[] = []): Player => {
         numberOfVisitedLocations: 0,
         visitedLocations: [],
         inventory: [],
-        shopInventory: [], // Initialize shopInventory as empty
+        shopInventory: [],
         hunger: 100,
         money: 10000,
         unlockedAchievements: [],

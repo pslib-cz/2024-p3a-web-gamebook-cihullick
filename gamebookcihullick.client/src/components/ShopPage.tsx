@@ -41,8 +41,7 @@ const ShopPage: React.FC = () => {
     const handleBuyItem = (itemID: number, itemCost: number) => {
         const success = buyItem(player, itemID, 1, itemCost);
         if (success) {
-            savePlayer(player); // Save player after successful purchase
-            //alert('Purchase successful!');
+            savePlayer(player);
         } else {
             alert('Not enough money!');
         }
@@ -62,6 +61,7 @@ const ShopPage: React.FC = () => {
                         <h2>{item.name}</h2>
                         <p>Cost: {item.cost} F</p>
                         <p>Quantity: {item.quantity}</p>
+                        <p>Description: {item.description}</p>
                         <button onClick={() => handleBuyItem(item.itemID, parseInt(item.cost))}>
                             Buy Item
                         </button>

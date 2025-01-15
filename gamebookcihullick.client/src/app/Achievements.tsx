@@ -33,21 +33,16 @@ const Achievements: React.FC = () => {
                         {achievements.map((achievement) => (
                             <li key={achievement.achievementID} className={AchievementModule.ach}>
                                 <img
-                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${achievement.image.pathToFile}.webp`} // Use the pathToFile from the image object
+                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${achievement.image.pathToFile}.webp`}
                                     alt={achievement.image.name}
                                     className={AchievementModule.ach_img}
                                     style={{
-                                        filter: unlockedAchievements.includes(achievement.achievementID)
-                                            ? 'none'
-                                            : 'grayscale(100%)',
-                                    }}
-                                />
+                                        filter: unlockedAchievements.includes(achievement.achievementID)? 'none' : 'grayscale(100%)',
+                                    }}/>
                                 <div className={AchievementModule.ach_info}>
                                     <p className={AchievementModule.ach_name}>{achievement.name}</p>
                                     <p className={AchievementModule.ach_desc}>
-                                        {unlockedAchievements.includes(achievement.achievementID)
-                                            ? achievement.description
-                                            : '???'}
+                                        {unlockedAchievements.includes(achievement.achievementID) ? achievement.description: '???'}
                                     </p>
                                 </div>
                             </li>

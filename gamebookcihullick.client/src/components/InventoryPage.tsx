@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Inventory } from '../types/InventoryType';
-import ShopPage from './ShopPage'; // Assuming ShopPage exists
+import ShopPage from './ShopPage';
 
 const InventoryPage: React.FC = () => {
     const { inventoryid } = useParams<{ inventoryid: string }>();
@@ -48,12 +48,10 @@ const InventoryPage: React.FC = () => {
                 height: '120vh',
                 padding: '20px',
                 color: 'gainsboro',
-            }}
-        >
+            }}>
             {renderContent()}
         </div>
     );
-
 };
 
 export default InventoryPage;
