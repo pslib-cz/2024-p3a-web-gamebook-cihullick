@@ -18,24 +18,57 @@ namespace GamebookCihullick.Server.Controllers
 
         // GET: api/Locations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
+        public async Task<ActionResult<IEnumerable<object>>> GetLocations()
         {
-            return await _context.Locations.ToListAsync();
+            var locations = await _context.Locations
+                .Include(l => l.Image)
+                .Select(l => new
+                {
+                    l.LocationID,
+                    l.Name,
+                    l.Description,
+                    Image = l.Image != null ? new
+                    {
+                        l.Image.ImageID,
+                        l.Image.Name,
+                        l.Image.PathToFile
+                    } : null
+                })
+                .ToListAsync();
+
+            return Ok(locations);
         }
+
 
         // GET: api/Locations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Location>> GetLocation(int id)
+        public async Task<ActionResult<object>> GetLocation(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
+            var location = await _context.Locations
+                .Include(l => l.Image)
+                .Where(l => l.LocationID == id)
+                .Select(l => new
+                {
+                    l.LocationID,
+                    l.Name,
+                    l.Description,
+                    Image = l.Image != null ? new
+                    {
+                        l.Image.ImageID,
+                        l.Image.Name,
+                        l.Image.PathToFile
+                    } : null
+                })
+                .FirstOrDefaultAsync();
 
             if (location == null)
             {
                 return NotFound();
             }
 
-            return location;
+            return Ok(location);
         }
+
 
         [HttpGet("{id}/connections")]
         public IActionResult GetConnectedLocations(int id)
@@ -89,14 +122,51 @@ namespace GamebookCihullick.Server.Controllers
         }
 
         [HttpGet("{id}/npcs")]
-        public async Task<ActionResult<IEnumerable<NPC>>> GetNPCsForLocation(int id)
+        public async Task<ActionResult<IEnumerable<object>>> GetNPCsForLocation(int id)
         {
             var npcs = await _context.NPCs
                 .Where(npc => npc.LocationID == id)
+                .Include(npc => npc.Image)
+                .Include(npc => npc.BlockedLocation)
                 .Include(npc => npc.RequiredItem)
+                .ThenInclude(ri => ri.Image)
+                .Select(npc => new
+                {
+                    npc.NPCID,
+                    npc.Name,
+                    npc.LocationID,
+                    Location = npc.Location != null ? new
+                    {
+                        npc.Location.LocationID,
+                        npc.Location.Name
+                    } : null,
+                    npc.BlockedLocationID,
+                    BlockedLocation = npc.BlockedLocation != null ? new
+                    {
+                        npc.BlockedLocation.LocationID,
+                        npc.BlockedLocation.Name
+                    } : null,
+                    npc.RequiredItemID,
+                    RequiredItem = npc.RequiredItem != null ? new
+                    {
+                        npc.RequiredItem.ItemID,
+                        npc.RequiredItem.Name,
+                        Image = npc.RequiredItem.Image != null ? new
+                        {
+                            npc.RequiredItem.Image.ImageID,
+                            npc.RequiredItem.Image.PathToFile
+                        } : null
+                    } : null,
+                    Image = npc.Image != null ? new
+                    {
+                        npc.Image.ImageID,
+                        npc.Image.Name,
+                        npc.Image.PathToFile
+                    } : null
+                })
                 .ToListAsync();
 
-            if (npcs == null || npcs.Count == 0)
+            if (!npcs.Any())
             {
                 return NotFound();
             }
@@ -104,12 +174,30 @@ namespace GamebookCihullick.Server.Controllers
             return Ok(npcs);
         }
 
+
+
+
+
+
+
         [HttpGet("{id}/inventories")]
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetInventoriesForLocation(int id)
+        public async Task<ActionResult<IEnumerable<object>>> GetInventoriesForLocation(int id)
         {
             var inventories = await _context.Inventories
                 .Where(inv => inv.LocationID == id)
-                .Include(inv => inv.Image) // Include related data, if needed
+                .Include(inv => inv.Image)
+                .Select(inv => new
+                {
+                    inv.InventoryID,
+                    inv.Name,
+                    inv.Type,
+                    Image = inv.Image != null ? new
+                    {
+                        inv.Image.ImageID,
+                        inv.Image.Name,
+                        inv.Image.PathToFile
+                    } : null
+                })
                 .ToListAsync();
 
             if (inventories == null || inventories.Count == 0)
@@ -119,6 +207,7 @@ namespace GamebookCihullick.Server.Controllers
 
             return Ok(inventories);
         }
+
 
 
         // POST: api/Locations

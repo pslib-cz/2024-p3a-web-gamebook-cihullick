@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Item } from '../types';
 import { getPlayer, savePlayer, buyItem } from '../services/PlayerService';
 import BackButton from './buttons/BackButton';
+import InventoryModule from '../components/inventory.module.css';
 
 const ShopPage: React.FC = () => {
     const [shopItems, setShopItems] = useState<(Item & { quantity: number })[]>([]);
@@ -42,8 +43,8 @@ const ShopPage: React.FC = () => {
     }, [player.shopInventory]);
 
 
-    const handleBuyItem = (itemID: number, itemCost: number) => {
-        const success = buyItem(player, itemID, 1, itemCost);
+    const handleBuyItem = (itemID: number, name: string, itemCost: number) => {
+        const success = buyItem(player, itemID, 1, name, itemCost);
         if (success) {
             savePlayer(player);
         } else {
@@ -52,27 +53,43 @@ const ShopPage: React.FC = () => {
     };
 
     return (
-        <div>
-            <h1>Shop Inventory</h1>
-            <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', } }>
+        <div className={InventoryModule.thecontainerwithin}>
+            <div className={InventoryModule.inv_title_propagules}>
+                <h1>Buy Items</h1>
+            </div>
+
+            <div className={InventoryModule.item_list}>
                 {shopItems.map((item) => (
-                    <div key={item.itemID} style={{ border: '1px solid black', margin: '10px', padding: '10px' }}>
+                    <div key={item.itemID} className={InventoryModule.item}>
                         <img
                             src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
                             alt={item.name}
-                            style={{ width: '100px', height: '100px' }}
+                            className={InventoryModule.img}
                         />
-                        <h2>{item.name}</h2>
-                        <p>Cost: {item.cost} F</p>
-                        <p>Quantity: {item.quantity}</p>
-                        <p>Description: {item.description}</p>
-                        <button onClick={() => handleBuyItem(item.itemID, parseInt(item.cost))}>
+                        <div className={InventoryModule.item_info}>
+                            <h2>{item.name}</h2>
+                            <p>{item.quantity} in stock</p>
+                            <p>{item.cost} F per unit</p>
+                        </div>
+                        <button className={InventoryModule.buy_btn} onClick={() => handleBuyItem(item.itemID, item.name, parseInt(item.cost))}>
                             Buy Item
                         </button>
                     </div>
                 ))}
             </div>
-            <BackButton />
+
+            <div className={InventoryModule.footer}>
+                <div className={InventoryModule.backbeans}>
+                    <BackButton />
+                </div>
+                <div className={InventoryModule.player_stats}>
+                    <div className={InventoryModule.player_stats_money}>
+                        <p>Purse: {player.money} F</p>
+                    </div>
+                    <button className={InventoryModule.player_stats_inv}>Player inventory button thing</button>
+                </div>
+            </div>
+
         </div>
     );
 };

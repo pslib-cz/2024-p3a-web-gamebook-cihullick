@@ -23,38 +23,128 @@ namespace GamebookCihullick.Server.Controllers
 
         // GET: api/NPCs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NPC>>> GetNPCs()
+        public async Task<ActionResult<IEnumerable<object>>> GetNPCs()
         {
-            return await _context.NPCs.ToListAsync();
+            var npcs = await _context.NPCs
+                .Include(npc => npc.Image)
+                .Include(npc => npc.RequiredItem)
+                .ThenInclude(ri => ri.Image)
+                .Include(npc => npc.Location)
+                .Include(npc => npc.BlockedLocation)
+                .Select(npc => new
+                {
+                    npc.NPCID,
+                    npc.Name,
+                    npc.LocationID,
+                    Location = npc.Location != null ? new
+                    {
+                        npc.Location.LocationID,
+                        npc.Location.Name
+                    } : null,
+                    npc.BlockedLocationID,
+                    BlockedLocation = npc.BlockedLocation != null ? new
+                    {
+                        npc.BlockedLocation.LocationID,
+                        npc.BlockedLocation.Name
+                    } : null,
+                    npc.RequiredItemID,
+                    RequiredItem = npc.RequiredItem != null ? new
+                    {
+                        npc.RequiredItem.ItemID,
+                        npc.RequiredItem.Name,
+                        Image = npc.RequiredItem.Image != null ? new
+                        {
+                            npc.RequiredItem.Image.ImageID,
+                            npc.RequiredItem.Image.PathToFile
+                        } : null
+                    } : null,
+                    Image = npc.Image != null ? new
+                    {
+                        npc.Image.ImageID,
+                        npc.Image.Name,
+                        npc.Image.PathToFile
+                    } : null,
+                    Dialog = npc.Dialog
+                })
+                .ToListAsync();
+
+            return Ok(npcs);
         }
+
+
+
 
         // GET: api/NPCs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<NPC>> GetNPC(int id)
+        public async Task<ActionResult<object>> GetNPC(int id)
         {
-            var nPC = await _context.NPCs.FindAsync(id);
+            var npc = await _context.NPCs
+                .Include(npc => npc.Image)
+                .Include(npc => npc.RequiredItem)
+                .ThenInclude(ri => ri.Image)
+                .Include(npc => npc.Location)
+                .Include(npc => npc.BlockedLocation)
+                .Where(npc => npc.NPCID == id)
+                .Select(npc => new
+                {
+                    npc.NPCID,
+                    npc.Name,
+                    npc.LocationID,
+                    Location = npc.Location != null ? new
+                    {
+                        npc.Location.LocationID,
+                        npc.Location.Name
+                    } : null,
+                    npc.BlockedLocationID,
+                    BlockedLocation = npc.BlockedLocation != null ? new
+                    {
+                        npc.BlockedLocation.LocationID,
+                        npc.BlockedLocation.Name
+                    } : null,
+                    npc.RequiredItemID,
+                    RequiredItem = npc.RequiredItem != null ? new
+                    {
+                        npc.RequiredItem.ItemID,
+                        npc.RequiredItem.Name,
+                        Image = npc.RequiredItem.Image != null ? new
+                        {
+                            npc.RequiredItem.Image.ImageID,
+                            npc.RequiredItem.Image.PathToFile
+                        } : null
+                    } : null,
+                    Image = npc.Image != null ? new
+                    {
+                        npc.Image.ImageID,
+                        npc.Image.Name,
+                        npc.Image.PathToFile
+                    } : null,
+                    Dialog = npc.Dialog
+                })
+                .FirstOrDefaultAsync();
 
-            if (nPC == null)
+            if (npc == null)
             {
                 return NotFound();
             }
 
-            return nPC;
+            return Ok(npc);
         }
+
+
 
         [HttpGet("blocked-locations")]
         public IActionResult GetBlockedLocations()
         {
             var blockedLocations = _context.NPCs
-                .Where(npc => npc.BlockedLocationID != null) // Filter NPCs that block locations
+                .Where(npc => npc.BlockedLocationID != null)
                 .Select(npc => new
                 {
                     BlockedLocationID = npc.BlockedLocationID,
                     Name = npc.Name
                 })
-                .ToList(); // Ensure this is always a list (array-like structure)
+                .ToList();
 
-            return Ok(blockedLocations); // Return the result as JSON
+            return Ok(blockedLocations);
         }
 
 

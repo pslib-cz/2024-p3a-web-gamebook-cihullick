@@ -1,6 +1,8 @@
 export type InventoryItem = {
     itemID: number;
     quantity: number;
+    name: string;
+    cost: number;
 };
 export type Player = {
     name: string;
@@ -64,14 +66,14 @@ export const visitLocation = (player: Player, locationID: number): void => {
     }
 };
 // ITEM SHENANIGANS
-export const addItemToInventory = ( player: Player, itemID: number, quantity: number, target: 'player' | 'shop' = 'player'): void => {
+export const addItemToInventory = ( player: Player, itemID: number, quantity: number, name: string, cost: number, target: 'player' | 'shop' = 'player'): void => {
     const inventory = target === 'player' ? player.inventory : player.shopInventory;
     const existingItem = inventory.find((item) => item.itemID === itemID);
 
     if (existingItem) {
         existingItem.quantity += quantity;
     } else {
-        inventory.push({ itemID, quantity });
+        inventory.push({ itemID, quantity, name, cost });
     }
 
     savePlayer(player);
@@ -112,7 +114,7 @@ export const removeBlockedLocation = (player: Player, locationID: number): boole
 
     return true;
 };
-export const buyItem = (player: Player, itemID: number, quantity: number, itemCost: number): boolean => {
+export const buyItem = (player: Player, itemID: number, quantity: number, name: string, itemCost: number): boolean => {
     const totalCost = itemCost * quantity;
 
     if (player.money < totalCost) {
@@ -120,7 +122,7 @@ export const buyItem = (player: Player, itemID: number, quantity: number, itemCo
         return false;
     }
     player.money -= totalCost;
-    addItemToInventory(player, itemID, quantity, 'player');
+    addItemToInventory(player, itemID, quantity, name, itemCost, 'player');
     removeItemFromInventory(player, itemID, quantity, 'shop');
     savePlayer(player);
     console.log(`Item ${itemID} purchased. Quantity: ${quantity}. Total cost: ${totalCost}.`);

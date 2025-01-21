@@ -23,10 +23,24 @@ namespace GamebookCihullick.Server.Controllers
 
         // GET: api/LocationConnections
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationConnection>>> GetLocationConnections()
+        public async Task<ActionResult<IEnumerable<object>>> GetLocationConnections()
         {
-            return await _context.LocationConnections.ToListAsync();
+            var connections = await _context.LocationConnections
+                .Include(lc => lc.Location)
+                .Include(lc => lc.ConnectedLocation)
+                .Select(lc => new
+                {
+                    lc.LocationID,
+                    LocationName = lc.Location != null ? lc.Location.Name : null,
+                    lc.ConnectedLocationID,
+                    ConnectedLocationName = lc.ConnectedLocation != null ? lc.ConnectedLocation.Name : null
+                })
+                .ToListAsync();
+
+            return Ok(connections);
         }
+
+
 
         // GET: api/LocationConnections/5
         [HttpGet("{id}")]

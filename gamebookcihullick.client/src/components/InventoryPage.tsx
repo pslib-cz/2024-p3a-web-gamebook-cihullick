@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Inventory } from '../types/InventoryType';
 import ShopPage from './ShopPage';
+import InventoryModule from '../components/inventory.module.css';
 
 const InventoryPage: React.FC = () => {
     const { inventoryid } = useParams<{ inventoryid: string }>();
@@ -42,13 +43,9 @@ const InventoryPage: React.FC = () => {
         <div
             style={{
                 backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}${inventory.image.pathToFile}.webp)`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                height: '120vh',
-                padding: '20px',
-                color: 'gainsboro',
-            }}>
+            }}
+            className={InventoryModule.container}
+        >
             {renderContent()}
         </div>
     );

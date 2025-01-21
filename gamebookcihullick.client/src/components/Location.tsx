@@ -128,6 +128,9 @@ const LocationPage: React.FC = () => {
                             </div>
                         ))}
                     </div>
+
+                    { id == '7' && <div className={LocationModule.object}><img src={`${import.meta.env.VITE_IMAGE_BASE_URL}customer.webp`} onClick={() => navigate('/customer')} ></img></div>}
+                    
                 </div>
             </div>
             <div className={LocationModule.btns}>

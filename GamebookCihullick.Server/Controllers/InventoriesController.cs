@@ -23,24 +23,73 @@ namespace GamebookCihullick.Server.Controllers
 
         // GET: api/Inventories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetInventories()
+        public async Task<ActionResult<IEnumerable<object>>> GetInventories()
         {
-            return await _context.Inventories.ToListAsync();
+            var inventories = await _context.Inventories
+                .Include(i => i.Image)
+                .Include(i => i.Location)
+                .Select(i => new
+                {
+                    i.InventoryID,
+                    i.Name,
+                    i.Type,
+                    i.ImageID,
+                    Image = i.Image != null ? new
+                    {
+                        i.Image.ImageID,
+                        i.Image.Name,
+                        i.Image.PathToFile
+                    } : null,
+                    i.LocationID,
+                    Location = i.Location != null ? new
+                    {
+                        i.Location.LocationID,
+                        i.Location.Name
+                    } : null
+                })
+                .ToListAsync();
+
+            return Ok(inventories);
         }
+
 
         // GET: api/Inventories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Inventory>> GetInventory(int id)
+        public async Task<ActionResult<object>> GetInventory(int id)
         {
-            var inventory = await _context.Inventories.FindAsync(id);
+            var inventory = await _context.Inventories
+                .Include(i => i.Image)
+                .Include(i => i.Location)
+                .Where(i => i.InventoryID == id)
+                .Select(i => new
+                {
+                    i.InventoryID,
+                    i.Name,
+                    i.Type,
+                    i.ImageID,
+                    Image = i.Image != null ? new
+                    {
+                        i.Image.ImageID,
+                        i.Image.Name,
+                        i.Image.PathToFile
+                    } : null,
+                    i.LocationID,
+                    Location = i.Location != null ? new
+                    {
+                        i.Location.LocationID,
+                        i.Location.Name
+                    } : null
+                })
+                .FirstOrDefaultAsync();
 
             if (inventory == null)
             {
                 return NotFound();
             }
 
-            return inventory;
+            return Ok(inventory);
         }
+
 
         // PUT: api/Inventories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

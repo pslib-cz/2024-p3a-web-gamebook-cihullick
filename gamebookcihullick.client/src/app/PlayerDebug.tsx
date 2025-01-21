@@ -14,9 +14,9 @@ const PlayerDebug: React.FC = () => {
             .catch((error) => console.error('Error fetching items:', error));
     }, []);
 
-    const handleAddItem = (itemID: number) => {
+    const handleAddItem = (itemID: number, name: string, cost: number) => {
         const updatedPlayer = { ...player };
-        addItemToInventory(updatedPlayer, itemID, 1);
+        addItemToInventory(updatedPlayer, itemID, 1, name, cost);
         setPlayer(updatedPlayer);
     };
 
@@ -41,7 +41,7 @@ const PlayerDebug: React.FC = () => {
                             <p>
                                 <strong>{item.name}</strong>: {item.description} (ID: {item.itemID})
                             </p>
-                            <button onClick={() => handleAddItem(item.itemID)}>Add to Inventory</button>
+                            <button onClick={() => handleAddItem(item.itemID, item.name, parseInt(item.cost))}>Add to Inventory</button>
                             <button onClick={() => handleRemoveItem(item.itemID)}>Remove from Inventory</button>
                             <p>Quantity in Inventory: {player.inventory.find((i) => i.itemID === item.itemID)?.quantity || 0}</p>
                         </li>

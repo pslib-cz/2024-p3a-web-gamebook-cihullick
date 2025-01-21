@@ -7,6 +7,7 @@ import Settings from './app/Settings';
 import PlayerDebug from './app/PlayerDebug'
 import NPCDialogPage from './components/NPCDialog';
 import InventoryPage from './components/InventoryPage'
+import CustomerPage from './components/CustomerPage';
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
     {
         path: '/achievements',
         element: <Achievements />,
+    },
+    {
+        path: '/customer',
+        element: <CustomerPage />,
     },
     {
         path: '/settings',
