@@ -48,7 +48,7 @@ const CustomerPage = (): JSX.Element => {
         const purchaseRecord: Record<number, number> = {};
         const shopInventory = player.shopInventory as ShopInventoryItem[];
         const totalItems = shopInventory.length;
-        const maxIterations = 20;
+        const maxIterations = 80;
         let iterationCount = 0;
 
 
@@ -140,12 +140,12 @@ const CustomerPage = (): JSX.Element => {
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            width: '100vw',  // Ensure it covers the full width
-            height: '100vh', // Ensure it covers the full height of the viewport
-            display: 'flex', // Optional: Helps arrange content properly
-            flexDirection: 'column', // Aligns content properly
-            justifyContent: 'center', // Centers vertically
-            alignItems: 'center' // Centers horizontally
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
         }}>
             <h1 style={{ backgroundColor: 'rgba(0, 0, 0, .5)', }}>Customer Page</h1>
             {customer && (
