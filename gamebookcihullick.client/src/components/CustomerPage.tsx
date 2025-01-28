@@ -1,19 +1,14 @@
 import { useState, useEffect } from 'react';
 import { getPlayer, savePlayer, removeItemFromInventory } from '../services/PlayerService';
-import { Customer } from '../types';
+import { Customer, ShopInventoryItem } from '../types';
 import BackButton from './buttons/BackButton';
+import CustomerModule from '../components/customerpage.module.css';
 
-interface ShopInventoryItem {
-    itemID: number;
-    quantity: number;
-    cost: number;
-    name: string;
-}
 
 const CustomerPage = (): JSX.Element => {
     const [customers, setCustomers] = useState<Customer[]>([]);
     const [customer, setCustomer] = useState<Customer | null>(null);
-    const [purchasedItems, setPurchasedItems] = useState<{ itemID: number; name: string; quantity: number; cost: number }[]>([]);
+    const [purchasedItems, setPurchasedItems] = useState<ShopInventoryItem[]>([]);
     const [player, setPlayer] = useState(getPlayer());
     const [totalInput, setTotalInput] = useState("");
     const [feedback, setFeedback] = useState<string | null>(null);
@@ -41,10 +36,10 @@ const CustomerPage = (): JSX.Element => {
 
     const handlePurchase = () => {
         if (!customer) return;
-
+        setFeedback(null);
         let budget = customer.budget;
         const uniqueItems = new Set<number>();
-        const itemsBought: { itemID: number; name: string; quantity: number; cost: number }[] = [];
+        const itemsBought: ShopInventoryItem[] = [];
         const purchaseRecord: Record<number, number> = {};
         const shopInventory = player.shopInventory as ShopInventoryItem[];
         const totalItems = shopInventory.length;
@@ -90,7 +85,7 @@ const CustomerPage = (): JSX.Element => {
             setFeedback("Not enough stock in the shop.");
             return;
         }
-
+        console.log("items bought:", itemsBought);
 
         for (const itemID in purchaseRecord) {
             const item = shopInventory.find(i => i.itemID === Number(itemID));
@@ -104,10 +99,11 @@ const CustomerPage = (): JSX.Element => {
                 removeItemFromInventory(player, item.itemID, purchaseRecord[item.itemID], 'shop');
             }
         }
-
+        console.log("items bought:", itemsBought);
+        console.log("purchaseRecord:", purchaseRecord);
         setPurchasedItems(itemsBought);
-        savePlayer({ ...player, shopInventory: player.shopInventory });
         setPlayer({ ...player });
+        savePlayer({ ...player});
 
         setTotalInput("");
         setHasSubmitted(false);
@@ -117,102 +113,128 @@ const CustomerPage = (): JSX.Element => {
 
     const calculateTotal = () => {
         const total = purchasedItems.reduce((sum, item) => sum + item.cost, 0);
-        const userTotal = parseInt(totalInput, 10);
+        const userTotal = parseInt(totalInput);
 
         if (!isNaN(userTotal)) {
             if (userTotal === total) {
                 setFeedback("Correct! You earned 10% of the total.");
-                setPlayer(prev => ({ ...prev, money: Math.round(prev.money + total * 0.1) }));
-                savePlayer({ ...player, money: Math.round(player.money + total * 0.1 )});
+                setPlayer({ ...player, money: Math.round(player.money + total * 0.1)});
+                savePlayer({ ...player, money: Math.round(player.money + total * 0.1)});
             } else {
                 setFeedback(`Incorrect. The correct total was ${total}.`);
             }
         } else {
             setFeedback("Please enter a valid number.");
         }
-
         setHasSubmitted(true);
     };
 
+    const formatCustomerOrder = (items: ShopInventoryItem[]): string => {
+        if (items.length === 0) return "";
+
+        const formattedItems = items.map(item => `${item.quantity}x ${item.name}`);
+
+        if (formattedItems.length === 1) {
+            return `Hello, I'd like ${formattedItems[0]}.`;
+        }
+
+        const lastItem = formattedItems.pop();
+        return `Hello, I'd like ${formattedItems.join(", ")} and ${lastItem}.`;
+    };
+    
+
     return (
-        <div style={{
-            backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}customer.webp)`,
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            width: '100vw',
-            height: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-        }}>
-            <h1 style={{ backgroundColor: 'rgba(0, 0, 0, .5)', }}>Customer Page</h1>
+        <div
+            style={{ backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}customer.webp)` }}
+            className={CustomerModule.container}
+        >
+            {firstCustomer && (
+                <button
+                    onClick={() => {
+                        handlePurchase();
+                        if (shopHasStock) selectRandomCustomer(customers);
+                    }}
+                    disabled={!shopHasStock}
+                    className={CustomerModule.start_work}
+                >Start work</button>
+            )}
             {customer && (
-                <div>
-                    <h2>Customer: {customer.name}</h2>
-                    <p>Budget: {customer.budget}</p>
-                </div>
+                <>
+                    {purchasedItems.length > 0 && (
+                        <h2>{customer.name}</h2>
+                    )}
+                </>
             )}
 
+            <div className={CustomerModule.npc_container}>
+                {customer && (
+                    <>
+                        {purchasedItems.length > 0 && (
+                            <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${customer.image.pathToFile}.webp`} className={CustomerModule.img} />
+                        )}
+                    </>
+                )}
+                <div className={CustomerModule.dialogue_container}>
+                    {purchasedItems.length > 0 && (
+                        <div className={CustomerModule.dialogue_box}>
+                            <p>{formatCustomerOrder(purchasedItems)}</p>
+                            <div className={CustomerModule.dialogue_input}>
+                                {stockWarning && (
+                                    <p style={{ color: "red", fontWeight: "bold" }}>{stockWarning}</p>
+                                )}
+                                {feedback && (
+                                    <p style={{ color: feedback.startsWith("Correct") ? "green" : "red" }}>
+                                        {feedback}
+                                    </p>
+                                )}
 
-            <button
-                onClick={() => {
-                    handlePurchase();
-                    if (shopHasStock) selectRandomCustomer(customers);
-                }}
-                disabled={!shopHasStock}
-            >
-                {firstCustomer ? "Start Work" : "Next Customer"}
-            </button>
-
-            {purchasedItems.length > 0 && (
-                <div style={{ backgroundColor: 'rgba(0, 0, 0, .5)', }}>
-                    <h3>Customer Order</h3>
-                    <p>{formatCustomerOrder(purchasedItems)}</p>
-
-                    <h3>Enter Total Cost</h3>
-
-                    {!hasSubmitted && (
-                        <>
-                            <input
-                                type="number"
-                                value={totalInput}
-                                onChange={(e) => setTotalInput(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && calculateTotal()}
-                                placeholder="Enter total amount..."
-                            />
-                            <button onClick={calculateTotal}>Check Total</button>
-                        </>
+                                {!hasSubmitted && (
+                                    <input
+                                        type="number"
+                                        value={totalInput}
+                                        onChange={(e) => setTotalInput(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && calculateTotal()}
+                                        placeholder="Enter total price..."
+                                        className={CustomerModule.price_input}
+                                    />
+                                )}
+                            </div>
+                        </div>
                     )}
 
-                    {feedback && (
-                        <p style={{ color: feedback.startsWith("Correct") ? "green" : "red" }}>
-                            {feedback}
-                        </p>
-                    )}
-                    
+                    <div className={CustomerModule.dialogue_options}>
+                        {purchasedItems.length > 0 && (
+                            <>
+                                {!hasSubmitted && (
+                                    <button onClick={calculateTotal} className={CustomerModule.option}>Check Total</button>
+                                )}
+                                <button
+                                    onClick={() => {
+                                        handlePurchase();
+                                        if (shopHasStock) selectRandomCustomer(customers);
+                                    }}
+                                    disabled={!shopHasStock}
+                                    className={CustomerModule.option}
+                                >Next customer</button>
+                            </>
+                        )}
+                    </div>
                 </div>
-            )}
-            {stockWarning && (
-                <p style={{ color: "red", fontWeight: "bold" }}>{stockWarning}</p>
-            )}
-            <BackButton />
+            </div>
+
+            <div className={CustomerModule.footer}>
+                <div className={CustomerModule.backbeans}>
+                    <BackButton />
+                </div>
+                <div className={CustomerModule.player_stats}>
+                    <div className={CustomerModule.player_stats_money}>
+                        <p>Purse: {player.money} F</p>
+                    </div>
+                    <button className={CustomerModule.player_stats_inv}>Shop inventory button thing</button>
+                </div>
+            </div>
         </div>
     );
-};
-
-const formatCustomerOrder = (items: { name: string; quantity: number }[]): string => {
-    if (items.length === 0) return "";
-
-    const formattedItems = items.map(item => `${item.quantity}x ${item.name}`);
-
-    if (formattedItems.length === 1) {
-        return `Hello, I'd like ${formattedItems[0]}.`;
-    }
-
-    const lastItem = formattedItems.pop();
-    return `Hello, I'd like ${formattedItems.join(", ")} and ${lastItem}.`;
 };
 
 export default CustomerPage;
