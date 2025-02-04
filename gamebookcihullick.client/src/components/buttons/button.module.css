@@ -8,6 +8,9 @@
     color: #FFFFFF;
     border: none;
     border-radius: 2299968px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .btn:hover {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Item } from '../types';
 import { getPlayer, savePlayer, buyItem } from '../services/PlayerService';
-import InventoryModule from '../components/inventory.module.css';
+import ShopPageModule from '../components/shoppage.module.css';
 import FooterBar from './FooterBar';
 import PlayerInventory from './PlayerInventory';
 
@@ -67,33 +67,33 @@ const ShopPage: React.FC = () => {
     };
 
     return (
-        <div className={InventoryModule.thecontainerwithin}>
-            <div className={InventoryModule.inv_title_propagules}>
+        <div className={ShopPageModule.thecontainerwithin}>
+            <div className={ShopPageModule.inv_title_propagules}>
                 <h1>Buy Items</h1>
             </div>
 
-            <div className={InventoryModule.item_list}>
+            <div className={ShopPageModule.item_list}>
                 {shopItems.map((item) => (
-                    <div key={item.itemID} className={InventoryModule.item}>
+                    <div key={item.itemID} className={ShopPageModule.item}>
                         <img
                             src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
                             alt={item.name}
-                            className={InventoryModule.img}
+                            className={ShopPageModule.img}
                         />
-                        <div className={InventoryModule.item_info}>
+                        <div className={ShopPageModule.item_info}>
                             <h2>{item.name}</h2>
                             <p>{item.quantity} in stock</p>
                             <p>{item.cost} F per unit</p>
                         </div>
-                        <button className={InventoryModule.buy_btn} onClick={() => handleBuyItem(item.itemID, item.name, parseInt(item.cost))}>
+                        <button className={ShopPageModule.buy_btn} onClick={() => handleBuyItem(item.itemID, item.name, parseInt(item.cost))}>
                             Buy Item
                         </button>
                     </div>
                 ))}
             </div>
+
             {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
             <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
-
         </div>
     );
 };

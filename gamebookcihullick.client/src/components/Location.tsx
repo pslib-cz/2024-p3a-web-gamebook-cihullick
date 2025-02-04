@@ -33,85 +33,89 @@ const LocationPage: React.FC = () => {
     }, [id, playerLocationID]);
 
     if (!data) return <div className={LocationModule.loading}>Loading...</div>;
+    if (!data) return <div className={LocationModule.loading}>Loading...</div>;
     return (
         <div className={LocationModule.container} style={{ backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}${data.image?.pathToFile || 'default'}.webp)` }}>
-            <div className={LocationModule.loc_title}>
+            <div className={LocationModule.location_propagules}>
                 <h2>{data.name}</h2>
                 <p>{data.description}</p>
-            </div>
 
-            <div className={LocationModule.location_propagules}>
-                <div className={LocationModule.list_list}>
-                    <h3>NPCs</h3>
+                <div className={LocationModule.list_list_list_list_list_list_list_list_list}>
 
-
-                    {Array.isArray(data.npCs) && data.npCs.length > 0 ? (
-                        data.npCs.map((npc) => (
-                            <div key={npc.npcid} className={LocationModule.object}>
-                                <img
-                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${npc.image?.pathToFile || 'default'}.webp`}
-                                    alt={npc.name}
-                                    className={LocationModule.img}
-                                    onClick={() => navigate(`/location/${id}/npc/${npc.npcid}`)}
-                                />
-                                <p>{npc.name}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p className={LocationModule.center}>No NPCs available at this location.</p>
+                    {data.inventories.length > 0 && (
+                        <div className={LocationModule.list_list}>
+                            {data.inventories && data.inventories.length > 0 ? (
+                                data.inventories.map((inventory) => (
+                                    <div
+                                        key={inventory.inventoryID}
+                                        className={LocationModule.object}
+                                        onClick={() => navigate(`/location/${inventory.locationID}/inventory/${inventory.inventoryID}`)}
+                                    >
+                                        <img
+                                            src={`${import.meta.env.VITE_IMAGE_BASE_URL}${inventory.image?.pathToFile || 'default'}.webp`}
+                                            alt={inventory.name}
+                                            className={LocationModule.img}
+                                        />
+                                        <p>{inventory.name}</p>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className={LocationModule.center}>No inventories available at this location.</p>
+                            )}
+                        </div>
                     )}
-                </div>
 
-
-                <div className={LocationModule.list_list}>
-                    <h3>Inventories</h3>
-                    {data.inventories && data.inventories.length > 0 ? (
-                        data.inventories.map((inventory) => (
-                            <div
-                                key={inventory.inventoryID}
-                                className={LocationModule.object}
-                                onClick={() => navigate(`/location/${inventory.locationID}/inventory/${inventory.inventoryID}`)}
-                            >
-                                <img
-                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${inventory.image?.pathToFile || 'default'}.webp`}
-                                    alt={inventory.name}
-                                    className={LocationModule.img}
-                                />
-                                <p>{inventory.name}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p className={LocationModule.center}>No inventories available at this location.</p>
+                    {data.npCs.length > 0 && (
+                        <div className={LocationModule.list_list}>
+                            <h3>NPCs</h3>
+                            {Array.isArray(data.npCs) && data.npCs.length > 0 ? (
+                                data.npCs.map((npc) => (
+                                    <div key={npc.npcid} className={LocationModule.object}>
+                                        <img
+                                            src={`${import.meta.env.VITE_IMAGE_BASE_URL}${npc.image?.pathToFile || 'default'}.webp`}
+                                            alt={npc.name}
+                                            className={LocationModule.img}
+                                            onClick={() => navigate(`/location/${id}/npc/${npc.npcid}`)}
+                                        />
+                                        <p>{npc.name}</p>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className={LocationModule.center}>No NPCs available at this location.</p>
+                            )}
+                        </div>
                     )}
-                </div>
 
-                <div className={LocationModule.list_list}>
-                    <h3>Locations</h3>
-                    <div className={LocationModule.list}>
-                        {data.connectedLocations?.filter((conn) => {
-                            const player = getPlayer();
-                            return !player.blockedLocations.includes(conn.connectedLocationID);
-                        }).map((conn) => (
-                            <div key={conn.connectedLocationID} className={LocationModule.object}>
-                                <img
-                                    src={conn.imagePath ? `${import.meta.env.VITE_IMAGE_BASE_URL}${conn.imagePath}.webp` : '/default-image.webp'}
-                                    onClick={() => navigate(`/location/${conn.connectedLocationID}`)}
-                                    className={LocationModule.img}
-                                />
-                                <p>{conn.name}</p>
+                    {data.connectedLocations.length > 0 && (
+                        <div className={LocationModule.list_list}>
+                            <h3>Locations</h3>
+                            <div className={LocationModule.list}>
+                                {data.connectedLocations?.filter((conn) => {
+                                    const player = getPlayer();
+                                    return !player.blockedLocations.includes(conn.connectedLocationID);
+                                }).map((conn) => (
+                                    <div key={conn.connectedLocationID} className={LocationModule.object}>
+                                        <img
+                                            src={conn.imagePath ? `${import.meta.env.VITE_IMAGE_BASE_URL}${conn.imagePath}.webp` : '/default-image.webp'}
+                                            onClick={() => navigate(`/location/${conn.connectedLocationID}`)}
+                                            className={LocationModule.img}
+                                        />
+                                        <p>{conn.name}</p>
+                                    </div>
+                                ))}
+                                {id == '7' && (
+                                    <div className={LocationModule.object}>
+                                        <img
+                                            src={`${import.meta.env.VITE_IMAGE_BASE_URL}customer.webp`}
+                                            onClick={() => navigate('/customer')}
+                                            className={LocationModule.img}
+                                        />
+                                        <p>Customer</p>
+                                    </div>
+                                )}
                             </div>
-                        ))}
-                        {id == '7' && (
-                            <div className={LocationModule.object}>
-                                <img
-                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}customer.webp`}
-                                    onClick={() => navigate('/customer')}
-                                    className={LocationModule.img}
-                                />
-                                <p>Customer</p>
-                            </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </div>
 

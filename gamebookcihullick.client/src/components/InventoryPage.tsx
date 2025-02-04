@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Inventory } from '../types/InventoryType';
 import ShopPage from './ShopPage';
-import InventoryModule from '../components/inventory.module.css';
+import InventoryModule from '../components/shoppage.module.css';
 
 const InventoryPage: React.FC = () => {
     const { inventoryid } = useParams<{ inventoryid: string }>();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getPlayer, consumeItem } from '../services/PlayerService';
 import { Item } from '../types/ItemType';
-import styles from '../components/inventory.module.css';
+import InventoryModule from '../components/playerinventory.module.css';
 
 interface PlayerInventoryProps {
     onClose: () => void;
@@ -53,25 +53,25 @@ const PlayerInventory: React.FC<PlayerInventoryProps> = ({ onClose }) => {
     };
 
     return (
-        <div className={styles.inventoryOverlay}>
-            <div ref={modalRef} className={styles.inventoryContainer}>
-                <button className={styles.closeBtn} onClick={onClose}>X</button>
-                <h2 className={styles.inventoryTitle}>Your Inventory</h2>
+        <div className={InventoryModule.overlay}>
+            <div ref={modalRef} className={InventoryModule.inv_container}>
+                <button className={InventoryModule.close_btn} onClick={onClose}>X</button>
+                <h2 className={InventoryModule.inventory_title}>Your Inventory</h2>
 
-                <div className={styles.inventoryGrid}>
+                <div className={InventoryModule.inventory_list}>
                     {items.map((item) => (
-                        <div key={item.itemID} className={styles.inventoryItem}>
+                        <div key={item.itemID} className={InventoryModule.inventory_item}>
                             <img
                                 src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
                                 alt={item.name}
-                                className={styles.itemImage}
+                                className={InventoryModule.img}
                             />
-                            <div className={styles.itemDetails}>
-                                <span>{item.name}</span>
-                                <span>{item.quantity}x</span>
+                            <div className={InventoryModule.item_details}>
+                                <p>{item.name}</p>
+                                <p>{item.quantity}x</p>
                             </div>
                             {item.isEdible && (
-                                <button className={styles.consumeBtn} onClick={() => handleConsume(item.itemID, item.nutritionalValue)}>Consume</button>
+                                <button className={InventoryModule.consume_btn} onClick={() => handleConsume(item.itemID, item.nutritionalValue)}>Consume</button>
                             )}
                         </div>
                     ))}

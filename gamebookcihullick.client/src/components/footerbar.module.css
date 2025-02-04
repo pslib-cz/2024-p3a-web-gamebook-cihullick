@@ -1,0 +1,85 @@
+
+.player_stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 100vw;
+    height: 200px;
+    background-color: gainsboro;
+}
+
+.player_stats_money {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    background-color: white;
+}
+
+    .player_stats_money p {
+        font-size: 20px;
+        text-align: center;
+        color: black;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+.player_stats_btn {
+    width: 100%;
+    height: 50%;
+    font-size: 20px;
+    font-weight: normal;
+    text-align: center;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    color: black;
+    background-color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+    .player_stats_btn:hover {
+        background-color: gainsboro;
+    }
+
+@media (min-width: 768px) {
+
+    .player_stats {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1px;
+        width: 100%;
+        height: 50px;
+    }
+
+    .player_stats_money {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 100%;
+        font-size: 24px;
+        text-align: center;
+        color: black;
+        background-color: white;
+    }
+
+        .player_stats_money p {
+            font-size: 24px;
+        }
+
+    .player_stats_btn {
+        width: 50%;
+        height: 100%;
+        font-size: 24px;
+    }
+}
