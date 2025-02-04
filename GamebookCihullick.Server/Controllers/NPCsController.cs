@@ -36,6 +36,7 @@ namespace GamebookCihullick.Server.Controllers
                     npc.NPCID,
                     npc.Name,
                     npc.LocationID,
+                    npc.Type,
                     Location = npc.Location != null ? new
                     {
                         npc.Location.LocationID,

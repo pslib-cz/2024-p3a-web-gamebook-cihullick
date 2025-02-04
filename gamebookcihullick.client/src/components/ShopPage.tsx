@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Item } from '../types';
 import { getPlayer, savePlayer, buyItem } from '../services/PlayerService';
-import BackButton from './buttons/BackButton';
 import InventoryModule from '../components/inventory.module.css';
+import FooterBar from './FooterBar';
+import PlayerInventory from './PlayerInventory';
 
 const ShopPage: React.FC = () => {
     const [shopItems, setShopItems] = useState<(Item & { quantity: number })[]>([]);
+    const [isInventoryOpen, setInventoryOpen] = useState(false);
     const player = getPlayer();
 
     useEffect(() => {
@@ -38,7 +40,19 @@ const ShopPage: React.FC = () => {
                     console.error('Error fetching shop items:', error);
                 });
         };
-
+        /*
+        <div className={InventoryModule.footer}>
+                <div className={InventoryModule.backbeans}>
+                    <BackButton />
+                </div>
+                <div className={InventoryModule.player_stats}>
+                    <div className={InventoryModule.player_stats_money}>
+                        <p>Purse: {player.money} F</p>
+                    </div>
+                    <button className={InventoryModule.player_stats_inv}>Player inventory button thing</button>
+                </div>
+            </div>
+            */
         fetchShopItems();
     }, [player.shopInventory]);
 
@@ -77,18 +91,8 @@ const ShopPage: React.FC = () => {
                     </div>
                 ))}
             </div>
-
-            <div className={InventoryModule.footer}>
-                <div className={InventoryModule.backbeans}>
-                    <BackButton />
-                </div>
-                <div className={InventoryModule.player_stats}>
-                    <div className={InventoryModule.player_stats_money}>
-                        <p>Purse: {player.money} F</p>
-                    </div>
-                    <button className={InventoryModule.player_stats_inv}>Player inventory button thing</button>
-                </div>
-            </div>
+            {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
+            <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
 
         </div>
     );

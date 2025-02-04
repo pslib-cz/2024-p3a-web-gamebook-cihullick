@@ -73,7 +73,7 @@ export const addItemToInventory = ( player: Player, itemID: number, quantity: nu
     if (existingItem) {
         existingItem.quantity += quantity;
     } else {
-        inventory.push({ itemID, quantity, name, cost });
+        inventory.push({ itemID, quantity, name, cost});
     }
 
     savePlayer(player);
@@ -95,8 +95,21 @@ export const removeItemFromInventory = (player: Player, itemID: number, quantity
     savePlayer(player);
     return true;
 };
+export const consumeItem = (player: Player, itemID: number, nutritionalValue: number): boolean => {
+    const item = player.inventory.find(i => i.itemID === itemID);
+    if (!item || item.quantity <= 0) return false;
+    if (player.hunger == 1000) return false;
+    player.hunger = Math.min(player.hunger + nutritionalValue, 1000);
 
+    item.quantity -= 1;
 
+    if (item.quantity === 0) {
+        removeItemFromInventory(player, itemID, 1)
+    }
+
+    savePlayer(player);
+    return true;
+};
 export const getItemQuantity = (player: Player, itemID: number): number => {
     const item = player.inventory.find((i) => i.itemID === itemID);
     return item ? item.quantity : 0;
@@ -137,7 +150,7 @@ export const initializePlayer = (blockedLocations: number[] = []): Player => {
         visitedLocations: [],
         inventory: [],
         shopInventory: [],
-        hunger: 100,
+        hunger: 10,
         money: 10000,
         unlockedAchievements: [],
         npcs: {},

@@ -4,7 +4,9 @@ export interface Item {
     name: string;
     description: string;
     cost: string;
-    IsEdible: boolean;
+    isEdible: boolean;
+    showsInInventory: boolean;
+    type: string;
     nutritionalValue: number;
     image: Image;
 }

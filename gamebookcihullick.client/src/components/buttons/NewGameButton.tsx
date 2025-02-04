@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { initializePlayer, savePlayer } from '../../services/PlayerService';
+import { addItemToInventory, initializePlayer, savePlayer } from '../../services/PlayerService';
 import ButtonModule from '../buttons/button.module.css';
 
 const NewGameButton: React.FC = () => {
@@ -24,12 +24,21 @@ const NewGameButton: React.FC = () => {
             }
             const items = await itemsResponse.json();
 
-            player.shopInventory = items.map((item: { itemID: number, name: string, cost: number }) => ({
+            for (let i = items.length - 1; i >= 0; i--) {
+                if (items[i].showsInInventory == false) {
+                    items.splice(i, 1);
+                }
+            }
+
+            player.shopInventory = items.map((item: { itemID: number, name: string, cost: number, showsInInventory: boolean }) => ({
                 itemID: item.itemID,
                 quantity: 50,
                 name: item.name,
                 cost: item.cost,
+                showsInInventory: item.showsInInventory,
             }));
+
+            addItemToInventory(player, 16, 1, "Dirty clothes", 0);
 
             savePlayer(player);
             navigate('/location/1');
