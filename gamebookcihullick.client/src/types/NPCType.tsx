@@ -6,6 +6,7 @@ export interface NPC {
     dialog: NPCDialogOption[]; 
     image: Image;
     blockedLocationID: number;
+    type: number;
 }
 export interface NPCDialogOption {
     id: number;

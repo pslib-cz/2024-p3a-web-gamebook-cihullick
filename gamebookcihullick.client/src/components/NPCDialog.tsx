@@ -62,7 +62,9 @@ const NPCDialogPage: React.FC = () => {
                 return;
             }
 
-            removeItemFromInventory(player, npc.requiredItemID, 1);
+            if (npc.type === 1) {
+                removeItemFromInventory(player, npc.requiredItemID, 1);
+            }
             removeBlockedLocation(player, npc.blockedLocationID);
             player.npcs[npcID] = { dialogStage: 2 };
             savePlayer(player);
