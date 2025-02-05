@@ -7,11 +7,14 @@ import SettingsButton from './buttons/SettingsButton'
 import PlayerDebugButton from './buttons/PlayerDebugButton';
 import MenuButton from './buttons/MenuButton';
 import LocationModule from '../components/location.module.css';
+import FooterBar from './FooterBar';
+import PlayerInventory from './PlayerInventory';
 
 const LocationPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [data, setData] = useState<Location | null>(null);
     const navigate = useNavigate();
+    const [isInventoryOpen, setInventoryOpen] = useState(false);
     const [playerLocationID, setPlayerLocationID] = useState<number | null>(null);
 
     useEffect(() => {
@@ -67,7 +70,7 @@ const LocationPage: React.FC = () => {
 
                     {data.npCs.length > 0 && (
                         <div className={LocationModule.list_list}>
-                            <h3>NPCs</h3>
+                            <h3>npCs</h3>
                             {Array.isArray(data.npCs) && data.npCs.length > 0 ? (
                                 data.npCs.map((npc) => (
                                     <div key={npc.npcid} className={LocationModule.object}>
@@ -125,6 +128,8 @@ const LocationPage: React.FC = () => {
                 <PlayerDebugButton />
                 <MenuButton />
             </div>
+            {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
+            <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>
     );
 };

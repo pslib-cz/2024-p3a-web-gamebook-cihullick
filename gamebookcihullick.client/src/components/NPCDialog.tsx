@@ -3,11 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getPlayer, savePlayer, removeItemFromInventory, removeBlockedLocation } from '../services/PlayerService';
 import { NPC, Location } from '../types'
 import DialogueModule from '../components/npcdialogue.module.css';
+import FooterBar from './FooterBar';
+import PlayerInventory from './PlayerInventory';
 
 const NPCDialogPage: React.FC = () => {
     const { id, npcid } = useParams<{ id: string; npcid: string }>();
     const navigate = useNavigate();
     const [npc, setNpc] = useState<NPC | null>(null);
+    const [isInventoryOpen, setInventoryOpen] = useState(false);
     const [currentDialogIndex, setCurrentDialogIndex] = useState(0);
     const player = getPlayer();
 
@@ -104,6 +107,8 @@ const NPCDialogPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+            {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
+            <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>
     );
 };
