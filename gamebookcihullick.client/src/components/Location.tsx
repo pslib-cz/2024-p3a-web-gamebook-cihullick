@@ -36,7 +36,6 @@ const LocationPage: React.FC = () => {
     }, [id, playerLocationID]);
 
     if (!data) return <div className={LocationModule.loading}>Loading...</div>;
-    if (!data) return <div className={LocationModule.loading}>Loading...</div>;
     return (
         <div className={LocationModule.container} style={{ backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}${data.image?.pathToFile || 'default'}.webp)` }}>
             <div className={LocationModule.location_propagules}>
