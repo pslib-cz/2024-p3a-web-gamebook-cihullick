@@ -84,6 +84,14 @@ p {
     cursor: pointer;
 }
 
+.img_noclick {
+    width: 100px;
+    height: 100px;
+    aspect-ratio: 1/1;
+    background-color: white;
+    margin-bottom: 5px;
+}
+
 .btns {
     display: flex;
     gap: 10px;
@@ -104,10 +112,6 @@ p {
 
     p {
         font-size: 20px;
-    }
-
-    .location_propagules {
-        margin-top: 200px;
     }
 
     .btns {

@@ -44,7 +44,7 @@ const LocationPage: React.FC = () => {
         addItemToInventory(player, 18, 1, "Clean clothes", 0);
         }
         setWashComplete(true);
-        savePlayer(player); // Save the updated inventory
+        savePlayer(player);
     };
 
     if (!data) return <div className={LocationModule.loading}>Loading...</div>;
@@ -130,27 +130,39 @@ const LocationPage: React.FC = () => {
                             </div>
                         </div>
                     )}
+
                     {data.locationID === 13 && hasWashingmachine && (
-                        <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                            <h1>Your washing machine</h1>
-                            <img
-                                src={`${import.meta.env.VITE_IMAGE_BASE_URL}/washingmachine.webp`}
-                                alt="Washing Machine"
-                                style={{ width: '200px', height: 'auto' }}
-                            />
-                            <button onClick={handleWashClothes} style={{ marginTop: '10px' }}>
-                                Wash Your Clothes
-                            </button>
+                        <div className={ LocationModule.object }>
+                            <h3>Washing machine (pristine edition wow) its very late and i think it would be pretty funny if i just made this text extremely long for no reason so that yo'ud have to read the whole thing (and also the page is now scrollable, love css fr) because that is precisely something you would do (now say YEAH) YEAH YEAH YEAH :UGH: UGH: :daniel_adult:</h3>
+                            {washComplete && (
+                                <img
+                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}/washingmachine.webp`}
+                                    alt="Fixed Washing Machine"
+                                    className={ LocationModule.img_noclick }
+                                    onClick={handleWashClothes}
+                                />
+                            )}
+                            {!washComplete && (
+                                <img
+                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}/washingmachine.webp`}
+                                    alt="Fixed Washing Machine"
+                                    className={ LocationModule.img }
+                                    onClick={handleWashClothes}
+                                />
+                            )}
+                            
+                            {!washComplete && <p>(click to use)</p>}
                             {washComplete && <p>Your clothes are now sparkling clean!</p>}
                         </div>
                     )}
                     {data.locationID === 13 && !hasWashingmachine && (
-                        <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                            <h1>Your BROKEN washing machine :(</h1>
+                        <div className={ LocationModule.object }>
+                            <h3>Your BROKEN washing machine :(</h3>
                             <img
                                 src={`${import.meta.env.VITE_IMAGE_BASE_URL}/washingmachine.webp`}
-                                alt="Washing Machine"
-                                style={{ width: '200px', height: 'auto', filter: 'grayscale(100%)' }}
+                                alt="Broken Washing Machine"
+                                style={{ filter: 'grayscale(100%)' }}
+                                className={ LocationModule.img_noclick }
                             />
                         </div>
                     )}
