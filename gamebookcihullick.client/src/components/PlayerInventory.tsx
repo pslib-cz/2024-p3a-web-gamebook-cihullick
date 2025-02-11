@@ -24,7 +24,9 @@ const PlayerInventory: React.FC<PlayerInventoryProps> = ({ onClose }) => {
                 const playerInventory = player.inventory
                     .map((invItem) => {
                         const fullItem = allItems.find(item => item.itemID === invItem.itemID);
-                        return fullItem ? { ...fullItem, quantity: invItem.quantity } : null;
+                        return fullItem && fullItem.showsInInventory === true
+                            ? { ...fullItem, quantity: invItem.quantity }
+                            : null;
                     })
                     .filter(item => item !== null) as (Item & { quantity: number })[];
 

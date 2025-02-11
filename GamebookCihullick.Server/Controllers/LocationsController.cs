@@ -114,6 +114,8 @@ namespace GamebookCihullick.Server.Controllers
                             npc.NPCID,
                             npc.Name,
                             npc.Dialog,
+                            npc.BlockedLocationID,
+                            npc.RequiredItemID,
                             Image = npc.Image != null ? new
                             {
                                 npc.Image.ImageID,

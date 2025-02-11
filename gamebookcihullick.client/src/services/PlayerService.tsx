@@ -79,7 +79,7 @@ export const addItemToInventory = ( player: Player, itemID: number, quantity: nu
     savePlayer(player);
 };
 
-export const removeItemFromInventory = (player: Player, itemID: number, quantity: number,target: 'player' | 'shop' = 'player'): boolean => {
+export const removeItemFromInventory = (player: Player, itemID: number, quantity: number, target: 'player' | 'shop' = 'player'): boolean => {
     const inventory = target === 'player' ? player.inventory : player.shopInventory;
     const itemIndex = inventory.findIndex((item) => item.itemID === itemID);
 

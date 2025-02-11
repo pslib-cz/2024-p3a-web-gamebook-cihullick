@@ -13,32 +13,32 @@ const NPCDialogPage: React.FC = () => {
     const [isInventoryOpen, setInventoryOpen] = useState(false);
     const [currentDialogIndex, setCurrentDialogIndex] = useState(0);
     const player = getPlayer();
-
     const [data, setData] = useState<Location | null>(null);
 
     useEffect(() => {
-        if (!npcid) return;
-
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/npcs/${npcid}`)
-            .then((response) => response.json())
-            .then((data) => {
-                data.dialog = JSON.parse(data.dialog);
-                setNpc(data);
-
-                if (!player.npcs) player.npcs = {};
-                if (!player.npcs[+npcid]) {
-                    player.npcs[+npcid] = { dialogStage: 0 };
-                    savePlayer(player);
-                }
-                setCurrentDialogIndex(player.npcs[+npcid].dialogStage);
-            })
+        if (!id || !npcid) return;
 
         fetch(`${import.meta.env.VITE_API_BASE_URL}/api/locations/${id}`)
             .then((response) => response.json())
             .then((result) => {
                 setData(result);
+
+                const npcData = result.npCs.find((npc: NPC) => npc.npcid === +npcid);
+                if (npcData) {
+                    npcData.dialog = JSON.parse(npcData.dialog);
+                    setNpc(npcData);
+
+                    if (!player.npcs) player.npcs = {};
+                    if (!player.npcs[+npcid]) {
+                        player.npcs[+npcid] = { dialogStage: 0 };
+                        savePlayer(player);
+                    }
+                    setCurrentDialogIndex(player.npcs[+npcid].dialogStage);
+                }
             })
+            .catch((error) => console.error("Error loading location or NPC data:", error));
     }, [id, npcid, player]);
+
 
     const handleOptionClick = (index: number) => {
         if (!npc || !player || !npcid) return;

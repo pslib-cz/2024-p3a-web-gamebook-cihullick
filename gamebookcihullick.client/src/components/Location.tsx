@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Location } from '../types';
 import AchievementsButton from './buttons/AchievementsButton'
-import { getPlayer, savePlayer, visitLocation } from '../services/PlayerService';
+import { addItemToInventory, getPlayer, removeItemFromInventory, savePlayer, visitLocation } from '../services/PlayerService';
 import SettingsButton from './buttons/SettingsButton'
 import PlayerDebugButton from './buttons/PlayerDebugButton';
 import MenuButton from './buttons/MenuButton';
@@ -16,6 +16,9 @@ const LocationPage: React.FC = () => {
     const navigate = useNavigate();
     const [isInventoryOpen, setInventoryOpen] = useState(false);
     const [playerLocationID, setPlayerLocationID] = useState<number | null>(null);
+    const player = getPlayer();
+    const [washComplete, setWashComplete] = useState(false);
+    const hasWashingmachine = player.inventory.some(item => item.name === 'Washing machine');
 
     useEffect(() => {
         if (!id) return;
@@ -34,6 +37,15 @@ const LocationPage: React.FC = () => {
             })
             .catch((error) => console.error('Error fetching location data:', error));
     }, [id, playerLocationID]);
+
+    const handleWashClothes = () => {
+        if (!player.inventory.some(item => item.name === 'Clean clothes')) {
+        removeItemFromInventory(player, 16, 1);
+        addItemToInventory(player, 18, 1, "Clean clothes", 0);
+        }
+        setWashComplete(true);
+        savePlayer(player); // Save the updated inventory
+    };
 
     if (!data) return <div className={LocationModule.loading}>Loading...</div>;
     return (
@@ -116,6 +128,30 @@ const LocationPage: React.FC = () => {
                                     </div>
                                 )}
                             </div>
+                        </div>
+                    )}
+                    {data.locationID === 13 && hasWashingmachine && (
+                        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                            <h1>Your washing machine</h1>
+                            <img
+                                src={`${import.meta.env.VITE_IMAGE_BASE_URL}/washingmachine.webp`}
+                                alt="Washing Machine"
+                                style={{ width: '200px', height: 'auto' }}
+                            />
+                            <button onClick={handleWashClothes} style={{ marginTop: '10px' }}>
+                                Wash Your Clothes
+                            </button>
+                            {washComplete && <p>Your clothes are now sparkling clean!</p>}
+                        </div>
+                    )}
+                    {data.locationID === 13 && !hasWashingmachine && (
+                        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                            <h1>Your BROKEN washing machine :(</h1>
+                            <img
+                                src={`${import.meta.env.VITE_IMAGE_BASE_URL}/washingmachine.webp`}
+                                alt="Washing Machine"
+                                style={{ width: '200px', height: 'auto', filter: 'grayscale(100%)' }}
+                            />
                         </div>
                     )}
                 </div>
