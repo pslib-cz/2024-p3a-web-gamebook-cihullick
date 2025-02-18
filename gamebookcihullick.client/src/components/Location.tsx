@@ -9,6 +9,8 @@ import MenuButton from './buttons/MenuButton';
 import LocationModule from '../components/location.module.css';
 import FooterBar from './FooterBar';
 import PlayerInventory from './PlayerInventory';
+import ShopInventoryPage from './ShopInventoryPage';
+import ShopFooterBar from './ShopFooterBar';
 
 const LocationPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -127,6 +129,16 @@ const LocationPage: React.FC = () => {
                                         <p>Customer</p>
                                     </div>
                                 )}
+                                {id == '11' && (
+                                    <div className={LocationModule.object}>
+                                        <img
+                                            src={`${import.meta.env.VITE_IMAGE_BASE_URL}therecure.webp`}
+                                            onClick={() => navigate('/gambba')}
+                                            className={LocationModule.img}
+                                        />
+                                        <p>Gamble</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
@@ -175,8 +187,21 @@ const LocationPage: React.FC = () => {
                 <PlayerDebugButton />
                 <MenuButton />
             </div>
-            {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
-            <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
+            {isInventoryOpen && (
+                data.locationID === 7 ? (
+                    <ShopInventoryPage onClose={() => setInventoryOpen(false)} />
+                ) : (
+                    <PlayerInventory onClose={() => setInventoryOpen(false)} />
+                )
+            )}
+
+            {data.locationID === 7 ? (
+                <ShopFooterBar onOpenInventory={() => setInventoryOpen(true)} />
+            ) : (
+                <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
+            )}
+
+
         </div>
     );
 };

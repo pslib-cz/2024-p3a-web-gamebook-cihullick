@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Item } from '../types';
-import { getPlayer, savePlayer, buyItem } from '../services/PlayerService';
+import { getPlayer, savePlayer, removeItemFromInventory, addItemToInventory } from '../services/PlayerService';
 import ShopPageModule from '../components/shoppage.module.css';
-import FooterBar from './FooterBar';
-import PlayerInventory from './PlayerInventory';
+import ShopInventoryPage from './ShopInventoryPage';
+import ShopFooterBar from './ShopFooterBar';
 
 const ShopPage: React.FC = () => {
     const [shopItems, setShopItems] = useState<(Item & { quantity: number })[]>([]);
@@ -12,7 +12,7 @@ const ShopPage: React.FC = () => {
 
     useEffect(() => {
         const fetchShopItems = () => {
-            const shopInventory = player.shopInventory || [];
+            const shopWarehouse = player.shopWarehouse || [];
 
             fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`)
                 .then(response => {
@@ -22,7 +22,7 @@ const ShopPage: React.FC = () => {
                     return response.json();
                 })
                 .then((allItems: Item[]) => {
-                    const itemsToDisplay = shopInventory.map((inventoryItem) => {
+                    const itemsToDisplay = shopWarehouse.map((inventoryItem) => {
                         const fullItem = allItems.find(item => item.itemID === inventoryItem.itemID);
                         if (!fullItem) {
                             console.warn(`Item with ID ${inventoryItem.itemID} not found.`);
@@ -41,22 +41,19 @@ const ShopPage: React.FC = () => {
                 });
         };
         fetchShopItems();
-    }, [player.shopInventory]);
+    }, [player.shopWarehouse]);
 
 
-    const handleBuyItem = (itemID: number, name: string, itemCost: number) => {
-        const success = buyItem(player, itemID, 1, name, itemCost);
-        if (success) {
-            savePlayer(player);
-        } else {
-            alert('Not enough money!');
-        }
+    const handleMoveItem = (itemID: number, name: string, itemCost: number) => {
+        removeItemFromInventory(player, itemID, 1, "warehouse");
+        addItemToInventory(player, itemID, 1, name, itemCost, "shop");
+        savePlayer(player);
     };
 
     return (
         <div className={ShopPageModule.thecontainerwithin}>
             <div className={ShopPageModule.inv_title_propagules}>
-                <h1>Buy Items</h1>
+                <h1>Shop Warehouse</h1>
             </div>
 
             <div className={ShopPageModule.item_list}>
@@ -72,15 +69,15 @@ const ShopPage: React.FC = () => {
                             <p>{item.quantity} in stock</p>
                             <p>{item.cost} F per unit</p>
                         </div>
-                        <button className={ShopPageModule.buy_btn} onClick={() => handleBuyItem(item.itemID, item.name, parseInt(item.cost))}>
-                            Buy Item
+                        <button className={ShopPageModule.buy_btn} onClick={() => handleMoveItem(item.itemID, item.name, parseInt(item.cost))}>
+                            Move To Shop
                         </button>
                     </div>
                 ))}
             </div>
 
-            {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
-            <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
+            {isInventoryOpen && <ShopInventoryPage onClose={() => setInventoryOpen(false)} />}
+            <ShopFooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>
     );
 };

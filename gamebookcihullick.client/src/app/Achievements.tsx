@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { unlockAdventurerAchievement, getPlayer } from '../services/PlayerService';
-import BackButton from '../components/buttons/BackButton';
+import { unlockAdventurerAchievement, getPlayer, unlockWinnerAchievement } from '../services/PlayerService';
 import { Achievement } from '../types';
 import AchievementModule from '../app/achievements.module.css';
+import PlayerInventory from '../components/PlayerInventory';
+import FooterBar from '../components/FooterBar';
 
 const Achievements: React.FC = () => {
     const [achievements, setAchievements] = useState<Achievement[]>([]);
+    const [isInventoryOpen, setInventoryOpen] = useState(false);
     const player = getPlayer();
 
     useEffect(() => {
@@ -19,9 +21,11 @@ const Achievements: React.FC = () => {
 
     useEffect(() => {
         unlockAdventurerAchievement(player);
+        unlockWinnerAchievement(player);
     }, [player]);
 
     const unlockedAchievements = player?.unlockedAchievements || [];
+
 
     return (
         <div>
@@ -30,7 +34,6 @@ const Achievements: React.FC = () => {
                 backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}sheetmetal.webp)`,
             }} >
                 <h1>Achievements</h1>
-                <BackButton />
                 {achievements.length > 0 ? (
                     <ul className={AchievementModule.ach_list}>
                         {achievements.map((achievement) => (
@@ -55,6 +58,8 @@ const Achievements: React.FC = () => {
                     <p>Loading achievements...</p>
                 )}
             </div>
+            {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
+            <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>
     );
 };

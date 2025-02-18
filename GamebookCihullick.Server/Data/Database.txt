@@ -1,11 +1,6 @@
 ﻿PC
 
-C:\Users\matth\source\repos\2024-p3a-web-gamebook-cihullick-current\GamebookCihullick.Server\Data
-
-
-Laptop
-
-C:\Users\matth\source\repos\2024-p3a-web-gamebook-cihullick\GamebookCihullick.Server\Data
+C:\Users\matth\source\repos
 
 
 

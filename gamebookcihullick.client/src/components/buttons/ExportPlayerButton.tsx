@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { unlockAdventurerAchievement, getPlayer } from '../../services/PlayerService';
+import { unlockAdventurerAchievement, getPlayer, unlockWinnerAchievement } from '../../services/PlayerService';
 import ButtonModule from '../buttons/button.module.css';
 
 const ExportPlayerButton: React.FC = () => {
     const player = getPlayer();
 
     useEffect(() => {
-        unlockAdventurerAchievement(player)
+        unlockAdventurerAchievement(player);
+        unlockWinnerAchievement(player);
     }, [player]);
     const handleExport = () => {
         

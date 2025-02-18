@@ -8,6 +8,8 @@ import PlayerDebug from './app/PlayerDebug'
 import NPCDialogPage from './components/NPCDialog';
 import InventoryPage from './components/InventoryPage'
 import CustomerPage from './components/CustomerPage';
+import GamblingPage from './components/GamblingPage';
+import GlobalClickHandler from './components/GlobalClickHandler';
 
 const router = createBrowserRouter([
     {
@@ -40,6 +42,10 @@ const router = createBrowserRouter([
         element: <CustomerPage />,
     },
     {
+        path: '/gambba',
+        element: <GamblingPage />,
+    },
+    {
         path: '/settings',
         element: <Settings />,
     },
@@ -52,6 +58,7 @@ const router = createBrowserRouter([
 function App() {
     return (
         <>
+            <GlobalClickHandler />
             <RouterProvider router={router} />
         </>
     );

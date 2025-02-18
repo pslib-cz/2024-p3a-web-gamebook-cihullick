@@ -32,7 +32,7 @@ const NewGameButton: React.FC = () => {
 
             player.shopInventory = items.map((item: { itemID: number, name: string, cost: number, showsInInventory: boolean }) => ({
                 itemID: item.itemID,
-                quantity: 50,
+                quantity: 53,
                 name: item.name,
                 cost: item.cost,
                 showsInInventory: item.showsInInventory,

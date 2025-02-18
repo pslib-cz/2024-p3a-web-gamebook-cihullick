@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Inventory } from '../types/InventoryType';
 import ShopPage from './ShopPage';
 import InventoryModule from '../components/shoppage.module.css';
+import BuyShopStockPage from './BuyShopStockPage';
+import ShopWarehousePage from './ShopWarehousePage';
 
 const InventoryPage: React.FC = () => {
     const { inventoryid } = useParams<{ inventoryid: string }>();
@@ -31,9 +33,9 @@ const InventoryPage: React.FC = () => {
             case 1:
                 return <ShopPage />;
             case 2:
-                return <p>OrderPage coming soon...</p>;
+                return <BuyShopStockPage />;
             case 3:
-                return <p>StoragePage coming soon...</p>;
+                return <ShopWarehousePage />;
             default:
                 return <p>Invalid inventory type.</p>;
         }

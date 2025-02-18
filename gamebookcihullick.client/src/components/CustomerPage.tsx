@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getPlayer, savePlayer, removeItemFromInventory } from '../services/PlayerService';
 import { Customer, ShopInventoryItem } from '../types';
-import BackButton from './buttons/BackButton';
 import CustomerModule from '../components/customerpage.module.css';
+import ShopFooterBar from './ShopFooterBar';
+import ShopInventoryPage from './ShopInventoryPage';
 
 
 const CustomerPage = (): JSX.Element => {
@@ -16,6 +17,7 @@ const CustomerPage = (): JSX.Element => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [firstCustomer, setFirstCustomer] = useState(true);
     const [shopHasStock, setShopHasStock] = useState(true);
+    const [isInventoryOpen, setInventoryOpen] = useState(false);
 
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Customers`)
@@ -118,8 +120,8 @@ const CustomerPage = (): JSX.Element => {
         if (!isNaN(userTotal)) {
             if (userTotal === total) {
                 setFeedback("Correct! You earned 10% of the total.");
-                setPlayer({ ...player, money: Math.round(player.money + total * 0.1)});
-                savePlayer({ ...player, money: Math.round(player.money + total * 0.1)});
+                setPlayer({ ...player, money: Math.round(player.money + total * 0.1), shopMoney: Math.round(player.money + total * 0.53) });
+                savePlayer({ ...player, money: Math.round(player.money + total * 0.1), shopMoney: Math.round(player.money + total * 0.53) });
             } else {
                 setFeedback(`Incorrect. The correct total was ${total}.`);
             }
@@ -222,17 +224,9 @@ const CustomerPage = (): JSX.Element => {
                 </div>
             </div>
 
-            <div className={CustomerModule.footer}>
-                <div className={CustomerModule.backbeans}>
-                    <BackButton />
-                </div>
-                <div className={CustomerModule.player_stats}>
-                    <div className={CustomerModule.player_stats_money}>
-                        <p>Purse: {player.money} F</p>
-                    </div>
-                    <button className={CustomerModule.player_stats_inv}>Shop inventory button thing</button>
-                </div>
-            </div>
+            
+            {isInventoryOpen && <ShopInventoryPage onClose={() => setInventoryOpen(false)} />}
+            <ShopFooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>
     );
 };
