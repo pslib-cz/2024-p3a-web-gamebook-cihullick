@@ -224,7 +224,6 @@ const CustomerPage = (): JSX.Element => {
                 </div>
             </div>
 
-            
             {isInventoryOpen && <ShopInventoryPage onClose={() => setInventoryOpen(false)} />}
             <ShopFooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>

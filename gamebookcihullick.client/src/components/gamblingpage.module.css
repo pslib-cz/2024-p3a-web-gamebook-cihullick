@@ -1,0 +1,92 @@
+
+html, body, p {
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-size: 48px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h3 {
+    font-size: 28px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+p, label {
+    font-size: 16px;
+}
+
+.center {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    min-height: 100vh;
+    gap: 20px;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.propagules {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80vw;
+    background-color: rgba(0, 0, 0, .6);
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.wager_form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wager_input {
+    font-size: 20px;
+    padding: 16px;
+    min-width: 200px;
+    cursor: pointer;
+    background-color: #555555;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 2299968px;
+}
+
+.wager_input:hover {
+    background-color: #464646;
+}
+
+@media (min-width: 768px) {
+
+    h2 {
+        font-size: 72px;
+        padding: 20px 0 0 0;
+        padding: 0;
+    }
+
+    h3 {
+        font-size: 36px;
+    }
+
+    p, label {
+        font-size: 20px;
+    }
+
+    .btns {
+        margin-bottom: 70px;
+    }
+}

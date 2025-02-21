@@ -72,9 +72,9 @@ h1 {
     background-color: rgba(0, 0, 0, .75);
 }
 
-    .dialogue_box p, .dialogue_box div p, .dialogue_box div input {
-        margin: 20px;
-    }
+.dialogue_box p, .dialogue_box div p, .dialogue_box div input {
+    margin: 20px;
+}
 
 .dialogue {
     font-size: 20px;
@@ -94,6 +94,10 @@ h1 {
     color: #FFFFFF;
     border: none;
     border-radius: 2299968px;
+}
+
+.price_input:hover {
+    background-color: #464646;
 }
 
 .dialogue_options {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getPlayer, savePlayer } from '../services/PlayerService';
+import GamblingModule from '../components/gamblingpage.module.css';
 import PlayerInventory from './PlayerInventory';
 import FooterBar from './FooterBar';
 
@@ -28,10 +29,6 @@ const GamblingPage: React.FC = () => {
         return Math.max(0.01, winChance / 100);
     };
 
-
-
-
-
     const handleGamble = () => {
         if (totalMoney <= 0) {
             alert("You have no money to gamble!");
@@ -53,31 +50,44 @@ const GamblingPage: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className={ GamblingModule.container }>
             <h1>Gamble Your Money</h1>
-            <p>Current Money: {totalMoney} F</p>
 
-            <label>Wager Percentage (1-100):</label>
-            <input
-                type="number"
-                value={wagerPercentage}
-                onChange={handleWagerChange}
-                min="1"
-                max="100"
-            />
+            <div className={ GamblingModule.propagules }>
+                <div>
+                    <form className={ GamblingModule.wager_form }>
+                        <label>Wager Percentage (1-100):</label>
+                        <input
+                            className={ GamblingModule.wager_input }
+                            type="number"
+                            value={wagerPercentage}
+                            onChange={handleWagerChange}
+                            min="1"
+                            max="100"
+                        />
+                    </form>
+                    <p>Wager Amount: {wagerAmount} F</p>
+                    <p>Chance of Winning: {(getWinChance() * 100).toFixed(2)}%</p>
+                </div>
 
-            <p>Wager Amount: {wagerAmount} F</p>
-            <p>If Win: {winAmount} F</p>
-            <p>If Lose: {loseAmount} F</p>
-            <p>Chance of Winning: {(getWinChance() * 100).toFixed(2)}%</p>
+                <div>
+                    <p>Total money if win: {winAmount} F</p>
+                    <p>Total money if lose: {loseAmount} F</p>
+                </div>
+                
+                <button onClick={handleGamble} className={ GamblingModule.gamble_time } >
+                    Gamble!
+                </button>
 
-            <button onClick={handleGamble} >
-                Gamble!
-            </button>
+                {result &&
+                    <p className={ GamblingModule.center } style={{ color: result.startsWith("You won") ? "green" : "red" }}>
+                        {result}
+                    </p>
+                }
 
-            {result && <p>{result}</p>}
-            {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
-            <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
+                {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
+                <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
+            </div>
         </div>
     );
 };
