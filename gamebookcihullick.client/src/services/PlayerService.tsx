@@ -1,18 +1,13 @@
-export type InventoryItem = {
-    itemID: number;
-    quantity: number;
-    name: string;
-    cost: number;
-};
+import { ShopInventoryItem } from '../types';
 export type Player = {
     name: string;
     locationID: number | null;
     numberOfVisitedLocations: number;
     visitedLocations: number[];
-    inventory: InventoryItem[];
-    shopInventory: InventoryItem[];
+    inventory: ShopInventoryItem[];
+    shopInventory: ShopInventoryItem[];
     shopMoney: number;
-    shopWarehouse: InventoryItem[];
+    shopWarehouse: ShopInventoryItem[];
     hunger: number;
     money: number;
     unlockedAchievements: number[];
@@ -31,10 +26,10 @@ export const getPlayer = (): Player => {
             visitedLocations: player.visitedLocations || [],
             inventory: player.inventory || [],
             shopInventory: player.shopInventory || [],
-            shopMoney: player.shopMoney ?? 10000,
+            shopMoney: player.shopMoney ?? 7777,
             shopWarehouse: player.shopWarehouse ?? [],
-            hunger: player.hunger ?? 100,
-            money: player.money ?? 10000,
+            hunger: player.hunger ?? 1000,
+            money: player.money ?? 1000,
             unlockedAchievements: player.unlockedAchievements || [],
             npcs: player.npcs || {},
             blockedLocations: player.blockedLocations || [],
@@ -84,7 +79,6 @@ export const addItemToInventory = (
     cost: number,
     target: 'player' | 'shop' | 'warehouse' = 'player'
 ): void => {
-    // Determine target inventory
     const inventory =
         target === 'player'
             ? player.inventory
@@ -109,7 +103,6 @@ export const removeItemFromInventory = (
     quantity: number,
     target: 'player' | 'shop' | 'warehouse' = 'player'
 ): boolean => {
-    // Determine target inventory
     const inventory =
         target === 'player'
             ? player.inventory
@@ -174,32 +167,27 @@ export const buyItem = (
     const totalCost = itemCost * quantity;
 
     if (buyer === 'player') {
-        // Check if player has enough money
         if (player.money < totalCost) {
             console.warn(`Not enough money. Player has ${player.money}, but needs ${totalCost}.`);
             return false;
         }
 
-        // Check if shop has enough stock
         const shopItem = player.shopInventory.find(item => item.itemID === itemID);
         if (!shopItem || shopItem.quantity < quantity) {
             console.warn(`Not enough stock in shop for item ${itemID}.`);
             return false;
         }
 
-        // Deduct money and stock
         player.money -= totalCost;
-        removeItemFromInventory(player, itemID, quantity, 'shop'); // REMOVE from shop stock
-        addItemToInventory(player, itemID, quantity, name, itemCost, 'player'); // ADD to player inventory
+        removeItemFromInventory(player, itemID, quantity, 'shop');
+        addItemToInventory(player, itemID, quantity, name, itemCost, 'player');
 
     } else {
-        // Shop purchase for warehouse stock
         if (player.shopMoney < totalCost) {
             console.warn(`Not enough shop money. Shop has ${player.shopMoney}, but needs ${totalCost}.`);
             return false;
         }
 
-        // Deduct shop money and add to warehouse
         player.shopMoney -= totalCost;
         addItemToInventory(player, itemID, quantity, name, itemCost, 'warehouse');
     }
@@ -220,8 +208,8 @@ export const initializePlayer = (blockedLocations: number[] = []): Player => {
         shopInventory: [],
         shopMoney: 10000,
         shopWarehouse: [],
-        hunger: 10,
-        money: 10000,
+        hunger: 1000,
+        money: 1000,
         unlockedAchievements: [],
         npcs: {},
         blockedLocations,

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CutscenePage = () => {
-    const { id } = useParams<{ id: string }>(); // Get ID from the URL
+    const { id } = useParams<{ id: string }>();
     const [cutscene, setCutscene] = useState<Cutscene | null>(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -24,16 +24,16 @@ const CutscenePage = () => {
         if (cutscene.nextCutsceneID === 0) {
             switch (cutscene.cutsceneID) {
                 case 4:
-                    navigate("/location/1"); // Redirect to LocationPage
+                    navigate("/location/1");
                     break;
                 default:
-                    navigate("/"); // Default redirect (e.g., home page)
+                    navigate("/");
                     break;
             }
             return;
         }
 
-        navigate(`/cutscene/${cutscene.nextCutsceneID}`); // Navigate to next cutscene
+        navigate(`/cutscene/${cutscene.nextCutsceneID}`);
     };
 
     if (loading) return <p>Loading cutscene...</p>;
