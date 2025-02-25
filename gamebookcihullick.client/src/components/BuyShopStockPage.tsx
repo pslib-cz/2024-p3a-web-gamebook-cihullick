@@ -19,16 +19,15 @@ const ShopPage: React.FC = () => {
 
                 const allItems: Item[] = await response.json();
 
-                // Filter items to only show those in inventory
                 const filteredItems = allItems
                     .filter(item => item.showsInInventory === true)
                     .map(item => ({
                         ...item,
-                        quantity: 50, // Default quantity for display
+                        quantity: 50,
                     }));
 
                 setShopItems(filteredItems);
-                setShopMoney(player.shopMoney || 0); // Load shop money
+                setShopMoney(player.shopMoney || 0);
             } catch (error) {
                 console.error('Error fetching shop items:', error);
             }
@@ -39,7 +38,7 @@ const ShopPage: React.FC = () => {
 
     const handleBuyStock = (itemID: number, name: string, cost: number) => {
         if (buyItem(player, itemID, 1, name, cost, 'shop')) {
-            setShopMoney(player.shopMoney); // Update UI
+            setShopMoney(player.shopMoney);
         } else {
             alert('Not enough shop money!');
         }

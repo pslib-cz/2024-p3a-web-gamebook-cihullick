@@ -3,7 +3,7 @@ import { getPlayer } from '../services/PlayerService';
 import FooterBarModule from '../components/footerbar.module.css';
 
 interface ShopFooterBarProps {
-    onOpenInventory: () => void; // Function to toggle inventory
+    onOpenInventory: () => void;
 }
 
 const ShopFooterBar: React.FC<ShopFooterBarProps> = ({ onOpenInventory }) => {
@@ -13,6 +13,9 @@ const ShopFooterBar: React.FC<ShopFooterBarProps> = ({ onOpenInventory }) => {
         <div className={FooterBarModule.player_stats}>
             <div className={FooterBarModule.player_stats_money}>
                 <p>Shop Budget: {player.shopMoney} F</p>
+            </div>
+            <div className={FooterBarModule.player_stats_money}>
+                <p>Hunger: {player.hunger}</p>
             </div>
             <button className={FooterBarModule.player_stats_btn} onClick={onOpenInventory}>
                 Open Shop Inventory

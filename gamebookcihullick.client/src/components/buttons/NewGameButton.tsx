@@ -41,7 +41,7 @@ const NewGameButton: React.FC = () => {
             addItemToInventory(player, 16, 1, "Dirty clothes", 0);
 
             savePlayer(player);
-            navigate('/location/1');
+            navigate('/cutscene/1');
         } catch (error) {
             console.error('Error initializing new game:', error);
         }

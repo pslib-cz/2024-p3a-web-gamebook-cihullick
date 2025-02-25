@@ -11,11 +11,11 @@ const GlobalClickHandler: React.FC = () => {
             const player = getPlayer();
 
             if (target.tagName === "BUTTON") {
-                hungerLoss = Math.floor(Math.random() * 44) + 10;
+                hungerLoss = Math.floor(Math.random() * 15);
                 console.log(`Button clicked! Lost ${hungerLoss} hunger.`);
             }
             else if (target.tagName === "IMG") {
-                hungerLoss = Math.floor(Math.random() * 63) + 15;
+                hungerLoss = Math.floor(Math.random() * 25);
                 console.log(`Image clicked! Lost ${hungerLoss} hunger.`);
             }
             else {

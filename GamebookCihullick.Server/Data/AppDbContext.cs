@@ -15,6 +15,7 @@ namespace GamebookCihullick.Server.Data
         public DbSet<Achievement> Achievements { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Cutscene> Cutscenes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

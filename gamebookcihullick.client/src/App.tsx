@@ -9,6 +9,7 @@ import NPCDialogPage from './components/NPCDialog';
 import InventoryPage from './components/InventoryPage'
 import CustomerPage from './components/CustomerPage';
 import GamblingPage from './components/GamblingPage';
+import CutscenePage from './components/CutscenePage'
 import GlobalClickHandler from './components/GlobalClickHandler';
 
 const router = createBrowserRouter([
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
     {
         path: '/location/:id',
         element: <LocationPage />,
+    },
+    {
+        path: '/cutscene/:id',
+        element: <CutscenePage />,
     },
     {
         path: '/location',

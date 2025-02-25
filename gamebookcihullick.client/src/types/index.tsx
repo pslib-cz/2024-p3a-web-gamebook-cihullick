@@ -7,3 +7,4 @@ export type { Image } from "./ImageType";
 export type { Inventory } from "./InventoryType"
 export type { Customer } from "./CustomerType"
 export type { ShopInventoryItem } from "./ShopInventoryItemType"
+export type { Cutscene } from "./CutsceneType"

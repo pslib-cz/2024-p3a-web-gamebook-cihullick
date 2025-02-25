@@ -3,7 +3,7 @@ import { getPlayer } from '../services/PlayerService';
 import FooterBarModule from '../components/footerbar.module.css';
 
 interface FooterBarProps {
-    onOpenInventory: () => void; // Function to toggle inventory
+    onOpenInventory: () => void;
 }
 
 const FooterBar: React.FC<FooterBarProps> = ({ onOpenInventory }) => {

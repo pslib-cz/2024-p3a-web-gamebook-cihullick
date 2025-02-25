@@ -27,19 +27,22 @@ const CustomerPage = (): JSX.Element => {
                 selectRandomCustomer(data);
             })
             .catch(error => console.error('Error fetching customers:', error));
-    }, []);
+    }, []); // <-- well boo fucking hoo react, cry about it
 
 
     const selectRandomCustomer = (customerList: Customer[]) => {
         if (customerList.length === 0) return;
         const randomIndex = Math.floor(Math.random() * customerList.length);
-        setCustomer(customerList[randomIndex]);
+        const newCustomer = customerList[randomIndex];
+        setCustomer(newCustomer);
+        handlePurchase(newCustomer);
     };
 
-    const handlePurchase = () => {
-        if (!customer) return;
+
+    const handlePurchase = (currentCustomer: Customer) => {
+        if (!currentCustomer) return;
         setFeedback(null);
-        let budget = customer.budget;
+        let budget = currentCustomer.budget;
         const uniqueItems = new Set<number>();
         const itemsBought: ShopInventoryItem[] = [];
         const purchaseRecord: Record<number, number> = {};
@@ -101,8 +104,6 @@ const CustomerPage = (): JSX.Element => {
                 removeItemFromInventory(player, item.itemID, purchaseRecord[item.itemID], 'shop');
             }
         }
-        console.log("items bought:", itemsBought);
-        console.log("purchaseRecord:", purchaseRecord);
         setPurchasedItems(itemsBought);
         setPlayer({ ...player });
         savePlayer({ ...player});
@@ -153,7 +154,6 @@ const CustomerPage = (): JSX.Element => {
             {firstCustomer && (
                 <button
                     onClick={() => {
-                        handlePurchase();
                         if (shopHasStock) selectRandomCustomer(customers);
                     }}
                     disabled={!shopHasStock}
@@ -212,7 +212,6 @@ const CustomerPage = (): JSX.Element => {
                                 )}
                                 <button
                                     onClick={() => {
-                                        handlePurchase();
                                         if (shopHasStock) selectRandomCustomer(customers);
                                     }}
                                     disabled={!shopHasStock}

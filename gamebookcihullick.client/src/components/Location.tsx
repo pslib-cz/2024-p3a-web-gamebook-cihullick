@@ -178,6 +178,11 @@ const LocationPage: React.FC = () => {
                             />
                         </div>
                     )}
+                    {id == '10' && (
+                        <div className={LocationModule.object}>
+                            <button onClick={() => navigate('/cutscene/5')}>End Game</button>
+                        </div>
+                    )}
                 </div>
             </div>
 
