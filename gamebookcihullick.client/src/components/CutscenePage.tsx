@@ -1,6 +1,7 @@
 import { Cutscene } from '../types';
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import CutsceneModule from '../components/cutscenepage.module.css';
 
 const CutscenePage = () => {
     const { id } = useParams<{ id: string }>();
@@ -36,20 +37,24 @@ const CutscenePage = () => {
         navigate(`/cutscene/${cutscene.nextCutsceneID}`);
     };
 
-    if (loading) return <p>Loading cutscene...</p>;
-    if (!cutscene) return <p>No cutscene found.</p>;
+    if (loading) return <p className={ CutsceneModule.loading }>Loading cutscene...</p>;
+    if (!cutscene) return <p className={ CutsceneModule.error }>No cutscene found.</p>;
 
     return (
-        <div className="cutscene-container">
-            <img
-                src={`${import.meta.env.VITE_IMAGE_BASE_URL}${cutscene.image.pathToFile}.webp`}
-                alt={cutscene.name}
-                className="cutscene-image"
-            />
-            <div className="cutscene-textbox" onClick={handleNextCutscene}>
-                <p>{cutscene.text}</p>
+        <div className={ CutsceneModule.container } onClick={handleNextCutscene}>
+            <div className={ CutsceneModule.cutscene_container }>
+                <img
+                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${cutscene.image.pathToFile}.webp`}
+                    alt={cutscene.name}
+                    className={ CutsceneModule.cutscene_img }
+                />
+                <div className={ CutsceneModule.cutscene_textbox }>
+                    <p className={ CutsceneModule.cutscene_text }>{cutscene.text}</p>
+                    <p className={ CutsceneModule.cutscene_text }>(click anywhere to proceed)</p>
+                </div>
             </div>
         </div>
+        
     );
 };
 

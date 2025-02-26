@@ -56,9 +56,9 @@ p, label {
 }
 
 .wager_input {
-    font-size: 20px;
-    padding: 16px;
-    min-width: 200px;
+    font-size: 16px;
+    padding: 12px;
+    max-width: 200px;
     cursor: pointer;
     background-color: #555555;
     color: #FFFFFF;
@@ -68,6 +68,39 @@ p, label {
 
 .wager_input:hover {
     background-color: #464646;
+}
+
+.text_div {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.winamount {
+    color: green;
+}
+
+.loseamount {
+    color: red;
+}
+
+.gamble_time {
+    text-align: center;
+    font-size: 16px;
+    padding: 12px;
+    cursor: pointer;
+    background-color: #555555;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 2299968px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gamble_time:hover {
+    background-color: #464646;
+    color: #FFE77B;
 }
 
 @media (min-width: 768px) {
@@ -86,7 +119,24 @@ p, label {
         font-size: 20px;
     }
 
-    .btns {
-        margin-bottom: 70px;
+    .wager_input {
+        font-size: 20px;
+        padding: 16px;
+        min-width: 200px;
+        cursor: pointer;
+        background-color: #555555;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 2299968px;
+    }
+
+    .gamble_time {
+        font-size: 20px;
+        padding: 16px;
+        cursor: pointer;
+        background-color: #555555;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 100px;
     }
 }

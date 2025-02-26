@@ -19,7 +19,7 @@ const GamblingPage: React.FC = () => {
     };
 
     const wagerAmount = Math.floor((wagerPercentage / 100) * totalMoney);
-    const winAmount = wagerAmount * 2;
+    const winAmount = totalMoney + wagerAmount;
     const loseAmount = totalMoney - wagerAmount;
 
     const getWinChance = () => {
@@ -71,8 +71,14 @@ const GamblingPage: React.FC = () => {
                 </div>
 
                 <div>
-                    <p>Total money if win: {winAmount} F</p>
-                    <p>Total money if lose: {loseAmount} F</p>
+                    <div className={GamblingModule.text_div}>
+                        <p>Total money if win:</p>
+                        <p className={ GamblingModule.winamount }>{winAmount} F</p>
+                    </div>
+                    <div className={GamblingModule.text_div}>
+                        <p>Total money if lose:</p>
+                        <p className={ GamblingModule.loseamount }>{loseAmount} F</p>
+                    </div>
                 </div>
                 
                 <button onClick={handleGamble} className={ GamblingModule.gamble_time } >
