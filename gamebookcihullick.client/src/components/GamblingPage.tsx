@@ -51,49 +51,52 @@ const GamblingPage: React.FC = () => {
 
     return (
         <div className={ GamblingModule.container }>
-            <h1>Gamble Your Money</h1>
+            <div className={ GamblingModule.gambba_propagule }>
+                <h1>Gamble Your Money</h1>
 
-            <div className={ GamblingModule.propagules }>
-                <div>
-                    <form className={ GamblingModule.wager_form }>
-                        <label>Wager Percentage (1-100):</label>
-                        <input
-                            className={ GamblingModule.wager_input }
-                            type="number"
-                            value={wagerPercentage}
-                            onChange={handleWagerChange}
-                            min="1"
-                            max="100"
-                        />
-                    </form>
-                    <p>Wager Amount: {wagerAmount} F</p>
-                    <p>Chance of Winning: {(getWinChance() * 100).toFixed(2)}%</p>
-                </div>
+                <div className={ GamblingModule.propagules }>
+                    <div>
+                        <form className={ GamblingModule.wager_form }>
+                            <label>Wager Percentage (1-100):</label>
+                            <input
+                                className={ GamblingModule.wager_input }
+                                type="number"
+                                value={wagerPercentage}
+                                onChange={handleWagerChange}
+                                min="1"
+                                max="100"
+                            />
+                        </form>
+                        <p>Wager Amount: {wagerAmount} F</p>
+                        <p>Chance of Winning: {(getWinChance() * 100).toFixed(2)}%</p>
+                    </div>
 
-                <div>
-                    <div className={GamblingModule.text_div}>
-                        <p>Total money if win:</p>
-                        <p className={ GamblingModule.winamount }>{winAmount} F</p>
+                    <div>
+                        <div className={GamblingModule.text_div}>
+                            <p>Total money if win:</p>
+                            <p className={ GamblingModule.winamount }>{winAmount} F</p>
+                        </div>
+                        <div className={GamblingModule.text_div}>
+                            <p>Total money if lose:</p>
+                            <p className={ GamblingModule.loseamount }>{loseAmount} F</p>
+                        </div>
                     </div>
-                    <div className={GamblingModule.text_div}>
-                        <p>Total money if lose:</p>
-                        <p className={ GamblingModule.loseamount }>{loseAmount} F</p>
-                    </div>
-                </div>
                 
-                <button onClick={handleGamble} className={ GamblingModule.gamble_time } >
-                    Gamble!
-                </button>
+                    <button onClick={handleGamble} className={ GamblingModule.gamble_time } >
+                        Gamble!
+                    </button>
 
-                {result &&
-                    <p className={ GamblingModule.center } style={{ color: result.startsWith("You won") ? "green" : "red" }}>
-                        {result}
-                    </p>
-                }
-
-                {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
-                <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
+                    {result &&
+                        <p className={ GamblingModule.center } style={{ color: result.startsWith("You won") ? "green" : "red" }}>
+                            {result}
+                        </p>
+                    }
+                </div>
             </div>
+            
+
+            {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
+            <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>
     );
 };
