@@ -1,93 +1,98 @@
-https://www.figma.com/design/ejRhrcdOx1MVqLTyM1kG7A/GAMEBOOK?node-id=228-3&node-type=canvas&t=pmkE2gCsXu0EFNmv-0
-https://drive.google.com/file/d/14LK3LTzbO3efJm6ZSDxWqJVjrgLPxwDY/view?usp=drive_link
-
-Note for Kazda & Stehlík:
-Do not look in the DON'T LOOK page.
-
-Diagram note:
-Open the diagram in draw.io to see more pixels.
+# Washing machine quest
 
 
+## Hra
 
-Popis mechanik:
-
-
-
-Blokované lokace
-
-Některé lokace (např. bohaté ulice nebo kanály) budou hráči blokovány, dokud nezíská požadovaný předmět
+Hra se odehrává ve Vaduzu, hlavním městě Lichtenštejnska. Hrajete za muže jménem Joe, jehož bankovní účet byl zablokován a jehož jediný způsob, jak se dostat do banky a vyřešit svůj problém, je vyčistit si své oblečení v nové pračce. Cíl hry je pracovat v místním obchodě Coop, abyste si vydělali na novou pračku a vrátili se zpět banky pro svůj účet.
 
 
-Inventář hráče
+## Herní mechaniky
 
-Hráč má inventář, kde má své itemy. Předměty lze přidávat, spotřebovávat (pokud jsou jídlo), nebo používat pro odemknutí jiných lokací.
+### Lokace
 
+Každá herní lokace obsahuje alespoň jednu další navazující lokaci, ke které se můžete přemístit. V jednotlivých lokacích také můžete nalézt různé NPC, či budovy s dalšími mechanikami.
 
-Hlad hráče
+### Dialogy s NPC
 
-Hráč má ukazatel hladu, který se postupně snižuje. Hlad lze obnovit konzumací jídla uloženého v inventáři.
+Ve hře můžete najít několik postav, se kterými si můžete popovídat. Pokud jim pomůžete s jejimi problémy, možná vám i odemknou nové lokace.
 
+### Nákup v obchodě
 
-Obchodní mechanika
+V obchodě si můžete vybrat z desítek různých produktů ke koupi. Každý má svou cenovku, nutriční hodnotu či jinou speciální funkci.
 
-Hráč může nakupovat a pracovat v obchodě. Obchodní minihra zahrnuje počítání celkové ceny zboží vybraného zákazníkem. 
+### Práce v obchodě
 
-Postup v obchodní práci:
-1) Pouze prodávání zboží.
-2) Doplnění regálů zbožím.
-3) Objednávání produktů přes online rozhraní.
+1. Pokladna
+   - V této minihře sedíte u pokladny a čekáte na zákazníky, kteří k vám postupně chodí se svými objednávkami. Váš cíl je vypočítat správnou hodnotu jejich objednávky, abyste si vydělali pár peněz.
+2. Nákup zásob
+   - Při práci u pokladny se postupně vyprazdňují zásoby obchodu. Vaše práce, jakožto jediný pracovník v celé budově, je čas od času nakoupit nějaké zásoby pomocí rozpočtu obchodu, abyste měli co prodávat.
+3. Doplňování zboží do regálů
+   - Po koupi zásob se produkty pokaždé musí přesunout do ragálů, aby si je lidé mohli kupovat.
 
+### Casino
 
-Banka
+V místním casinu si můžete vsadit určité procento svých peněz a hra vám čistou náhodou vybere, zde své peníze zdvojnásobíte, či naopak navždy ztratíte. Není třeba váhat - v našem casinu nikdo neprohrává!
 
-Banka bude uzamčena, dokud hráč nenosí čisté oblečení. Hráč musí nejdříve vydělat peníze, koupit pračku a vyprat si oblečení, aby získal přístup.
+### Koupelna s pračkou
 
+Pokud si koupíte novou pračku, můžete ji ihned najít již předem nainstalovanou ve svém domě. Po kliku se vám vyčistí vaše oblečení, což vám může nabídnout nové možnosti.
 
-Kanalizace a krysy
+### Inventář a hlad
 
-Krysy blokují vstup do určitých částí města (kanály pod ulicemi a bohatými ulicemi). Hráč musí donést požadovaný předmět krysám, aby odešli a hráčovi odemkly cestu.
+- Všechny vaše nakoupené předměty si můžete prohlédnout ve svém inventáři, kde je také lze sníst pro doplnění hladiny hladu.
+- Obchod má také svůj inventář, kde si můžete prohlédnout ceny a počet jednotlivých produktů (toto se obzvláště hodí při práci u pokladny).
 
+### Achievementy
 
-Kasinová minihra
-
-Pokud si hráč nebude chtít vydělat všechny peníze v obchodě, může jít do kasina. Hráč může hrát sloty v kasinu k získání více peněz. Kasino je dostupné pouze v bohaté ulici, která vyžaduje odblokování (Pule sýr).
-
-
-Praní prádla
-
-Hráč si může koupit pračku v obchodě a použít ji k praní špinavého oblečení.
-
-
-Pokojové interakce
-
-1) Ložnice: Umožňuje hráči spát a tím ukončit den.
-2) Koupelna: Obsahuje pračku, která je ale rozbitá. (Hráč si musí koupit novou)
-3) Chodba: Slouží jako výstup z domu na ulici.
+Hráč může splňovat všelijaké achievementy/úspěchy, které si následně lze prohlédnout v hlavním menu hry.
 
 
-Stav hry a ukládání
+## Hráč
 
-Hra sleduje stav hráče (progres, peníze, inventář, hlad, aktuální den). Uložení stavu hry do souboru a jeho pozdější import pro pokračování.
+### Inventář
 
+Hráč má svůj inventář, do kterého se ukládají všechny předměty, které má mít u sebe.
 
-Propojené lokace
+### Hlad
 
-Lokace jsou propojeny (např. dům → ulice → obchod). Některé cesty jsou zablokované, dokud nejsou splněny požadavky (např. krysy v kanálech).
+Hráč začíná s hodnotou hladu nastavenou na 1000. Tato hodnota se časem snižuje.
 
+### Peníze
 
-Dialogy NPC
-
-NPC můžou s hráčem mluvit a dávat požadavky (např. krysy žádající sýr).
-
-
-Postup ve hře
-
-Hra končí, když hráč získá přístup do banky a vyřeší svůj problém s účtem. Po dokončení hry je hráči umožněno pokračovat ve hře (např. vydělávat peníze v kasinu nebo obchodě).
+Hráč má své peníze, které může utrácet či vydělávat.
 
 
+## Lokace
 
-Příběh:
+1. Domov
+   - Koupelna
+2. Ulice
+   - Obchod Coop
+     - Nákup
+     - Práce
+       - Pokladna
+       - Nákup zásob
+       - Doplňování zboží
+3. Bohatá čtvrť
+   - Banka
+     - Tim Fuchsteufelswild (NPC)
+     - Bankovní Interiér
+   - Casino
+     - Gamblování
+4. Vesmír
+   - Jim Boring (NPC)
+   - Černá díra
+
+## Diagramy
 
 
 
-Jednoho dne se probudíš se zprávou, že tvůj bankovní účet byl zablokován. Jediný způsob jak tento problém vyřešit je jít pěšky do banky a tam to vyřešit. Problém je, že tvá banka vyžaduje čisté oblečení pro vstup, které ty nemáš, protože sis předešlý den hrál v blátě. Jediný způsob jak se dostat do banky je vyprat si své prádlo. Problém 2! Tvá pračka se zrovna jako naschvál rozbila a ty nemáš skoro žádné peníze. Po dlouhém měsíci šetření si peněz jako brigádník v lokálním obchodě si konečně vyděláš na svou pračku a můžeš si vyprat své prádlo. Po cestě do banky ovšem zjistíš, že ulice je uzavřena a jediný způsob jak se dostat do banky je nedostupný. Musíš najít alternativní cestu. Po nějaké době tě napadne se do banky dostat přes kanalizaci, stráženou místním krysím gangem. Při vstupu do kanalizace se setkáš s krysím gang leaderem, který ti řekne, že jediná podmínka pro to, aby tě pustil dále, je, že mu daruješ čerstvý speciální pule sýr, který se prodává pouze v obchodě, kde pracuješ, a stojí $600. Zpátky do práce! Po našetření zbytku peněz a pravděpodobně dalším vyprání svého prádla se vratíš zpět ke krysám, které od tebe odeberou sýr a pustí tě dál. Nyní můžeš jít do banky. V bance ti jednoduše pomůžou s odblokováním svého účtu a ty můžeš dále expandovat svou závislost na gamblení. WOOP WOOP
+## Recenze
+
+### Jim Boring
+
+> Tato hra byla tak výjimečná, že jsem ji doporučil své manželce - i ona na konci brečela. Až tak krásný je příběh této hry. 5/5
+
+### Mrs. Bobulette
+
+> Velmi dobrá obsluha. Obchod Coop mohu velmi doporučovat... obzvláště ve Vaduzu. Ten mladík Joe pracuje opravdu tvrdě. 5/5
