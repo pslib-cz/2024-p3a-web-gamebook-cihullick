@@ -83,8 +83,9 @@ Hráč má své peníze, které může utrácet či vydělávat.
    - Jim Boring (NPC)
    - Černá díra
 
-## Diagramy
+## Diagram
 
+![Image](https://github.com/user-attachments/assets/d84cdb4e-63e0-4bc4-b433-7f8457f0419f)
 
 
 ## Recenze
