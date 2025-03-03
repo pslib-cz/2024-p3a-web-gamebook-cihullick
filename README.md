@@ -85,7 +85,7 @@ Hráč má své peníze, které může utrácet či vydělávat.
 
 ## Diagram
 
-![Image](https://github.com/user-attachments/assets/d84cdb4e-63e0-4bc4-b433-7f8457f0419f)
+![Image](https://github.com/user-attachments/assets/3fc7c83a-ed71-45ec-8602-56cec06f2655)
 
 
 ## Recenze
