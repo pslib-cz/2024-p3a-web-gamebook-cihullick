@@ -22,7 +22,6 @@ const NewGameButton: React.FC = () => {
             itemID: item.itemID, quantity: 53, name: item.name, cost: item.cost, showsInInventory: item.showsInInventory,
         }));
         addItemToInventory(player, 16, 1, "Dirty clothes", 0);
-        addItemToInventory(player, 1, 1, "Golden jelly bean", 1);
         savePlayer(player);
         navigate('/cutscene/1');
     };

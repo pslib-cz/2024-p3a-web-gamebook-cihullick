@@ -34,11 +34,9 @@ const PlayerInventory: React.FC<PlayerInventoryProps> = ({ onClose }) => {
                 <div className={InventoryModule.inventory_list}>
                     {items.map((item) => (
                         <div key={item.itemID} className={InventoryModule.inventory_item}>
-                            <img
-                                src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
-                                alt={item.name}
-                                className={InventoryModule.img}
-                            />
+                            <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
+                                 alt={item.name}
+                                 className={InventoryModule.img}/>
                             <div className={InventoryModule.item_details}>
                                 <p>{item.name}</p>
                                 <p>{item.quantity}x</p>

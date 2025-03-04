@@ -2,6 +2,7 @@ import React from 'react';
 import BackButton from '../components/buttons/BackButton';
 import ExportPlayerButton from '../components/buttons/ExportPlayerButton';
 import ImportPlayerButton from '../components/buttons/ImportPlayerButton';
+import PlayerDebugButton from '../components/buttons/PlayerDebugButton';
 
 const Settings: React.FC = () => {
     return (
@@ -10,6 +11,7 @@ const Settings: React.FC = () => {
             <p>Modify your game settings here.</p>
             <ExportPlayerButton />
             <ImportPlayerButton />
+            <PlayerDebugButton />
             <BackButton />
         </div>
     );

@@ -20,6 +20,7 @@ export const getPlayer = (): Player => {
             unlockedAchievements: player.unlockedAchievements || [],
             npcs: player.npcs || {},
             blockedLocations: player.blockedLocations || [],
+            totalSpent: player.totalSpent ?? 0,
         };
     }
     return initializePlayer();
@@ -40,16 +41,10 @@ export const initializePlayer = (blockedLocations: number[] = []): Player => {
         unlockedAchievements: [],
         npcs: {},
         blockedLocations,
+        totalSpent: 0,
     };
     savePlayer(defaultPlayer);
     return defaultPlayer;
-};
-
-export const unlockAdventurerAchievement = (player: Player) => {
-    if (!player) return;
-    if (player?.numberOfVisitedLocations >= 3) {
-        unlockAchievement(player, 1);
-    }
 };
 
 export const clearPlayerData = () => {
@@ -80,12 +75,35 @@ export const removeBlockedLocation = (player: Player, locationID: number): boole
 };
 
 // ACHIEVEMENTS
+export const unlockAdventurerAchievement = (player: Player) => {
+    if (!player) return;
+    if (player?.numberOfVisitedLocations >= 9) {
+        unlockAchievement(player, 1);
+    }
+};
+
 export const unlockWinnerAchievement = (player: Player) => {
     if (!player) return;
     if (player?.locationID === 10) {
         unlockAchievement(player, 2);
     }
 };
+
+export const unlockShopaholicAchievement = (player: Player) => {
+    if (!player) return;
+    if (player?.totalSpent >= 15000) {
+        unlockAchievement(player, 3);
+    }
+};
+
+export const unlockGamerAchievement = (player: Player) => {
+    if (!player) return;
+
+    if (player.inventory.some(item => item.itemID === 3 && item.quantity > 0) && player.inventory.some(item => item.itemID === 7 && item.quantity > 0)) {
+        unlockAchievement(player, 4);
+    }
+};
+
 
 export const unlockAchievement = (player: Player, achievementId: number) => {
     if (!player) return;
@@ -141,7 +159,7 @@ export const consumeItem = (player: Player, itemID: number, nutritionalValue: nu
     return true;
 };
 
-export const buyItem = (player: Player, itemID: number, quantity: number, name: string, itemCost: number, buyer: 'player' | 'shop' = 'player' ): boolean => {
+export const buyItem = (player: Player, itemID: number, quantity: number, name: string, itemCost: number, buyer: 'player' | 'shop' = 'player'): boolean => {
     const totalCost = itemCost * quantity;
 
     if (buyer === 'player') {
@@ -154,6 +172,7 @@ export const buyItem = (player: Player, itemID: number, quantity: number, name: 
             return false;
         }
 
+        player.totalSpent += totalCost;
         player.money -= totalCost;
         removeItemFromInventory(player, itemID, quantity, 'shop');
         addItemToInventory(player, itemID, quantity, name, itemCost, 'player');

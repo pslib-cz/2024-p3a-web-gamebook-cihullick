@@ -13,9 +13,6 @@ const InventoryPage: React.FC = () => {
     useEffect(() => {
         const fetchInventory = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Inventories/${inventoryid}`);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch inventory: ${response.statusText}`);
-            }
             const data: Inventory = await response.json();
             setInventory(data);
         };

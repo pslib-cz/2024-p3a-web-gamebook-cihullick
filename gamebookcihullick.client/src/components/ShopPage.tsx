@@ -11,38 +11,22 @@ const ShopPage: React.FC = () => {
     const player = getPlayer();
 
     useEffect(() => {
-        const fetchShopItems = () => {
+        const fetchShopItems = async () => {
             const shopInventory = player.shopInventory || [];
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
+            const allItems: Item[] = await response.json();
+            const itemsToDisplay = shopInventory.map((inventoryItem) => {
+                    const fullItem = allItems.find(item => item.itemID === inventoryItem.itemID);
+                    if (!fullItem) { return null;}
+                    return { ...fullItem, quantity: inventoryItem.quantity,};
+                }).filter(item => item !== null);
 
-            fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch items: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then((allItems: Item[]) => {
-                    const itemsToDisplay = shopInventory.map((inventoryItem) => {
-                        const fullItem = allItems.find(item => item.itemID === inventoryItem.itemID);
-                        if (!fullItem) {
-                            console.warn(`Item with ID ${inventoryItem.itemID} not found.`);
-                            return null;
-                        }
-                        return {
-                            ...fullItem,
-                            quantity: inventoryItem.quantity,
-                        };
-                    }).filter(item => item !== null);
+            setShopItems(itemsToDisplay);
 
-                    setShopItems(itemsToDisplay);
-                })
-                .catch(error => {
-                    console.error('Error fetching shop items:', error);
-                });
         };
+
         fetchShopItems();
     }, [player.shopInventory]);
-
 
     const handleBuyItem = (itemID: number, name: string, itemCost: number) => {
         const success = buyItem(player, itemID, 1, name, itemCost);
@@ -61,23 +45,17 @@ const ShopPage: React.FC = () => {
 
             <div className={ShopPageModule.list_margin}>
                 <div className={ShopPageModule.item_list}>
-                    {shopItems
-                        .sort((a, b) => a.type.toLowerCase().localeCompare(b.type.toLowerCase()))
-                        .map((item) => (
+                    {shopItems.sort((a, b) => a.type.toLowerCase().localeCompare(b.type.toLowerCase())).map((item) => (
                             <div key={item.itemID} className={ShopPageModule.item}>
-                                <img
-                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
-                                    alt={item.name}
-                                    className={ShopPageModule.img}
-                                />
+                                <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
+                                     alt={item.name}
+                                     className={ShopPageModule.img}/>
                                 <div className={ShopPageModule.item_info}>
                                     <h2>{item.name}</h2>
                                     <p>{item.quantity} in stock</p>
                                     <p>{item.cost} F per unit</p>
                                 </div>
-                                <button className={ShopPageModule.buy_btn} onClick={() => handleBuyItem(item.itemID, item.name, parseInt(item.cost))}>
-                                    Buy Item
-                                </button>
+                                <button className={ShopPageModule.buy_btn} onClick={() => handleBuyItem(item.itemID, item.name, parseInt(item.cost))}>Buy Item</button>
                             </div>
                         ))}
                 </div>

@@ -11,37 +11,24 @@ const ShopPage: React.FC = () => {
     const player = getPlayer();
 
     useEffect(() => {
-        const fetchShopItems = () => {
+        const fetchShopItems = async () => {
             const shopWarehouse = player.shopWarehouse || [];
-
-            fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch items: ${response.statusText}`);
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
+            const allItems: Item[] = await response.json();
+            const itemsToDisplay = shopWarehouse.map((inventoryItem) => {
+                    const fullItem = allItems.find(item => item.itemID === inventoryItem.itemID);
+                    if (!fullItem) {
+                        return null;
                     }
-                    return response.json();
-                })
-                .then((allItems: Item[]) => {
-                    const itemsToDisplay = shopWarehouse.map((inventoryItem) => {
-                        const fullItem = allItems.find(item => item.itemID === inventoryItem.itemID);
-                        if (!fullItem) {
-                            console.warn(`Item with ID ${inventoryItem.itemID} not found.`);
-                            return null;
-                        }
-                        return {
-                            ...fullItem,
-                            quantity: inventoryItem.quantity,
-                        };
-                    }).filter(item => item !== null);
+                    return { ...fullItem, quantity: inventoryItem.quantity,};
+                }).filter(item => item !== null);
 
-                    setShopItems(itemsToDisplay);
-                })
-                .catch(error => {
-                    console.error('Error fetching shop items:', error);
-                });
+                setShopItems(itemsToDisplay);
         };
+
         fetchShopItems();
     }, [player.shopWarehouse]);
+
 
 
     const handleMoveItem = (itemID: number, name: string, itemCost: number) => {
@@ -59,19 +46,15 @@ const ShopPage: React.FC = () => {
             <div className={ShopPageModule.item_list}>
                 {shopItems.map((item) => (
                     <div key={item.itemID} className={ShopPageModule.item}>
-                        <img
-                            src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
-                            alt={item.name}
-                            className={ShopPageModule.img}
-                        />
+                        <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
+                             alt={item.name}
+                             className={ShopPageModule.img}/>
                         <div className={ShopPageModule.item_info}>
                             <h2>{item.name}</h2>
                             <p>{item.quantity} in stock</p>
                             <p>{item.cost} F per unit</p>
                         </div>
-                        <button className={ShopPageModule.buy_btn} onClick={() => handleMoveItem(item.itemID, item.name, parseInt(item.cost))}>
-                            Move To Shop
-                        </button>
+                        <button className={ShopPageModule.buy_btn} onClick={() => handleMoveItem(item.itemID, item.name, parseInt(item.cost))}>Move To Shop</button>
                     </div>
                 ))}
             </div>

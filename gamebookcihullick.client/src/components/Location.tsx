@@ -4,7 +4,6 @@ import { Location } from '../types';
 import AchievementsButton from './buttons/AchievementsButton'
 import { addItemToInventory, getPlayer, removeItemFromInventory, savePlayer, visitLocation } from '../services/PlayerService';
 import SettingsButton from './buttons/SettingsButton'
-import PlayerDebugButton from './buttons/PlayerDebugButton';
 import MenuButton from './buttons/MenuButton';
 import LocationModule from '../components/location.module.css';
 import FooterBar from './FooterBar';
@@ -180,7 +179,6 @@ const LocationPage: React.FC = () => {
             <div className={LocationModule.btns}>
                 <AchievementsButton />
                 <SettingsButton />
-                <PlayerDebugButton />
                 <MenuButton />
             </div>
 

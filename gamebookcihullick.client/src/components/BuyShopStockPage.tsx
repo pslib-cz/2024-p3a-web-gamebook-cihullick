@@ -7,30 +7,16 @@ import ShopFooterBar from './ShopFooterBar';
 
 const ShopPage: React.FC = () => {
     const [shopItems, setShopItems] = useState<(Item & { quantity: number })[]>([]);
-    const [shopMoney, setShopMoney] = useState(0);
+    const [, setShopMoney] = useState(0);
     const [isInventoryOpen, setInventoryOpen] = useState(false);
     const player = getPlayer();
-    console.log(shopMoney); //react is happy
     useEffect(() => {
         const fetchShopItems = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
-                if (!response.ok) throw new Error(`Failed to fetch items: ${response.statusText}`);
-
-                const allItems: Item[] = await response.json();
-
-                const filteredItems = allItems
-                    .filter(item => item.showsInInventory === true)
-                    .map(item => ({
-                        ...item,
-                        quantity: 50,
-                    }));
-
-                setShopItems(filteredItems);
-                setShopMoney(player.shopMoney || 0);
-            } catch (error) {
-                console.error('Error fetching shop items:', error);
-            }
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
+            const allItems: Item[] = await response.json();
+            const filteredItems = allItems.filter(item => item.showsInInventory).map(item => ({...item,quantity: 50,}));
+            setShopItems(filteredItems);
+            setShopMoney(player.shopMoney || 0);
         };
 
         fetchShopItems();
@@ -52,25 +38,16 @@ const ShopPage: React.FC = () => {
 
             <div className={ShopPageModule.list_margin}>
                 <div className={ShopPageModule.item_list}>
-                    {shopItems
-                        .sort((a, b) => a.type.toLowerCase().localeCompare(b.type.toLowerCase()))
-                        .map((item) => (
+                    {shopItems.sort((a, b) => a.type.toLowerCase().localeCompare(b.type.toLowerCase())).map((item) => (
                             <div key={item.itemID} className={ShopPageModule.item}>
-                                <img
-                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image?.pathToFile}.webp`}
-                                    alt={item.name}
-                                    className={ShopPageModule.img}
-                                />
+                                <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image?.pathToFile}.webp`}
+                                     alt={item.name}
+                                     className={ShopPageModule.img}/>
                                 <div className={ShopPageModule.item_info}>
                                     <h2>{item.name}</h2>
                                     <p>Cost: {item.cost} F</p>
                                 </div>
-                                <button
-                                    className={ShopPageModule.buy_btn}
-                                    onClick={() => handleBuyStock(item.itemID, item.name, parseInt(item.cost))}
-                                >
-                                    Buy Stock
-                                </button>
+                                <button className={ShopPageModule.buy_btn} onClick={() => handleBuyStock(item.itemID, item.name, parseInt(item.cost))}>Buy Stock</button>
                             </div>
                         ))}
                 </div>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { unlockAdventurerAchievement, getPlayer, unlockWinnerAchievement } from '../../services/PlayerService';
+import { getPlayer, unlockAdventurerAchievement, unlockWinnerAchievement, unlockShopaholicAchievement, unlockGamerAchievement } from '../../services/PlayerService';
 import ButtonModule from '../buttons/button.module.css';
 
 const ExportPlayerButton: React.FC = () => {
@@ -8,9 +8,11 @@ const ExportPlayerButton: React.FC = () => {
     useEffect(() => {
         unlockAdventurerAchievement(player);
         unlockWinnerAchievement(player);
+        unlockShopaholicAchievement(player);
+        unlockGamerAchievement(player);
     }, [player]);
     const handleExport = () => {
-        
+
         if (!player) {
             alert('No player data found to export!');
             return;

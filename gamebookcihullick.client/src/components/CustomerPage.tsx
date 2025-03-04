@@ -98,7 +98,7 @@ const CustomerPage = (): JSX.Element => {
 
         setPurchasedItems(itemsBought);
         setPlayer({ ...player });
-        savePlayer({ ...player});
+        savePlayer(player);
 
         setTotalInput("");
         setHasSubmitted(false);
@@ -113,13 +113,16 @@ const CustomerPage = (): JSX.Element => {
         if (!isNaN(userTotal)) {
             if (userTotal === total) {
                 setFeedback("Correct! You earned 10% of the total.");
-                setPlayer({ ...player, money: Math.round(player.money + total * 0.1), shopMoney: Math.round(player.money + total * 0.53) });
-                savePlayer({ ...player, money: Math.round(player.money + total * 0.1), shopMoney: Math.round(player.money + total * 0.53) });
+                player.money = Math.round(player.money + total * 0.1);
+                player.shopMoney = Math.round(player.money + total * 0.53);
+                setPlayer({ ...player });
+                savePlayer(player);
             } else {
                 setFeedback(`Incorrect. The correct total was ${total}.`);
             }
         } else {
             setFeedback("Please enter a valid number.");
+            return;
         }
         setHasSubmitted(true);
     };
@@ -141,77 +144,42 @@ const CustomerPage = (): JSX.Element => {
     return (
         <div style={{ backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}customer.webp)` }} className={CustomerModule.container}>
             {firstCustomer && (
-                <button
-                    onClick={() => {
-                        if (shopHasStock) selectRandomCustomer(customers);
-                    }}
-                    disabled={!shopHasStock}
-                    className={CustomerModule.start_work}
-                >Start work</button>
+                <button onClick={() => {if (shopHasStock) selectRandomCustomer(customers);}} disabled={!shopHasStock} className={CustomerModule.start_work}>Start work</button>
             )}
-            {customer && (
-                <>
-                    {purchasedItems.length > 0 && (
-                        <h2>{customer.name}</h2>
-                    )}
-                </>
-            )}
+            {customer && purchasedItems.length > 0 && (<h2>{customer.name}</h2>)}
 
             <div className={CustomerModule.npc_container}>
-                {customer && (
-                    <>
-                        {purchasedItems.length > 0 && (
-                            <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${customer.image.pathToFile}.webp`} className={CustomerModule.img} />
-                        )}
-                    </>
-                )}
+            {customer && purchasedItems.length > 0 && (<img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${customer.image.pathToFile}.webp`} className={CustomerModule.img} />)}
+                   
                 <div className={CustomerModule.dialogue_container}>
                     {purchasedItems.length > 0 && (
                         <div className={CustomerModule.dialogue_box}>
                             <p>{formatCustomerOrder(purchasedItems)}</p>
                             <div className={CustomerModule.dialogue_input}>
-                                {stockWarning && (
-                                    <p style={{ color: "red", fontWeight: "bold" }}>{stockWarning}</p>
-                                )}
-                                {feedback && (
-                                    <p style={{ color: feedback.startsWith("Correct") ? "green" : "red" }}>
-                                        {feedback}
-                                    </p>
-                                )}
+                                {stockWarning && (<p style={{ color: "red", fontWeight: "bold" }}>{stockWarning}</p>)}
+                                {feedback && (<p style={{ color: feedback.startsWith("Correct") ? "green" : "red" }}>{feedback}</p>)}
 
                                 {!hasSubmitted && (
-                                    <input
-                                        type="number"
-                                        value={totalInput}
-                                        onChange={(e) => setTotalInput(e.target.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && calculateTotal()}
-                                        placeholder="Enter total price..."
-                                        className={CustomerModule.price_input}
-                                    />
+                                    <input type="number"
+                                           value={totalInput}
+                                           onChange={(e) => setTotalInput(e.target.value)}
+                                           onKeyDown={(e) => e.key === 'Enter' && calculateTotal()}
+                                           placeholder="Enter total price..."
+                                           className={CustomerModule.price_input}/>
                                 )}
                             </div>
                         </div>
                     )}
-
                     <div className={CustomerModule.dialogue_options}>
                         {purchasedItems.length > 0 && (
                             <>
-                                {!hasSubmitted && (
-                                    <button onClick={calculateTotal} className={CustomerModule.option}>Check Total</button>
-                                )}
-                                <button
-                                    onClick={() => {
-                                        if (shopHasStock) selectRandomCustomer(customers);
-                                    }}
-                                    disabled={!shopHasStock}
-                                    className={CustomerModule.option}
-                                >Next customer</button>
+                                {!hasSubmitted && (<button onClick={calculateTotal} className={CustomerModule.option}>Check Total</button>)}
+                                {hasSubmitted && (< button onClick={() => { if (shopHasStock) selectRandomCustomer(customers); }} disabled={!shopHasStock} className={CustomerModule.option}>Next customer</button>)}
                             </>
                         )}
                     </div>
                 </div>
             </div>
-
             {isInventoryOpen && <ShopInventoryPage onClose={() => setInventoryOpen(false)} />}
             <ShopFooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>

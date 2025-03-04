@@ -1,4 +1,4 @@
-import {ShopInventoryItem } from "../types"
+import { ShopInventoryItem } from "../types"
 export interface Player {
     name: string;
     locationID: number | null;
@@ -13,4 +13,5 @@ export interface Player {
     unlockedAchievements: number[];
     npcs: { [npcid: number]: { dialogStage: number } };
     blockedLocations: number[];
+    totalSpent: number;
 };
