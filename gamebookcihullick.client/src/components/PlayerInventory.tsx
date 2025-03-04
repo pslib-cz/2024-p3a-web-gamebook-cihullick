@@ -14,45 +14,16 @@ const PlayerInventory: React.FC<PlayerInventoryProps> = ({ onClose }) => {
 
     useEffect(() => {
         const fetchItems = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch items: ${response.statusText}`);
-                }
-                const allItems: Item[] = await response.json();
-
-                const playerInventory = player.inventory
-                    .map((invItem) => {
-                        const fullItem = allItems.find(item => item.itemID === invItem.itemID);
-                        return fullItem && fullItem.showsInInventory === true
-                            ? { ...fullItem, quantity: invItem.quantity }
-                            : null;
-                    })
-                    .filter(item => item !== null) as (Item & { quantity: number })[];
-
-                setItems(playerInventory);
-            } catch (error) {
-                console.error('Error fetching items:', error);
-            }
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
+            const allItems: Item[] = await response.json();
+            const playerInventory = player.inventory.map((invItem) => {
+                const fullItem = allItems.find(item => item.itemID === invItem.itemID);
+                return fullItem?.showsInInventory === true ? { ...fullItem, quantity: invItem.quantity } : null;
+            }).filter(item => item !== null);
+            setItems(playerInventory);
         };
-
         fetchItems();
     }, [player.inventory]);
-
-    const handleConsume = (itemID: number, nutritionalValue: number) => {
-        const success = consumeItem(player, itemID, nutritionalValue);
-        if (success) {
-            const updatedItems = items
-                .map(item =>
-                    item.itemID === itemID
-                        ? { ...item, quantity: item.quantity - 1 }
-                        : item
-                )
-                .filter(item => item.quantity > 0);
-
-            setItems(updatedItems);
-        }
-    };
 
     return (
         <div className={InventoryModule.overlay}>
@@ -72,9 +43,7 @@ const PlayerInventory: React.FC<PlayerInventoryProps> = ({ onClose }) => {
                                 <p>{item.name}</p>
                                 <p>{item.quantity}x</p>
                             </div>
-                            {item.isEdible && (
-                                <button className={InventoryModule.consume_btn} onClick={() => handleConsume(item.itemID, item.nutritionalValue)}>Consume</button>
-                            )}
+                            {item.isEdible && <button className={InventoryModule.consume_btn} onClick={() => consumeItem(player, item.itemID, item.nutritionalValue)}>Consume</button>}
                         </div>
                     ))}
                 </div>

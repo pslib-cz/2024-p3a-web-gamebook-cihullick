@@ -27,12 +27,7 @@ const ExportPlayerButton: React.FC = () => {
     };
 
     return (
-        <button
-            className={ButtonModule.btn}
-            onClick={handleExport}
-        >
-            Export Player Data
-        </button>
+        <button className={ButtonModule.btn} onClick={handleExport}>Export Player Data</button>
     );
 };
 

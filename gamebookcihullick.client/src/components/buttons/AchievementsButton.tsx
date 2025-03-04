@@ -6,12 +6,7 @@ const AchievementsButton: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <button
-            className={ButtonModule.btn}
-            onClick={() => navigate('/achievements')}
-        >
-            Achievements
-        </button>
+        <button className={ButtonModule.btn} onClick={() => navigate('/achievements')}> Achievements </button>
     );
 };
 

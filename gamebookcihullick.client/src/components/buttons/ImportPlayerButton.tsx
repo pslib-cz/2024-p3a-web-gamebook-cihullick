@@ -11,6 +11,7 @@ const ImportPlayerButton: React.FC = () => {
         }
 
         const reader = new FileReader();
+        reader.readAsText(file);
         reader.onload = (e) => {
             try {
                 const playerData = JSON.parse(e.target?.result as string);
@@ -22,20 +23,13 @@ const ImportPlayerButton: React.FC = () => {
                 alert('Invalid file format. Please upload a valid JSON file.');
             }
         };
-        reader.readAsText(file);
+        
     };
 
     return (
-        <label
-            className={ButtonModule.btn}
-        >
+        <label className={ButtonModule.btn}>
             Import Player Data
-            <input
-                type="file"
-                accept="application/json"
-                onChange={handleImport}
-                style={{ display: 'none' }}
-            />
+            <input type="file" accept="application/json" onChange={handleImport} style={{ display: 'none' }} />
         </label>
     );
 };

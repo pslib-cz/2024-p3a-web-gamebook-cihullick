@@ -2,6 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 h1 {
@@ -30,30 +31,34 @@ h1 {
     justify-content: flex-start;
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    height: auto;
     min-height: 100vh;
-    padding-top: 20px;
     background-color: rgba(0, 0, 0, .5);
 }
 
 .inv_title_propagules {
-    width: 90vw;
-    background-color: rgba(0, 0, 0, .5);
-    padding: 20px 0;
+    width: 100%;
+    background-color: #000000;
+    padding: 20px;
 }
 
 .img {
     aspect-ratio: 1/1;
 }
 
+.list_margin {
+    margin: 20px 0;
+}
+
 .item_list {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 220px;
+    align-items: flex-start;
+    margin-bottom: 200px;
     gap: 20px;
     width: 90vw;
+    max-height: calc(100vh - (112px + 200px + 40px));
+    overflow-y: auto;
 }
 
 .item {
@@ -94,14 +99,14 @@ h1 {
 
     h1 {
         font-size: 72px;
-        margin: 40px 0;
     }
 
     .item_list {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin-bottom: 70px;
+        margin-bottom: 50px;
+        max-height: calc(100vh - (140px + 50px + 40px));
     }
 
     .item {

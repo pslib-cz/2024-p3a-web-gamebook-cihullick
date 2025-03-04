@@ -24,7 +24,7 @@ const GamblingPage: React.FC = () => {
 
     const getWinChance = () => {
         if (wagerPercentage >= 100) return 0.01;
-
+        console.log("oogf")
         const winChance = (-0.4848 * wagerPercentage) + 49.4848;
         return Math.max(0.01, winChance / 100);
     };
@@ -45,7 +45,6 @@ const GamblingPage: React.FC = () => {
             player.money -= wagerAmount;
             setResult(`You lost! New balance: ${player.money} F`);
         }
-
         savePlayer(player);
     };
 
@@ -53,19 +52,16 @@ const GamblingPage: React.FC = () => {
         <div className={ GamblingModule.container }>
             <div className={ GamblingModule.gambba_propagule }>
                 <h1>Gamble Your Money</h1>
-
                 <div className={ GamblingModule.propagules }>
                     <div>
                         <form className={ GamblingModule.wager_form }>
                             <label>Wager Percentage (1-100):</label>
-                            <input
-                                className={ GamblingModule.wager_input }
-                                type="number"
-                                value={wagerPercentage}
-                                onChange={handleWagerChange}
-                                min="1"
-                                max="100"
-                            />
+                            <input className={ GamblingModule.wager_input }
+                                   type="number"
+                                   value={wagerPercentage}
+                                   onChange={handleWagerChange}
+                                   min="1"
+                                   max="100"/>
                         </form>
                         <p>Wager Amount: {wagerAmount} F</p>
                         <p>Chance of Winning: {(getWinChance() * 100).toFixed(2)}%</p>
@@ -86,15 +82,10 @@ const GamblingPage: React.FC = () => {
                         Gamble!
                     </button>
 
-                    {result &&
-                        <p className={ GamblingModule.center } style={{ color: result.startsWith("You won") ? "green" : "red" }}>
-                            {result}
-                        </p>
-                    }
+                    {result && <p className={ GamblingModule.center } style={{ color: result.startsWith("You won") ? "green" : "red" }}>{result}</p>}
                 </div>
             </div>
             
-
             {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}
             <FooterBar onOpenInventory={() => setInventoryOpen(true)} />
         </div>

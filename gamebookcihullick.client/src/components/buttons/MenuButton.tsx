@@ -6,12 +6,7 @@ const MenuButton: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <button
-            className={ButtonModule.btn}
-            onClick={() => navigate('/')}
-        >
-            Menu
-        </button>
+        <button className={ButtonModule.btn} onClick={() => navigate('/')}>Menu</button>
     );
 };
 

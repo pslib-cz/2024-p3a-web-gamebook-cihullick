@@ -1,4 +1,3 @@
-
 html, body, p {
     margin: 0;
     padding: 0;
@@ -73,9 +72,9 @@ p, label {
     border-radius: 2299968px;
 }
 
-.wager_input:hover {
-    background-color: #464646;
-}
+    .wager_input:hover {
+        background-color: #464646;
+    }
 
 .text_div {
     display: flex;
@@ -94,6 +93,7 @@ p, label {
 .gamble_time {
     text-align: center;
     font-size: 16px;
+    margin-top: 40px;
     padding: 12px;
     cursor: pointer;
     background-color: #555555;
@@ -105,10 +105,10 @@ p, label {
     text-overflow: ellipsis;
 }
 
-.gamble_time:hover {
-    background-color: #464646;
-    color: #FFE77B;
-}
+    .gamble_time:hover {
+        background-color: #464646;
+        color: #FFE77B;
+    }
 
 @media (min-width: 768px) {
 

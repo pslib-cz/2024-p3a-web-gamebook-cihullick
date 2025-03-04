@@ -6,12 +6,7 @@ const PlayerDebugButton: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <button
-            className={ButtonModule.btn}
-            onClick={() => navigate('/playerdebug')}
-        >
-            Player Object
-        </button>
+        <button className={ButtonModule.btn} onClick={() => navigate('/playerdebug')}>Player Object</button>
     );
 };
 

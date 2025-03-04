@@ -11,13 +11,14 @@ const Achievements: React.FC = () => {
     const player = getPlayer();
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/achievements`)
-            .then((response) => response.json())
-            .then((data) => {
-                setAchievements(data);
-            })
-            .catch((error) => console.error('Error fetching achievements:', error));
+        const fetchAchievements = async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/achievements`);
+            const data = await response.json();
+            setAchievements(data);
+        };
+        fetchAchievements();
     }, []);
+
 
     useEffect(() => {
         unlockAdventurerAchievement(player);
@@ -29,10 +30,7 @@ const Achievements: React.FC = () => {
 
     return (
         <div>
-            
-            <div className={AchievementModule.container} style={{
-                backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}sheetmetal.webp)`,
-            }} >
+            <div className={AchievementModule.container} style={{ backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}sheetmetal.webp)`,}}>
                 <h1>Achievements</h1>
                 {achievements.length > 0 ? (
                     <ul className={AchievementModule.ach_list}>
@@ -42,14 +40,10 @@ const Achievements: React.FC = () => {
                                     src={`${import.meta.env.VITE_IMAGE_BASE_URL}${achievement.image.pathToFile}.webp`}
                                     alt={achievement.image.name}
                                     className={AchievementModule.ach_img}
-                                    style={{
-                                        filter: unlockedAchievements.includes(achievement.achievementID)? 'none' : 'grayscale(100%)',
-                                    }}/>
+                                    style={{ filter: unlockedAchievements.includes(achievement.achievementID)? 'none' : 'grayscale(100%)',}}/>
                                 <div className={AchievementModule.ach_info}>
                                     <p className={AchievementModule.ach_name}>{achievement.name}</p>
-                                    <p className={AchievementModule.ach_desc}>
-                                        {unlockedAchievements.includes(achievement.achievementID) ? achievement.description: '???'}
-                                    </p>
+                                    <p className={AchievementModule.ach_desc}>{unlockedAchievements.includes(achievement.achievementID) ? achievement.description: '???'}</p>
                                 </div>
                             </li>
                         ))}

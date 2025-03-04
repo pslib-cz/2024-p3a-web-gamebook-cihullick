@@ -12,11 +12,11 @@ const GlobalClickHandler: React.FC = () => {
 
             if (target.tagName === "BUTTON") {
                 hungerLoss = Math.floor(Math.random() * 15);
-                console.log(`Button clicked! Lost ${hungerLoss} hunger.`);
+                //console.log(`Button clicked! Lost ${hungerLoss} hunger.`);
             }
             else if (target.tagName === "IMG") {
                 hungerLoss = Math.floor(Math.random() * 25);
-                console.log(`Image clicked! Lost ${hungerLoss} hunger.`);
+               // console.log(`Image clicked! Lost ${hungerLoss} hunger.`);
             }
             else {
                 return;
@@ -25,7 +25,7 @@ const GlobalClickHandler: React.FC = () => {
             player.hunger = Math.max(0, player.hunger - hungerLoss);
             savePlayer(player);
 
-            console.log(`New hunger: ${player.hunger}`);
+            //console.log(`New hunger: ${player.hunger}`);
         };
 
         document.addEventListener("click", handleClick);

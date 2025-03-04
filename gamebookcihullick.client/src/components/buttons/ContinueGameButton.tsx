@@ -25,12 +25,7 @@ const ContinueGameButton: React.FC = () => {
     };
 
     return (
-        <button
-            className={ButtonModule.btn}
-            onClick={handleContinueGame} disabled={!canContinue}
-        >
-            Continue Game
-        </button>
+        <button className={ButtonModule.btn} onClick={handleContinueGame} disabled={!canContinue}>Continue Game</button>
     );
 };
 

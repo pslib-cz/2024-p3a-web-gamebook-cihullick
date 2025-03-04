@@ -6,12 +6,7 @@ const BackButton: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <button
-            className={ButtonModule.btn}
-            onClick={() => navigate(-1)}
-        >
-            Back
-        </button>
+        <button className={ButtonModule.btn} onClick={() => navigate(-1)}>Back</button>
     );
 };
 

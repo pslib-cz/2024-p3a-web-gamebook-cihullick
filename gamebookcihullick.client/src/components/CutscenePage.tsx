@@ -6,18 +6,20 @@ import CutsceneModule from '../components/cutscenepage.module.css';
 const CutscenePage = () => {
     const { id } = useParams<{ id: string }>();
     const [cutscene, setCutscene] = useState<Cutscene | null>(null);
-    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!id) return;
 
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Cutscenes/${id}`)
-            .then((response) => response.json())
-            .then((data: Cutscene) => setCutscene(data))
-            .catch((error) => console.error("Error fetching cutscene:", error))
-            .finally(() => setLoading(false));
+        const fetchCutscene = async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Cutscenes/${id}`);
+            const data = await response.json();
+            setCutscene(data);
+        };
+
+        fetchCutscene();
     }, [id]);
+
 
     const handleNextCutscene = () => {
         if (!cutscene) return;
@@ -37,17 +39,13 @@ const CutscenePage = () => {
         navigate(`/cutscene/${cutscene.nextCutsceneID}`);
     };
 
-    if (loading) return <p className={ CutsceneModule.loading }>Loading cutscene...</p>;
-    if (!cutscene) return <p className={ CutsceneModule.error }>No cutscene found.</p>;
-
+    if (!cutscene) return <div className={CutsceneModule.loading}>Loading...</div>;
     return (
         <div className={ CutsceneModule.container } onClick={handleNextCutscene}>
             <div className={ CutsceneModule.cutscene_container }>
-                <img
-                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${cutscene.image.pathToFile}.webp`}
-                    alt={cutscene.name}
-                    className={ CutsceneModule.cutscene_img }
-                />
+                <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${cutscene.image.pathToFile}.webp`}
+                     alt={cutscene.name}
+                     className={ CutsceneModule.cutscene_img }/>
                 <div className={ CutsceneModule.cutscene_textbox }>
                     <p className={ CutsceneModule.cutscene_text }>{cutscene.text}</p>
                     <p className={ CutsceneModule.cutscene_text }>(click anywhere to proceed)</p>

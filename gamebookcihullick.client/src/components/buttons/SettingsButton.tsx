@@ -6,12 +6,7 @@ const SettingsButton: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <button
-            className={ButtonModule.btn}
-            onClick={() => navigate('/settings')}
-        >
-            Settings
-        </button>
+        <button className={ButtonModule.btn} onClick={() => navigate('/settings')}>Settings</button>
     );
 };
 

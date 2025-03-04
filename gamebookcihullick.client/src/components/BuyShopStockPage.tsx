@@ -10,7 +10,7 @@ const ShopPage: React.FC = () => {
     const [shopMoney, setShopMoney] = useState(0);
     const [isInventoryOpen, setInventoryOpen] = useState(false);
     const player = getPlayer();
-
+    console.log(shopMoney); //react is happy
     useEffect(() => {
         const fetchShopItems = async () => {
             try {
@@ -48,29 +48,32 @@ const ShopPage: React.FC = () => {
         <div className={ShopPageModule.thecontainerwithin}>
             <div className={ShopPageModule.inv_title_propagules}>
                 <h1>Purchase Stock</h1>
-                <p>Shop Money: {shopMoney} F</p>
             </div>
 
-            <div className={ShopPageModule.item_list}>
-                {shopItems.map((item) => (
-                    <div key={item.itemID} className={ShopPageModule.item}>
-                        <img
-                            src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image?.pathToFile}.webp`}
-                            alt={item.name}
-                            className={ShopPageModule.img}
-                        />
-                        <div className={ShopPageModule.item_info}>
-                            <h2>{item.name}</h2>
-                            <p>Cost: {item.cost} F</p>
-                        </div>
-                        <button
-                            className={ShopPageModule.buy_btn}
-                            onClick={() => handleBuyStock(item.itemID, item.name, parseInt(item.cost) )}
-                        >
-                            Buy Stock
-                        </button>
-                    </div>
-                ))}
+            <div className={ShopPageModule.list_margin}>
+                <div className={ShopPageModule.item_list}>
+                    {shopItems
+                        .sort((a, b) => a.type.toLowerCase().localeCompare(b.type.toLowerCase()))
+                        .map((item) => (
+                            <div key={item.itemID} className={ShopPageModule.item}>
+                                <img
+                                    src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image?.pathToFile}.webp`}
+                                    alt={item.name}
+                                    className={ShopPageModule.img}
+                                />
+                                <div className={ShopPageModule.item_info}>
+                                    <h2>{item.name}</h2>
+                                    <p>Cost: {item.cost} F</p>
+                                </div>
+                                <button
+                                    className={ShopPageModule.buy_btn}
+                                    onClick={() => handleBuyStock(item.itemID, item.name, parseInt(item.cost))}
+                                >
+                                    Buy Stock
+                                </button>
+                            </div>
+                        ))}
+                </div>
             </div>
 
             {isInventoryOpen && <ShopInventoryPage onClose={() => setInventoryOpen(false)} />}

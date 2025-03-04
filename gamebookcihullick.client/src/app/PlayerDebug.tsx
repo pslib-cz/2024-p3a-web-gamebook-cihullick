@@ -8,15 +8,18 @@ const PlayerDebug: React.FC = () => {
     const [player, setPlayer] = useState(getPlayer());
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`)
-            .then((response) => response.json())
-            .then((data) => setItems(data))
-            .catch((error) => console.error('Error fetching items:', error));
+        const fetchItems = async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/Items`);
+            const data = await response.json();
+            setItems(data);
+        };
+        fetchItems();
     }, []);
+
 
     const handleAddItem = (itemID: number, name: string, cost: number) => {
         const updatedPlayer = { ...player };
-        addItemToInventory(updatedPlayer, itemID, 1, name, cost);
+        addItemToInventory(player, itemID, 1, name, cost);
         setPlayer(updatedPlayer);
     };
 
