@@ -16,11 +16,12 @@ export const getPlayer = (): Player => {
             shopMoney: player.shopMoney ?? 7777,
             shopWarehouse: player.shopWarehouse ?? [],
             hunger: player.hunger ?? 1000,
-            money: player.money ?? 10000,
+            money: player.money ?? 500,
             unlockedAchievements: player.unlockedAchievements || [],
             npcs: player.npcs || {},
             blockedLocations: player.blockedLocations || [],
             totalSpent: player.totalSpent ?? 0,
+            customersServed: player.customersServed ?? 0,
         };
     }
     return initializePlayer();
@@ -37,11 +38,12 @@ export const initializePlayer = (blockedLocations: number[] = []): Player => {
         shopMoney: 10000,
         shopWarehouse: [],
         hunger: 1000,
-        money: 10000,
+        money: 500,
         unlockedAchievements: [],
         npcs: {},
         blockedLocations,
         totalSpent: 0,
+        customersServed: 0,
     };
     savePlayer(defaultPlayer);
     return defaultPlayer;
@@ -96,11 +98,32 @@ export const unlockShopaholicAchievement = (player: Player) => {
     }
 };
 
-export const unlockGamerAchievement = (player: Player) => {
+export const unlockYogurtAchievement = (player: Player) => {
     if (!player) return;
 
-    if (player.inventory.some(item => item.itemID === 3 && item.quantity > 0) && player.inventory.some(item => item.itemID === 7 && item.quantity > 0)) {
+    if (
+        player.inventory.some(item => item.itemID === 44 && item.quantity > 0) &&
+        player.inventory.some(item => item.itemID === 45 && item.quantity > 0) &&
+        player.inventory.some(item => item.itemID === 46 && item.quantity > 0) &&
+        player.inventory.some(item => item.itemID === 47 && item.quantity > 0) &&
+        player.inventory.some(item => item.itemID === 48 && item.quantity > 0)
+    ) {
         unlockAchievement(player, 4);
+    }
+};
+
+export const unlockBlackHoleAchievement = (player: Player) => {
+    if (!player) return;
+
+    if (player.visitedLocations.includes(5)) {
+        unlockAchievement(player, 5);
+    }
+};
+
+export const unlockServerAchievement = (player: Player) => {
+    if (!player) return;
+    if (player?.customersServed >= 100) {
+        unlockAchievement(player, 6);
     }
 };
 

@@ -14,4 +14,5 @@ export interface Player {
     npcs: { [npcid: number]: { dialogStage: number } };
     blockedLocations: number[];
     totalSpent: number;
+    customersServed: number;
 };

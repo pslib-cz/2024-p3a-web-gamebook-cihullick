@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { getPlayer, savePlayer } from '../services/PlayerService';
 import GamblingModule from '../components/gamblingpage.module.css';
+import AchievementsButton from './buttons/AchievementsButton';
+import SettingsButton from './buttons/SettingsButton';
+import MenuButton from './buttons/MenuButton';
 import PlayerInventory from './PlayerInventory';
 import FooterBar from './FooterBar';
 
@@ -84,6 +87,12 @@ const GamblingPage: React.FC = () => {
 
                     {result && <p className={ GamblingModule.center } style={{ color: result.startsWith("You won") ? "green" : "red" }}>{result}</p>}
                 </div>
+            </div>
+
+            <div className={GamblingModule.btns}>
+                <AchievementsButton />
+                <SettingsButton />
+                <MenuButton />
             </div>
             
             {isInventoryOpen && <PlayerInventory onClose={() => setInventoryOpen(false)} />}

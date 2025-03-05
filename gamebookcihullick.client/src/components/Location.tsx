@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Location } from '../types';
-import AchievementsButton from './buttons/AchievementsButton'
+import AchievementsButton from './buttons/AchievementsButton';
 import { addItemToInventory, getPlayer, removeItemFromInventory, savePlayer, visitLocation } from '../services/PlayerService';
-import SettingsButton from './buttons/SettingsButton'
+import SettingsButton from './buttons/SettingsButton';
 import MenuButton from './buttons/MenuButton';
 import LocationModule from '../components/location.module.css';
 import FooterBar from './FooterBar';

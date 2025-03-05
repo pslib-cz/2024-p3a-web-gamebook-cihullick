@@ -9,7 +9,7 @@ const ClearCacheButton: React.FC = () => {
     };
 
     return (
-        <button className={ButtonModule.btn} onClick={handleClearCache}>Clear Cache</button>
+        <button className={ButtonModule.btn} onClick={handleClearCache}>Clear Save Data</button>
     );
 };
 

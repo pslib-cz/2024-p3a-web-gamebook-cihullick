@@ -94,6 +94,8 @@ p {
 .btns {
     display: flex;
     gap: 10px;
+    position: absolute;
+    bottom: 0;
     margin: 20px 0 220px 0;
 }
 
@@ -109,10 +111,10 @@ p {
     margin-top: 40px;
 }
 
-    .end_btn:hover {
-        background-color: #464646;
-        color: #FFE77B;
-    }
+.end_btn:hover {
+    background-color: #464646;
+    color: #FFE77B;
+}
 
 @media (min-width: 768px) {
 

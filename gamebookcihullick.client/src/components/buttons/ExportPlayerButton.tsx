@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react';
-import { getPlayer, unlockAdventurerAchievement, unlockWinnerAchievement, unlockShopaholicAchievement, unlockGamerAchievement } from '../../services/PlayerService';
+import {
+    getPlayer,
+    unlockAdventurerAchievement,
+    unlockWinnerAchievement,
+    unlockShopaholicAchievement,
+    unlockYogurtAchievement,
+    unlockBlackHoleAchievement,
+    unlockServerAchievement,
+} from '../../services/PlayerService';
 import ButtonModule from '../buttons/button.module.css';
 
 const ExportPlayerButton: React.FC = () => {
@@ -9,7 +17,9 @@ const ExportPlayerButton: React.FC = () => {
         unlockAdventurerAchievement(player);
         unlockWinnerAchievement(player);
         unlockShopaholicAchievement(player);
-        unlockGamerAchievement(player);
+        unlockYogurtAchievement(player);
+        unlockBlackHoleAchievement(player);
+        unlockServerAchievement(player);
     }, [player]);
     const handleExport = () => {
 

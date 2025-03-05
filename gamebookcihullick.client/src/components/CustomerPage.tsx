@@ -47,7 +47,7 @@ const CustomerPage = (): JSX.Element => {
         const itemsBought: ShopInventoryItem[] = [];
         const shopInventory = player.shopInventory;
         const totalItems = shopInventory.length;
-        const maxIterations = 80;
+        const maxIterations = 20;
         let iterationCount = 0;
 
         const affordableItems = shopInventory.filter(i => i.cost <= budget);
@@ -115,6 +115,7 @@ const CustomerPage = (): JSX.Element => {
                 setFeedback("Correct! You earned 10% of the total.");
                 player.money = Math.round(player.money + total * 0.1);
                 player.shopMoney = Math.round(player.money + total * 0.53);
+                player.customersServed++;
                 setPlayer({ ...player });
                 savePlayer(player);
             } else {
@@ -174,7 +175,7 @@ const CustomerPage = (): JSX.Element => {
                         {purchasedItems.length > 0 && (
                             <>
                                 {!hasSubmitted && (<button onClick={calculateTotal} className={CustomerModule.option}>Check Total</button>)}
-                                {hasSubmitted && (< button onClick={() => { if (shopHasStock) selectRandomCustomer(customers); }} disabled={!shopHasStock} className={CustomerModule.option}>Next customer</button>)}
+                                {hasSubmitted && (< button onClick={() => { if (shopHasStock) {selectRandomCustomer(customers); player.customersServed++; console.log(player.customersServed); } }} disabled={!shopHasStock} className={CustomerModule.option}>Next customer</button>)}
                             </>
                         )}
                     </div>

@@ -19,7 +19,7 @@ const NewGameButton: React.FC = () => {
             }
         }
         player.shopInventory = items.map((item: { itemID: number, name: string, cost: number, showsInInventory: boolean }) => ({
-            itemID: item.itemID, quantity: 53, name: item.name, cost: item.cost, showsInInventory: item.showsInInventory,
+            itemID: item.itemID, quantity: 25, name: item.name, cost: item.cost, showsInInventory: item.showsInInventory,
         }));
         addItemToInventory(player, 16, 1, "Dirty clothes", 0);
         savePlayer(player);

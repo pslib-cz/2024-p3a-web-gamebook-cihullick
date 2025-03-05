@@ -34,7 +34,9 @@ const ShopInventory: React.FC<ShopInventoryProps> = ({ onClose }) => {
                 <h2 className={InventoryModule.inventory_title}>Shop Stock</h2>
 
                 <div className={InventoryModule.inventory_list}>
-                    {shopItems.map((item) => (
+                    {shopItems
+                        .sort((a, b) => a.type.toLowerCase().localeCompare(b.type.toLowerCase()))
+                        .map((item) => (
                         <div key={item.itemID} className={InventoryModule.inventory_item}>
                             <img src={`${import.meta.env.VITE_IMAGE_BASE_URL}${item.image.pathToFile}.webp`}
                                  alt={item.name}

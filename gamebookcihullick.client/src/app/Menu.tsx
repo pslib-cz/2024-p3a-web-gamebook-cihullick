@@ -1,10 +1,8 @@
 import React from 'react';
 import AchievementsButton from '../components/buttons/AchievementsButton';
 import SettingsButton from '../components/buttons/SettingsButton';
-import PlayerDebugButton from '../components/buttons/PlayerDebugButton';
 import NewGameButton from '../components/buttons/NewGameButton';
 import ContinueGameButton from '../components/buttons/ContinueGameButton';
-import ClearCacheButton from '../components/buttons/ClearCacheButton';
 import MenuModule from '../app/menu.module.css';
 
 const Menu: React.FC = () => {
@@ -18,8 +16,6 @@ const Menu: React.FC = () => {
                     <ContinueGameButton />
                     <AchievementsButton />
                     <SettingsButton />
-                    <PlayerDebugButton />
-                    <ClearCacheButton />
                 </div>
                 <div className={MenuModule.dial}></div>
             </div>

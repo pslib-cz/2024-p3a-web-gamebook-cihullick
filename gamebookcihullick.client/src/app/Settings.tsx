@@ -3,16 +3,29 @@ import BackButton from '../components/buttons/BackButton';
 import ExportPlayerButton from '../components/buttons/ExportPlayerButton';
 import ImportPlayerButton from '../components/buttons/ImportPlayerButton';
 import PlayerDebugButton from '../components/buttons/PlayerDebugButton';
+import ClearCacheButton from '../components/buttons/ClearCacheButton';
+import SettingsModule from '../app/settings.module.css';
 
 const Settings: React.FC = () => {
     return (
-        <div style={{ textAlign: 'center', padding: '20px', backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}sheetmetal.webp)`, }}>
-            <h1>Settings</h1>
-            <p>Modify your game settings here.</p>
-            <ExportPlayerButton />
-            <ImportPlayerButton />
-            <PlayerDebugButton />
-            <BackButton />
+        <div className={ SettingsModule.container }>
+            <div>
+                <div className={ SettingsModule.header }>
+                    <h1>Settings</h1>
+                    <p>Modify your game settings here.</p>
+                </div>
+
+                <div className={ SettingsModule.back }>
+                    <BackButton />
+                </div>
+
+                <div className={ SettingsModule.settings }>
+                    <ExportPlayerButton />
+                    <ImportPlayerButton />
+                    <PlayerDebugButton />
+                    <ClearCacheButton />
+                </div>
+            </div>
         </div>
     );
 };

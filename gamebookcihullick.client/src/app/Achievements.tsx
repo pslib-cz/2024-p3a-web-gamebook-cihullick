@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { unlockAdventurerAchievement, getPlayer, unlockWinnerAchievement, unlockShopaholicAchievement, unlockGamerAchievement } from '../services/PlayerService';
+import {
+    unlockAdventurerAchievement,
+    getPlayer,
+    unlockWinnerAchievement,
+    unlockShopaholicAchievement,
+    unlockYogurtAchievement,
+    unlockBlackHoleAchievement,
+    unlockServerAchievement,
+} from '../services/PlayerService';
 import { Achievement } from '../types';
 import AchievementModule from '../app/achievements.module.css';
 import BackButton from '../components/buttons/BackButton';
@@ -22,7 +30,9 @@ const Achievements: React.FC = () => {
         unlockAdventurerAchievement(player);
         unlockWinnerAchievement(player);
         unlockShopaholicAchievement(player);
-        unlockGamerAchievement(player);
+        unlockYogurtAchievement(player);
+        unlockBlackHoleAchievement(player);
+        unlockServerAchievement(player);
     }, [player]);
 
     const unlockedAchievements = player?.unlockedAchievements || [];
@@ -30,7 +40,7 @@ const Achievements: React.FC = () => {
 
     return (
         <div>
-            <div className={AchievementModule.container} style={{ backgroundImage: `url(${import.meta.env.VITE_IMAGE_BASE_URL}sheetmetal.webp)`, }}>
+            <div className={AchievementModule.container}>
                 <h1>Achievements</h1>
 
                 <div className={AchievementModule.back}>
