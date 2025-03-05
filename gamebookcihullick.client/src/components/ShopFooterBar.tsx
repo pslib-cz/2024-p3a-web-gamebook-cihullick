@@ -1,6 +1,7 @@
 import React from 'react';
 import { getPlayer } from '../services/PlayerService';
 import FooterBarModule from '../components/footerbar.module.css';
+import { useNavigate } from 'react-router-dom';
 
 interface ShopFooterBarProps {
     onOpenInventory: () => void;
@@ -8,6 +9,9 @@ interface ShopFooterBarProps {
 
 const ShopFooterBar: React.FC<ShopFooterBarProps> = ({ onOpenInventory }) => {
     const player = getPlayer();
+    const navigate = useNavigate();
+
+    if (player.hunger === 0) { navigate('/death') }
 
     return (
         <div className={FooterBarModule.player_stats}>

@@ -23,7 +23,6 @@ const GlobalClickHandler: React.FC = () => {
             savePlayer(player);
 
         };
-
         document.addEventListener("click", handleClick);
         return () => document.removeEventListener("click", handleClick);
     }, []);

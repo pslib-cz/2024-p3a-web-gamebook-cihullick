@@ -10,6 +10,7 @@ import InventoryPage from './components/InventoryPage'
 import CustomerPage from './components/CustomerPage';
 import GamblingPage from './components/GamblingPage';
 import CutscenePage from './components/CutscenePage'
+import DeathScreenPage from './components/DeathScreenPage'
 import GlobalClickHandler from './components/GlobalClickHandler';
 
 const router = createBrowserRouter([
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
         element: <Achievements />,
     },
     {
+        path: '/death',
+        element: <DeathScreenPage />,
+    },
+    {
         path: '/customer',
         element: <CustomerPage />,
     },
@@ -64,7 +69,7 @@ function App() {
     return (
         <>
             <GlobalClickHandler />
-            <RouterProvider router={router} />
+            <RouterProvider router={router}/>
         </>
     );
 }
