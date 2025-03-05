@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPlayer, savePlayer, removeItemFromInventory, removeBlockedLocation } from '../services/PlayerService';
-import { NPC, Location } from '../types'
+import { NPC, Location } from '../types';
 import DialogueModule from '../components/npcdialogue.module.css';
 import FooterBar from './FooterBar';
 import PlayerInventory from './PlayerInventory';
