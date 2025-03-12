@@ -113,7 +113,7 @@ const CustomerPage = (): JSX.Element => {
         if (!isNaN(userTotal)) {
             if (userTotal === total) {
                 setFeedback("Correct! You earned 10% of the total.");
-                player.money = Math.round(player.money + total * 0.1);
+                player.money = Math.round(player.money + total * 0.37);
                 player.shopMoney = Math.round(player.money + total * 0.53);
                 player.customersServed++;
                 setPlayer({ ...player });
