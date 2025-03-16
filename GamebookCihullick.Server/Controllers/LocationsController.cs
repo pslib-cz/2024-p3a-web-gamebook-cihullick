@@ -20,47 +20,36 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetLocations()
         {
-            var locations = await _context.Locations
-                .Include(l => l.Image)
-                .Include(l => l.Connections)
-                    .ThenInclude(c => c.ConnectedLocation)
-                    .ThenInclude(cl => cl.Image)
-                .Select(l => new
-                {
+            var locations = await _context.Locations.Include(l => l.Image).Include(l => l.Connections).ThenInclude(c => c.ConnectedLocation).ThenInclude(cl => cl.Image).Select(l => new {
                     l.LocationID,
                     l.Name,
                     l.Description,
-                    Image = l.Image != null ? new
-                    {
+
+                    Image = l.Image != null ? new {
                         l.Image.ImageID,
                         l.Image.Name,
                         l.Image.PathToFile
                     } : null,
-                    ConnectedLocations = l.Connections.Select(c => new
-                    {
+
+                    ConnectedLocations = l.Connections.Select(c => new {
                         c.ConnectedLocationID,
                         c.ConnectedLocation.Name,
                         c.ConnectedLocation.Description,
                         ImagePath = c.ConnectedLocation.Image != null ? c.ConnectedLocation.Image.PathToFile : null
                     }).ToList(),
-                    NPCs = _context.NPCs
-                        .Where(npc => npc.LocationID == l.LocationID)
-                        .Select(npc => new
-                        {
+
+                    NPCs = _context.NPCs.Where(npc => npc.LocationID == l.LocationID).Select(npc => new {
                             npc.NPCID,
                             npc.Name,
                             npc.Dialog,
-                            Image = npc.Image != null ? new
-                            {
+                            Image = npc.Image != null ? new {
                                 npc.Image.ImageID,
                                 npc.Image.Name,
                                 npc.Image.PathToFile
                             } : null
-                        }).ToList(),
-                    Inventories = _context.Inventories
-                        .Where(inv => inv.LocationID == l.LocationID)
-                        .Select(inv => new
-                        {
+                    }).ToList(),
+
+                    Inventories = _context.Inventories.Where(inv => inv.LocationID == l.LocationID).Select(inv => new {
                             inv.InventoryID,
                             inv.Name,
                             inv.Type,
@@ -70,9 +59,9 @@ namespace GamebookCihullick.Server.Controllers
                                 inv.Image.Name,
                                 inv.Image.PathToFile
                             } : null
-                        }).ToList()
-                })
-                .ToListAsync();
+                    }).ToList()
+
+                }).ToListAsync();
 
             return Ok(locations);
         }
@@ -83,62 +72,51 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetLocation(int id)
         {
-            var location = await _context.Locations
-                .Include(l => l.Image)
-                .Include(l => l.Connections)
-                    .ThenInclude(c => c.ConnectedLocation)
-                    .ThenInclude(cl => cl.Image)
-                .Where(l => l.LocationID == id)
-                .Select(l => new
-                {
+            var location = await _context.Locations.Include(l => l.Image).Include(l => l.Connections).ThenInclude(c => c.ConnectedLocation).ThenInclude(cl => cl.Image).Where(l => l.LocationID == id).Select(l => new {
                     l.LocationID,
                     l.Name,
                     l.Description,
-                    Image = l.Image != null ? new
-                    {
+
+                    Image = l.Image != null ? new {
                         l.Image.ImageID,
                         l.Image.Name,
                         l.Image.PathToFile
                     } : null,
-                    ConnectedLocations = l.Connections.Select(c => new
-                    {
+
+                    ConnectedLocations = l.Connections.Select(c => new {
                         c.ConnectedLocationID,
                         c.ConnectedLocation.Name,
                         c.ConnectedLocation.Description,
                         ImagePath = c.ConnectedLocation.Image != null ? c.ConnectedLocation.Image.PathToFile : null
                     }).ToList(),
-                    NPCs = _context.NPCs
-                        .Where(npc => npc.LocationID == l.LocationID)
-                        .Select(npc => new
-                        {
+
+                    NPCs = _context.NPCs.Where(npc => npc.LocationID == l.LocationID).Select(npc => new {
                             npc.NPCID,
                             npc.Name,
                             npc.Dialog,
                             npc.BlockedLocationID,
                             npc.RequiredItemID,
-                            Image = npc.Image != null ? new
-                            {
+
+                            Image = npc.Image != null ? new {
                                 npc.Image.ImageID,
                                 npc.Image.Name,
                                 npc.Image.PathToFile
                             } : null
                         }).ToList(),
-                    Inventories = _context.Inventories
-                        .Where(inv => inv.LocationID == l.LocationID)
-                        .Select(inv => new
-                        {
+
+                    Inventories = _context.Inventories.Where(inv => inv.LocationID == l.LocationID).Select(inv => new {
                             inv.InventoryID,
                             inv.Name,
                             inv.Type,
-                            Image = inv.Image != null ? new
-                            {
+
+                            Image = inv.Image != null ? new {
                                 inv.Image.ImageID,
                                 inv.Image.Name,
                                 inv.Image.PathToFile
                             } : null
                         }).ToList()
-                })
-                .FirstOrDefaultAsync();
+
+                }).FirstOrDefaultAsync();
 
             if (location == null)
             {
@@ -153,18 +131,12 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet("{id}/connections")]
         public IActionResult GetConnectedLocations(int id)
         {
-            var connections = _context.LocationConnections
-                .Where(lc => lc.LocationID == id)
-                .Include(lc => lc.ConnectedLocation)
-                .ThenInclude(cl => cl.Image)
-                .Select(lc => new
-                {
+            var connections = _context.LocationConnections.Where(lc => lc.LocationID == id).Include(lc => lc.ConnectedLocation).ThenInclude(cl => cl.Image).Select(lc => new {
                     lc.ConnectedLocationID,
                     lc.ConnectedLocation.Name,
                     lc.ConnectedLocation.Description,
                     ImagePath = lc.ConnectedLocation.Image != null ? lc.ConnectedLocation.Image.PathToFile : null
-                })
-                .ToList();
+                }).ToList();
 
             return Ok(connections);
         }
@@ -204,31 +176,24 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet("{id}/npcs")]
         public async Task<ActionResult<IEnumerable<object>>> GetNPCsForLocation(int id)
         {
-            var npcs = await _context.NPCs
-                .Where(npc => npc.LocationID == id)
-                .Include(npc => npc.Image)
-                .Include(npc => npc.BlockedLocation)
-                .Include(npc => npc.RequiredItem)
-                .ThenInclude(ri => ri.Image)
-                .Select(npc => new
-                {
+            var npcs = await _context.NPCs.Where(npc => npc.LocationID == id).Include(npc => npc.Image).Include(npc => npc.BlockedLocation).Include(npc => npc.RequiredItem).ThenInclude(ri => ri.Image).Select(npc => new {
                     npc.NPCID,
                     npc.Name,
                     npc.LocationID,
-                    Location = npc.Location != null ? new
-                    {
+
+                    Location = npc.Location != null ? new {
                         npc.Location.LocationID,
                         npc.Location.Name
                     } : null,
                     npc.BlockedLocationID,
-                    BlockedLocation = npc.BlockedLocation != null ? new
-                    {
+
+                    BlockedLocation = npc.BlockedLocation != null ? new {
                         npc.BlockedLocation.LocationID,
                         npc.BlockedLocation.Name
                     } : null,
                     npc.RequiredItemID,
-                    RequiredItem = npc.RequiredItem != null ? new
-                    {
+
+                    RequiredItem = npc.RequiredItem != null ? new {
                         npc.RequiredItem.ItemID,
                         npc.RequiredItem.Name,
                         Image = npc.RequiredItem.Image != null ? new
@@ -237,14 +202,14 @@ namespace GamebookCihullick.Server.Controllers
                             npc.RequiredItem.Image.PathToFile
                         } : null
                     } : null,
-                    Image = npc.Image != null ? new
-                    {
+
+                    Image = npc.Image != null ? new {
                         npc.Image.ImageID,
                         npc.Image.Name,
                         npc.Image.PathToFile
                     } : null
-                })
-                .ToListAsync();
+
+                }).ToListAsync();
 
             if (!npcs.Any())
             {
@@ -263,22 +228,17 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet("{id}/inventories")]
         public async Task<ActionResult<IEnumerable<object>>> GetInventoriesForLocation(int id)
         {
-            var inventories = await _context.Inventories
-                .Where(inv => inv.LocationID == id)
-                .Include(inv => inv.Image)
-                .Select(inv => new
-                {
+            var inventories = await _context.Inventories.Where(inv => inv.LocationID == id).Include(inv => inv.Image).Select(inv => new {
                     inv.InventoryID,
                     inv.Name,
                     inv.Type,
-                    Image = inv.Image != null ? new
-                    {
+
+                    Image = inv.Image != null ? new {
                         inv.Image.ImageID,
                         inv.Image.Name,
                         inv.Image.PathToFile
                     } : null
-                })
-                .ToListAsync();
+                }).ToListAsync();
 
             if (inventories == null || inventories.Count == 0)
             {

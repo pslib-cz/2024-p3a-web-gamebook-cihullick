@@ -25,49 +25,42 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetNPCs()
         {
-            var npcs = await _context.NPCs
-                .Include(npc => npc.Image)
-                .Include(npc => npc.RequiredItem)
-                .ThenInclude(ri => ri.Image)
-                .Include(npc => npc.Location)
-                .Include(npc => npc.BlockedLocation)
-                .Select(npc => new
-                {
+            var npcs = await _context.NPCs.Include(npc => npc.Image).Include(npc => npc.RequiredItem).ThenInclude(ri => ri.Image).Include(npc => npc.Location).Include(npc => npc.BlockedLocation).Select(npc => new {
                     npc.NPCID,
                     npc.Name,
                     npc.LocationID,
                     npc.Type,
-                    Location = npc.Location != null ? new
-                    {
+
+                    Location = npc.Location != null ? new {
                         npc.Location.LocationID,
                         npc.Location.Name
                     } : null,
                     npc.BlockedLocationID,
-                    BlockedLocation = npc.BlockedLocation != null ? new
-                    {
+
+                    BlockedLocation = npc.BlockedLocation != null ? new {
                         npc.BlockedLocation.LocationID,
                         npc.BlockedLocation.Name
                     } : null,
                     npc.RequiredItemID,
-                    RequiredItem = npc.RequiredItem != null ? new
-                    {
+
+                    RequiredItem = npc.RequiredItem != null ? new {
                         npc.RequiredItem.ItemID,
                         npc.RequiredItem.Name,
-                        Image = npc.RequiredItem.Image != null ? new
-                        {
+
+                        Image = npc.RequiredItem.Image != null ? new {
                             npc.RequiredItem.Image.ImageID,
                             npc.RequiredItem.Image.PathToFile
                         } : null
                     } : null,
-                    Image = npc.Image != null ? new
-                    {
+
+                    Image = npc.Image != null ? new {
                         npc.Image.ImageID,
                         npc.Image.Name,
                         npc.Image.PathToFile
                     } : null,
                     Dialog = npc.Dialog
-                })
-                .ToListAsync();
+
+                }).ToListAsync();
 
             return Ok(npcs);
         }
@@ -79,49 +72,41 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetNPC(int id)
         {
-            var npc = await _context.NPCs
-                .Include(npc => npc.Image)
-                .Include(npc => npc.RequiredItem)
-                .ThenInclude(ri => ri.Image)
-                .Include(npc => npc.Location)
-                .Include(npc => npc.BlockedLocation)
-                .Where(npc => npc.NPCID == id)
-                .Select(npc => new
-                {
+            var npc = await _context.NPCs.Include(npc => npc.Image).Include(npc => npc.RequiredItem).ThenInclude(ri => ri.Image).Include(npc => npc.Location).Include(npc => npc.BlockedLocation).Where(npc => npc.NPCID == id).Select(npc => new {
                     npc.NPCID,
                     npc.Name,
                     npc.LocationID,
-                    Location = npc.Location != null ? new
-                    {
+
+                    Location = npc.Location != null ? new {
                         npc.Location.LocationID,
                         npc.Location.Name
                     } : null,
                     npc.BlockedLocationID,
-                    BlockedLocation = npc.BlockedLocation != null ? new
-                    {
+
+                    BlockedLocation = npc.BlockedLocation != null ? new {
                         npc.BlockedLocation.LocationID,
                         npc.BlockedLocation.Name
                     } : null,
                     npc.RequiredItemID,
-                    RequiredItem = npc.RequiredItem != null ? new
-                    {
+
+                    RequiredItem = npc.RequiredItem != null ? new {
                         npc.RequiredItem.ItemID,
                         npc.RequiredItem.Name,
-                        Image = npc.RequiredItem.Image != null ? new
-                        {
+
+                        Image = npc.RequiredItem.Image != null ? new {
                             npc.RequiredItem.Image.ImageID,
                             npc.RequiredItem.Image.PathToFile
                         } : null
                     } : null,
-                    Image = npc.Image != null ? new
-                    {
+
+                    Image = npc.Image != null ? new {
                         npc.Image.ImageID,
                         npc.Image.Name,
                         npc.Image.PathToFile
                     } : null,
                     Dialog = npc.Dialog
-                })
-                .FirstOrDefaultAsync();
+
+                }).FirstOrDefaultAsync();
 
             if (npc == null)
             {
@@ -136,14 +121,10 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet("blocked-locations")]
         public IActionResult GetBlockedLocations()
         {
-            var blockedLocations = _context.NPCs
-                .Where(npc => npc.BlockedLocationID != null)
-                .Select(npc => new
-                {
+            var blockedLocations = _context.NPCs.Where(npc => npc.BlockedLocationID != null).Select(npc => new{
                     BlockedLocationID = npc.BlockedLocationID,
                     Name = npc.Name
-                })
-                .ToList();
+                }).ToList();
 
             return Ok(blockedLocations);
         }

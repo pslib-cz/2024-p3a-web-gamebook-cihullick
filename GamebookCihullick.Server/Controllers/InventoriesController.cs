@@ -25,29 +25,22 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetInventories()
         {
-            var inventories = await _context.Inventories
-                .Include(i => i.Image)
-                .Include(i => i.Location)
-                .Select(i => new
-                {
+            var inventories = await _context.Inventories.Include(i => i.Image).Include(i => i.Location).Select(i => new {
                     i.InventoryID,
                     i.Name,
                     i.Type,
                     i.ImageID,
-                    Image = i.Image != null ? new
-                    {
+                    Image = i.Image != null ? new {
                         i.Image.ImageID,
                         i.Image.Name,
                         i.Image.PathToFile
                     } : null,
                     i.LocationID,
-                    Location = i.Location != null ? new
-                    {
+                    Location = i.Location != null ? new {
                         i.Location.LocationID,
                         i.Location.Name
                     } : null
-                })
-                .ToListAsync();
+                }).ToListAsync();
 
             return Ok(inventories);
         }
@@ -57,30 +50,24 @@ namespace GamebookCihullick.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetInventory(int id)
         {
-            var inventory = await _context.Inventories
-                .Include(i => i.Image)
-                .Include(i => i.Location)
-                .Where(i => i.InventoryID == id)
-                .Select(i => new
-                {
+            var inventory = await _context.Inventories.Include(i => i.Image).Include(i => i.Location).Where(i => i.InventoryID == id).Select(i => new {
                     i.InventoryID,
                     i.Name,
                     i.Type,
                     i.ImageID,
-                    Image = i.Image != null ? new
-                    {
+
+                    Image = i.Image != null ? new {
                         i.Image.ImageID,
                         i.Image.Name,
                         i.Image.PathToFile
                     } : null,
                     i.LocationID,
-                    Location = i.Location != null ? new
-                    {
+
+                    Location = i.Location != null ? new {
                         i.Location.LocationID,
                         i.Location.Name
                     } : null
-                })
-                .FirstOrDefaultAsync();
+                }).FirstOrDefaultAsync();
 
             if (inventory == null)
             {
