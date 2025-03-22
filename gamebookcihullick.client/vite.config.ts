@@ -14,12 +14,14 @@ export default defineConfig({
         }
     },
     server: {
+        port: 5173, // or just leave this out to use the default
         proxy: {
-            '^/weatherforecast': {
-                target: 'http://localhost:7054', // Changed to HTTP instead of HTTPS
+            '^/api': {
+                target: 'http://localhost:5168',
+                changeOrigin: true,
                 secure: false
             }
-        },
-        port: 5173
+        }
     }
+
 });
