@@ -9,7 +9,7 @@ const Menu: React.FC = () => {
 
     return (
         <div className={MenuModule.container}>
-            <h1>Washing Machine Quest</h1>
+            <h1>Washing ------Machine Quest</h1>
             <div className={MenuModule.dial_and_btns}>
                 <div className={MenuModule.btn_list}>
                     <NewGameButton />
