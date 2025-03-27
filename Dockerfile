@@ -22,6 +22,6 @@ RUN dotnet publish "./GamebookCihullick.Server.csproj" -c $BUILD_CONFIGURATION -
 
 FROM base AS final
 WORKDIR /app
-COPY data /data
+COPY ./data/WashingMachineDB.db /data/WashingMachineDB.db
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "GamebookCihullick.Server.dll"]
