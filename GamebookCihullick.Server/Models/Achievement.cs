@@ -1,11 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace GamebookCihullick.Server.Models
+﻿namespace GamebookCihullick.Server.Models
 {
-    
-
-    [Table("Achievements")]
     public class Achievement
     {
         public int AchievementID { get; set; }

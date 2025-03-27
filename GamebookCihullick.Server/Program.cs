@@ -53,20 +53,4 @@ else
     Console.WriteLine(" DB file does not exist at runtime path!");
 }
 
-// Show tables
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    var conn = db.Database.GetDbConnection();
-    conn.Open();
-    var cmd = conn.CreateCommand();
-    cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table'";
-    var reader = cmd.ExecuteReader();
-    Console.WriteLine("Tables in DB:");
-    while (reader.Read())
-    {
-        Console.WriteLine($" - {reader.GetString(0)}");
-    }
-}
-
 app.Run();
