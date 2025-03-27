@@ -23,6 +23,6 @@ RUN dotnet publish "./GamebookCihullick.Server.csproj" -c $BUILD_CONFIGURATION -
 FROM base AS final
 WORKDIR /app
 ARG CACHE_BUSTER=1
-COPY ./data/WashingMachineDB.db /data/WashingMachineDB.db
+COPY ./data/WashingDB.db /data/WashingDB.db
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "GamebookCihullick.Server.dll"]
