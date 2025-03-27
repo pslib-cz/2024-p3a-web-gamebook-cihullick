@@ -43,6 +43,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+Console.WriteLine("DB Path: " + builder.Configuration.GetConnectionString("DefaultConnection"));
 
 app.Run();
 // CURRENT
