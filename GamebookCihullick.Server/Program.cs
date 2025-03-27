@@ -1,5 +1,4 @@
 using GamebookCihullick.Server.Data;
-using GamebookCihullick.Server.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -13,6 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -36,18 +36,29 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
-// LOGGING + TEST SEEDING
+// Log DB path and file size
 Console.WriteLine("DB Path: " + builder.Configuration.GetConnectionString("DefaultConnection"));
 
+var dbFile = new FileInfo("/data/WashingDB.db");
+if (dbFile.Exists)
+{
+    Console.WriteLine($"Actual DB file size (on disk): {dbFile.Length} bytes");
+}
+else
+{
+    Console.WriteLine(" DB file does not exist at runtime path!");
+}
+
+// Show tables
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var conn = db.Database.GetDbConnection();
     conn.Open();
-
     var cmd = conn.CreateCommand();
     cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table'";
     var reader = cmd.ExecuteReader();
@@ -55,32 +66,6 @@ using (var scope = app.Services.CreateScope())
     while (reader.Read())
     {
         Console.WriteLine($" - {reader.GetString(0)}");
-    }
-
-    // TEST SEEDING
-    Console.WriteLine("Seeding test item...");
-
-    if (!db.Items.Any(i => i.Name == "Test Item"))
-    {
-        db.Items.Add(new Item
-        {
-            ItemID = 9999,
-            Name = "Test Item",
-            Description = "This is a seeded test item",
-            Type = "debug",
-            Cost = 0,
-            IsEdible = false,
-            NutritionalValue = 0,
-            ShowsInInventory = true,
-            ImageID = 1 // assume 1 exists
-        });
-
-        db.SaveChanges();
-        Console.WriteLine("Test item seeded.");
-    }
-    else
-    {
-        Console.WriteLine("Test item already exists.");
     }
 }
 
