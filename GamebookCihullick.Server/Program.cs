@@ -1,24 +1,18 @@
 using GamebookCihullick.Server.Data;
+using GamebookCihullick.Server.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Console.WriteLine(" Starting to configure services...");
-
+// Add services to the container.
 builder.Services.AddControllers();
-
 builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine($" Configuring DbContext with connection string: {connectionString}");
-    options.UseSqlite(connectionString);
-});
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -27,60 +21,67 @@ builder.Services.AddCors(options =>
     });
 });
 
-Console.WriteLine(" Service configuration complete.");
-
 var app = builder.Build();
 
-Console.WriteLine(" App built successfully.");
-
-// Static files & CORS
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseCors(x => x.AllowAnyMethod().SetIsOriginAllowed(origin => new Uri(origin).IsLoopback));
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    Console.WriteLine(" Development environment detected: enabling Swagger");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
-//  Debug: DB check
-Console.WriteLine(" Checking DB connection and listing tables...");
+// LOGGING + TEST SEEDING
+Console.WriteLine("DB Path: " + builder.Configuration.GetConnectionString("DefaultConnection"));
 
-try
+using (var scope = app.Services.CreateScope())
 {
-    Console.WriteLine(" DB Path: " + builder.Configuration.GetConnectionString("DefaultConnection"));
-    using (var scope = app.Services.CreateScope())
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var conn = db.Database.GetDbConnection();
+    conn.Open();
+
+    var cmd = conn.CreateCommand();
+    cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table'";
+    var reader = cmd.ExecuteReader();
+    Console.WriteLine("Tables in DB:");
+    while (reader.Read())
     {
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        var conn = db.Database.GetDbConnection();
-        conn.Open();
+        Console.WriteLine($" - {reader.GetString(0)}");
+    }
 
-        var cmd = conn.CreateCommand();
-        cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table'";
-        var reader = cmd.ExecuteReader();
+    // TEST SEEDING
+    Console.WriteLine("Seeding test item...");
 
-        Console.WriteLine(" Tables in DB:");
-        while (reader.Read())
+    if (!db.Items.Any(i => i.Name == "Test Item"))
+    {
+        db.Items.Add(new Item
         {
-            Console.WriteLine($" {reader.GetString(0)}");
-        }
+            ItemID = 9999,
+            Name = "Test Item",
+            Description = "This is a seeded test item",
+            Type = "debug",
+            Cost = 0,
+            IsEdible = false,
+            NutritionalValue = 0,
+            ShowsInInventory = true,
+            ImageID = 1 // assume 1 exists
+        });
 
-        conn.Close();
+        db.SaveChanges();
+        Console.WriteLine("Test item seeded.");
+    }
+    else
+    {
+        Console.WriteLine("Test item already exists.");
     }
 }
-catch (Exception ex)
-{
-    Console.WriteLine($" Error while connecting to DB: {ex.Message}");
-}
-
-Console.WriteLine(" App startup complete. Ready to handle requests.");
 
 app.Run();
