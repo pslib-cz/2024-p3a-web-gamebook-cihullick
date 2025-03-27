@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GamebookCihullick.Server.Models
 {
+    
+
     [Table("Achievements")]
     public class Achievement
     {
