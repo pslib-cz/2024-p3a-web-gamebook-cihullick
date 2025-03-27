@@ -3,17 +3,22 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+Console.WriteLine(" Starting to configure services...");
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    Console.WriteLine($" Configuring DbContext with connection string: {connectionString}");
+    options.UseSqlite(connectionString);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -22,43 +27,60 @@ builder.Services.AddCors(options =>
     });
 });
 
+Console.WriteLine(" Service configuration complete.");
+
 var app = builder.Build();
 
+Console.WriteLine(" App built successfully.");
+
+// Static files & CORS
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseCors(x => x.AllowAnyMethod().SetIsOriginAllowed(origin => new Uri(origin).IsLoopback));
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    Console.WriteLine(" Development environment detected: enabling Swagger");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
-
 app.MapControllers();
-
 app.MapFallbackToFile("/index.html");
-Console.WriteLine("DB Path: " + builder.Configuration.GetConnectionString("DefaultConnection"));
-using (var scope = app.Services.CreateScope())
+
+//  Debug: DB check
+Console.WriteLine(" Checking DB connection and listing tables...");
+
+try
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    var conn = db.Database.GetDbConnection();
-    conn.Open();
-    var cmd = conn.CreateCommand();
-    cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table'";
-    var reader = cmd.ExecuteReader();
-    Console.WriteLine(" Tables in DB:");
-    while (reader.Read())
+    Console.WriteLine(" DB Path: " + builder.Configuration.GetConnectionString("DefaultConnection"));
+    using (var scope = app.Services.CreateScope())
     {
-        Console.WriteLine($" {reader.GetString(0)}");
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var conn = db.Database.GetDbConnection();
+        conn.Open();
+
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table'";
+        var reader = cmd.ExecuteReader();
+
+        Console.WriteLine(" Tables in DB:");
+        while (reader.Read())
+        {
+            Console.WriteLine($" {reader.GetString(0)}");
+        }
+
+        conn.Close();
     }
 }
+catch (Exception ex)
+{
+    Console.WriteLine($" Error while connecting to DB: {ex.Message}");
+}
 
+Console.WriteLine(" App startup complete. Ready to handle requests.");
 
 app.Run();
-// CURRENT
