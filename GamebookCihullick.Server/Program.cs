@@ -40,17 +40,5 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
-// Log DB path and file size
-Console.WriteLine("DB Path: " + builder.Configuration.GetConnectionString("DefaultConnection"));
-
-var dbFile = new FileInfo("/data/WashingDB.db");
-if (dbFile.Exists)
-{
-    Console.WriteLine($"Actual DB file size (on disk): {dbFile.Length} bytes");
-}
-else
-{
-    Console.WriteLine(" DB file does not exist at runtime path!");
-}
 
 app.Run();
