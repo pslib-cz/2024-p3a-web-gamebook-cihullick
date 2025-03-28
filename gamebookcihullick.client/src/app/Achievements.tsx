@@ -19,6 +19,7 @@ const Achievements: React.FC = () => {
     useEffect(() => {
         const fetchAchievements = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/achievements`);
+            console.log(`${import.meta.env.VITE_API_BASE_URL}/api/achievements`);
             const data = await response.json();
             setAchievements(data);
         };
