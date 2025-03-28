@@ -1,5 +1,4 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
@@ -18,7 +17,6 @@ RUN dotnet build "./GamebookCihullick.Server.csproj" -c $BUILD_CONFIGURATION -o 
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-COPY ./data/WashingDB.db ./data/WashingDB.db
 RUN dotnet publish "./GamebookCihullick.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
