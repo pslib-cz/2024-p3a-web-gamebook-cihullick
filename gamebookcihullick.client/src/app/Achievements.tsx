@@ -11,11 +11,13 @@ import {
 import { Achievement } from '../types';
 import AchievementModule from '../app/achievements.module.css';
 import BackButton from '../components/buttons/BackButton';
-
+console.log('1 API base URL:', import.meta.env.VITE_API_BASE_URL);
+console.log('1 Full import.meta.env:', import.meta.env);
 const Achievements: React.FC = () => {
     const [achievements, setAchievements] = useState<Achievement[]>([]);
     const player = getPlayer();
-
+    console.log('2 API base URL:', import.meta.env.VITE_API_BASE_URL);
+    console.log('2 Full import.meta.env:', import.meta.env);
     useEffect(() => {
         const fetchAchievements = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/achievements`);
